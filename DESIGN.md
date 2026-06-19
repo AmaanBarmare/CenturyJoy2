@@ -28,9 +28,10 @@ OKLCH, neutrals tinted warm toward the brand hue. Never pure `#000`/`#fff`.
 ### Brand
 | Token | OKLCH | ~hex | Use |
 |---|---|---|---|
-| `--red` | `oklch(0.54 0.20 22)` | `#C8102E` | Primary actions, brand accent, active nav |
-| `--red-deep` | `oklch(0.47 0.19 22)` | `#A60D26` | Hover / pressed |
-| `--red-tint` | `oklch(0.95 0.03 22)` | — | Subtle red wash behind brand moments (light) |
+| `--red` | — | `#B81F25` | Brand red (guidelines RGB 184,31,37). Primary actions, accent, active nav |
+| `--red-deep` | — | `#7A1411` | Dark red — hover / pressed |
+| `--red-tint` | — | `#F8ECEC` | Subtle red wash behind brand moments (light) |
+| `--gold` | — | `#C3952D` | Gold/dark-yellow secondary accent (sparing) |
 
 Strategy: landing = **Committed** (red is load-bearing on CTAs, the contact panel can go
 red-drenched). Portal = **Restrained** (red ≤10%: primary buttons, current selection, focus).
@@ -69,16 +70,18 @@ Red is reserved for: primary CTAs, destructive confirmations, and validation err
 
 ## Typography
 
-**Decision:** keep **Poppins** (the family across all four mockups) as the single UI + display
-face, for consistency with existing Century Ply properties. Cormorant (Option 7) is dropped —
-no serif. Hierarchy comes from weight + size contrast within Poppins (400/500/600/700), with
-tight negative tracking on large display sizes to echo the condensed "CENTURY" logotype.
+**Decision (per the official Century Joy Brand Guidelines, Mar 2025):** **Helvetica Neue**
+throughout, no serif, no web font.
 
-- **Primary — `Poppins`** (400–700). Display, headings, UI, body.
-- **Reference codes / metadata** — Poppins with `font-variant-numeric: tabular-nums` and a
-  `ui-monospace` fallback for `CJ-2026-0001`, file sizes, and timestamps (keeps the
-  technical/drawing-spec feel without adding a second webfont).
-- Fallback: `Poppins, "Helvetica Neue", system-ui, sans-serif`.
+- **Headings / display — Helvetica Neue Condensed Bold.** `--display` family with
+  `font-stretch: condensed` + weight 700, tight tracking. Echoes the condensed "CENTURY"
+  logotype. (`"Arial Narrow"` is the condensed fallback off macOS.)
+- **Body / UI — Helvetica Neue**, weights 400 (body), 500 (medium), 700 (bold). Hierarchy comes
+  from weight + size contrast, which is the guideline's intent ("headline bold / body bold").
+- **Reference codes / metadata** — `ui-monospace` with tabular figures for `CJ-2026-0001`,
+  file sizes, timestamps.
+- Stacks: body `"Helvetica Neue", Helvetica, Arial, sans-serif`;
+  display `"Helvetica Neue Condensed", "Helvetica Neue", "Arial Narrow", Arial, sans-serif`.
 
 ### Scale
 - **Landing (fluid):** display `clamp(2.6rem, 6.4vw, 6rem)` / 0.98 line-height / -0.035em; H2

@@ -6,11 +6,11 @@
    ============================================================ */
 :root {
   /* Brand */
-  --red: #c8102e;
-  --red: oklch(0.54 0.2 22);
-  --red-deep: #a60d26;
-  --red-deep: oklch(0.47 0.19 22);
-  --red-tint: #fbedee;
+  /* Brand palette per the Century Joy guidelines (Mar 2025) */
+  --red: #b81f25;        /* RGB 184,31,37 */
+  --red-deep: #7a1411;   /* dark red */
+  --red-tint: #f8ecec;
+  --gold: #c3952d;       /* dark yellow / gold accent */
 
   /* Light surfaces (portal) */
   --bg: #faf8f3;
@@ -52,7 +52,10 @@
   --shadow-lift: 0 24px 48px -32px rgba(30, 26, 21, 0.45);
 
   /* Type */
-  --ui: "Poppins", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  /* Brand typeface: Helvetica Neue throughout. Headings use the condensed
+     cut (condensed bold) per the guidelines; body uses the regular family. */
+  --ui: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+  --display: "Helvetica Neue Condensed", "Helvetica Neue", Helvetica, "Arial Narrow", Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
   /* Spacing rhythm */
