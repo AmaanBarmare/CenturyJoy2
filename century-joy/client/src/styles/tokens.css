@@ -1,0 +1,67 @@
+/* ============================================================
+   Century Joy — design tokens (see DESIGN.md)
+   Light = portal (default). Dark = landing (.theme-dark).
+   Values are warm-tinted neutrals per the OKLCH intent, shipped
+   as hex for broad browser support; brand red also as OKLCH.
+   ============================================================ */
+:root {
+  /* Brand */
+  --red: #c8102e;
+  --red: oklch(0.54 0.2 22);
+  --red-deep: #a60d26;
+  --red-deep: oklch(0.47 0.19 22);
+  --red-tint: #fbedee;
+
+  /* Light surfaces (portal) */
+  --bg: #faf8f3;
+  --surface: #fefdfb;
+  --surface-2: #f2eee6;
+  --text: #1e1a15;
+  --text-dim: #6b6457;
+  --text-faint: #9a9183;
+  --line: #e7e1d6;
+  --line-strong: #d8d0c2;
+
+  /* Dark surfaces (landing) — referenced explicitly where needed */
+  --d-bg: #16110b;
+  --d-panel: #1e1810;
+  --d-text: #f4efe6;
+  --d-text-dim: rgba(244, 239, 230, 0.62);
+  --d-text-faint: rgba(244, 239, 230, 0.4);
+  --d-line: rgba(244, 239, 230, 0.14);
+  --d-line-strong: rgba(244, 239, 230, 0.26);
+
+  /* Status palette (kept away from brand red) */
+  --st-amber-bg: #fbf0d8; --st-amber-fg: #8a5a00; --st-amber-dot: #e0a106;
+  --st-blue-bg: #e6edfb;  --st-blue-fg: #2a4fa0;  --st-blue-dot: #3b6fd6;
+  --st-violet-bg: #efe7fb;--st-violet-fg: #5b3ba6;--st-violet-dot: #7b52d6;
+  --st-emerald-bg: #dcf2e6;--st-emerald-fg: #136b45;--st-emerald-dot: #1fa468;
+  --st-green-bg: #ddf0dc; --st-green-fg: #1f6a2a; --st-green-dot: #2e9e3d;
+  --st-slate-bg: #e8eaee; --st-slate-fg: #46505f; --st-slate-dot: #6b7280;
+
+  /* Radii (Option 10) */
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+  --pill: 999px;
+
+  /* Elevation (light) */
+  --shadow-1: 0 1px 0 var(--line);
+  --shadow-2: 0 2px 6px -2px rgba(30, 26, 21, 0.1);
+  --shadow-lift: 0 24px 48px -32px rgba(30, 26, 21, 0.45);
+
+  /* Type */
+  --ui: "Poppins", "Helvetica Neue", system-ui, -apple-system, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Spacing rhythm */
+  --pad: clamp(18px, 4vw, 44px);
+  --gap: 18px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 0.16s;
+  --t: 0.22s;
+}
