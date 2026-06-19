@@ -4,18 +4,37 @@ import { useAuth } from '../context/AuthContext';
 import { Wordmark } from './Logo';
 import type { Role } from '../types';
 
-interface NavItem { to: string; label: string; ix: string; cta?: boolean; end?: boolean }
+type IconName = 'grid' | 'plus' | 'list' | 'users' | 'doc';
+
+const ICONS: Record<IconName, ReactNode> = {
+  grid: (<><rect x="3" y="3" width="7.5" height="7.5" rx="1.6" /><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6" /><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6" /><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6" /></>),
+  plus: <path d="M12 5v14M5 12h14" />,
+  list: (<><path d="M8 6h13M8 12h13M8 18h13" /><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01" /></>),
+  users: (<><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M21 21v-2a4 4 0 0 0-3-3.87" /></>),
+  doc: (<><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></>),
+};
+
+function Icon({ name }: { name: IconName }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {ICONS[name]}
+    </svg>
+  );
+}
+
+interface NavItem { to: string; label: string; icon: IconName; cta?: boolean; end?: boolean }
 
 const NAV: Record<Role, NavItem[]> = {
   client: [
-    { to: '/client', label: 'Dashboard', ix: '01', end: true },
-    { to: '/client/new', label: 'New Project', ix: '+', cta: true },
+    { to: '/client', label: 'Dashboard', icon: 'grid', end: true },
+    { to: '/client/new', label: 'New Project', icon: 'plus', cta: true },
   ],
-  studio: [{ to: '/studio', label: 'Project Queue', ix: '01', end: true }],
+  studio: [{ to: '/studio', label: 'Project Queue', icon: 'list', end: true }],
   admin: [
-    { to: '/admin', label: 'Projects', ix: '01', end: true },
-    { to: '/admin/users', label: 'Users', ix: '02' },
-    { to: '/admin/audit', label: 'Audit Log', ix: '03' },
+    { to: '/admin', label: 'Projects', icon: 'grid', end: true },
+    { to: '/admin/users', label: 'Users', icon: 'users' },
+    { to: '/admin/audit', label: 'Audit Log', icon: 'doc' },
   ],
 };
 
@@ -62,7 +81,7 @@ export function PortalLayout({ title, subtitle, actions, back, children }: Props
           {items.map((it) => (
             <NavLink key={it.to} to={it.to} end={it.end} title={it.label}
               className={({ isActive }) => (it.cta ? 'cta' : isActive ? 'active' : '')}>
-              <span className="ix">{it.ix}</span>
+              <span className="nav-ic"><Icon name={it.icon} /></span>
               <span className="label">{it.label}</span>
             </NavLink>
           ))}
@@ -74,7 +93,11 @@ export function PortalLayout({ title, subtitle, actions, back, children }: Props
             <div className="nm">{user.name}</div>
             <div className="rl">{user.role}</div>
           </div>
-          <button className="signout" onClick={handleLogout} aria-label="Sign out" title="Sign out">⎋</button>
+          <button className="signout" onClick={handleLogout} aria-label="Sign out" title="Sign out">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" />
+            </svg>
+          </button>
         </div>
       </aside>
 
@@ -82,7 +105,11 @@ export function PortalLayout({ title, subtitle, actions, back, children }: Props
         <header className="topbar">
           <div className="tb-left">
             {back && (
-              <button className="btn-back" onClick={() => navigate(back)} aria-label="Back" title="Back">←</button>
+              <button className="btn-back" onClick={() => navigate(back)} aria-label="Back" title="Back">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              </button>
             )}
             <div>
               <h1>{title}</h1>

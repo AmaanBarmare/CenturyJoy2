@@ -1,11 +1,28 @@
 /* ============================================================
    Century Joy — portal app shell (collapsible rail + content)
    ============================================================ */
-.shell { display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; transition: grid-template-columns .28s var(--ease-out-expo); }
+.shell {
+  display: grid; grid-template-columns: 264px 1fr; min-height: 100vh;
+  transition: grid-template-columns .28s var(--ease-out-expo);
+  /* Modern, clean cool-neutral palette scoped to the portal (brand red kept).
+     Landing/auth keep their warm tones. */
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #eef0f3;
+  --text: #15181c;
+  --text-dim: #5b6068;
+  --text-faint: #969ba3;
+  --line: #e7e9ee;
+  --line-strong: #d6dae1;
+  --red-tint: #fceeef;
+  --shadow-2: 0 1px 2px rgba(21, 24, 28, 0.05), 0 1px 3px rgba(21, 24, 28, 0.04);
+  --shadow-lift: 0 18px 40px -24px rgba(21, 24, 28, 0.28);
+  background: var(--bg);
+}
 .shell.collapsed { grid-template-columns: 76px 1fr; }
 
 .rail {
-  position: sticky; top: 0; height: 100vh; background: var(--surface-2);
+  position: sticky; top: 0; height: 100vh; background: var(--surface);
   border-right: 1px solid var(--line); display: flex; flex-direction: column;
   padding: 18px 14px; z-index: 30; overflow: hidden;
 }
@@ -24,14 +41,15 @@
   border-radius: var(--r-sm); font-size: 13.5px; font-weight: 500; color: var(--text-dim);
   transition: background var(--t-fast), color var(--t-fast); white-space: nowrap;
 }
-.rnav a .ix { font-family: var(--mono); font-size: 11px; color: var(--text-faint); width: 16px; text-align: center; flex: none; }
+.rnav a .nav-ic { display: grid; place-items: center; width: 20px; height: 20px; flex: none; color: var(--text-faint); transition: color var(--t-fast); }
 .rnav a .label { overflow: hidden; }
-.rnav a:hover { background: var(--bg); color: var(--text); }
-.rnav a.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow-2); font-weight: 600; }
-.rnav a.active .ix { color: var(--red); }
-.rnav a.cta { background: var(--red); color: #fff; margin-top: 10px; }
+.rnav a:hover { background: var(--surface-2); color: var(--text); }
+.rnav a:hover .nav-ic { color: var(--text); }
+.rnav a.active { background: var(--red-tint); color: var(--red); font-weight: 600; }
+.rnav a.active .nav-ic { color: var(--red); }
+.rnav a.cta { background: var(--red); color: #fff; margin-top: 10px; box-shadow: 0 6px 16px -8px var(--red); }
 .rnav a.cta:hover { background: var(--red-deep); color: #fff; }
-.rnav a.cta .ix { color: #fff; font-family: var(--ui); font-weight: 700; font-size: 15px; }
+.rnav a.cta .nav-ic { color: #fff; }
 
 .ruser { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 10px; display: flex; align-items: center; gap: 10px; }
 .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 13px; flex: none; }
@@ -45,7 +63,6 @@
 .collapsed .rail-top { flex-direction: column; gap: 12px; padding-bottom: 16px; }
 .collapsed .rnav a { justify-content: center; padding: 11px 0; gap: 0; }
 .collapsed .rnav a .label { display: none; }
-.collapsed .rnav a .ix { width: auto; font-size: 12px; }
 .collapsed .ruser { flex-direction: column; gap: 10px; }
 .collapsed .ruser-info { display: none; }
 
@@ -129,7 +146,6 @@
   .collapse-btn { display: none; }
   .rnav { flex-direction: row; flex: 0; flex-wrap: wrap; }
   .rnav a { padding: 8px 12px; }
-  .rnav a .ix { display: none; }
   .rnav a .label { display: inline; }
   .ruser { border-top: 0; padding-top: 0; margin-top: 0; flex-direction: row; }
   .ruser-info { display: none; }
