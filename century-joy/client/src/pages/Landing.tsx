@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Wordmark } from '../components/Logo';
 
@@ -41,9 +41,15 @@ const FAQ = [
 
 export default function Landing() {
   const navRef = useRef<HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('menu-open', menuOpen);
+  }, [menuOpen]);
 
   useEffect(() => {
     const nav = navRef.current;
+
     const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -105,18 +111,15 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="landing">
+    <>
+    <div className={`landing ${menuOpen ? 'menu-open' : ''}`}>
       <header className="lnav" ref={navRef}>
         <div className="lwrap lnav-in">
           <Wordmark />
-          <nav className="links">
-            {SECTIONS.slice(1).map((s) => (
-              <a key={s.id} className="ln-link" href={`#${s.id}`}>{s.label}</a>
-            ))}
-          </nav>
           <div className="lnav-cta">
             <a className="ln-link" href={REQUEST_ACCESS}>Request access</a>
             <Link to="/login" className="btn btn-primary btn-sm">Log in</Link>
+            <button className={`menu-btn ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen((o) => !o)} aria-label="Menu"><span /><span /><span /></button>
           </div>
         </div>
       </header>
@@ -154,7 +157,7 @@ export default function Landing() {
           <div className="about-grid">
             <div className="rv">
               <span className="eyebrow">About Century Joy</span>
-              <h2>Where Design Meets <span className="red">Visual Storytelling</span></h2>
+              <h2>Where Design Meets <br/><span className="red">Visual Storytelling</span></h2>
               <p className="big">Great designs deserve to be experienced, not just explained.</p>
               <p className="body">An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals, driving faster decisions and stronger client engagement.</p>
             </div>
@@ -296,5 +299,12 @@ export default function Landing() {
         </div>
       </footer>
     </div>
+
+    <nav className={`lnav-mobile ${menuOpen ? 'open' : ''}`}>
+      {SECTIONS.slice(1).map((s) => (
+        <a key={s.id} href={`#${s.id}`} onClick={() => setMenuOpen(false)}>{s.label}</a>
+      ))}
+    </nav>
+    </>
   );
 }
