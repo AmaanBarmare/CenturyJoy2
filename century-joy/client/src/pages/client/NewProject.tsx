@@ -68,7 +68,7 @@ export default function NewProject() {
   };
 
   return (
-    <PortalLayout title="New Project Request" subtitle="Submit your drawings and visualisation requirements">
+    <PortalLayout title="New Project Request" subtitle="Submit your drawings and visualisation requirements" back="/client">
       <div className="card card-pad" style={{ maxWidth: 760 }}>
         <div className="field">
           <label>Project Title <span style={{ color: 'var(--red)' }}>*</span>

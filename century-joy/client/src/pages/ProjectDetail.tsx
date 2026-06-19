@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { PortalLayout } from '../components/PortalLayout';
 import { StatusBadge } from '../components/StatusBadge';
 import { ProgressTracker } from '../components/ProgressTracker';
@@ -80,7 +80,7 @@ export default function ProjectDetail() {
     <PortalLayout
       title={p.title}
       subtitle={`${p.reference_number} · Submitted ${formatDate(p.created_at)}`}
-      actions={<Link to={backTo} className="btn btn-ghost btn-sm">← Back</Link>}
+      back={backTo}
     >
       <div className="detail-grid">
         <div className="detail-main">
