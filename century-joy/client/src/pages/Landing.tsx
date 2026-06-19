@@ -78,9 +78,29 @@ export default function Landing() {
     );
     document.querySelectorAll('.svc-b').forEach((b) => blockObs.observe(b));
 
+    // process stepper — fill 01 -> 06 sequentially when it scrolls into view
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const procObs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        document.querySelector('.psteps')?.classList.add('run');
+        const steps = [...document.querySelectorAll('.psteps .pstp')];
+        steps.forEach((s, i) => {
+          if (reduce) s.classList.add('on');
+          else timers.push(setTimeout(() => s.classList.add('on'), 200 + i * 260));
+        });
+        procObs.disconnect();
+      }),
+      { threshold: 0.45 },
+    );
+    const procEl = document.getElementById('process');
+    if (procEl) procObs.observe(procEl);
+
     return () => {
       window.removeEventListener('scroll', onScroll);
-      revealObs.disconnect(); dotObs.disconnect(); blockObs.disconnect();
+      revealObs.disconnect(); dotObs.disconnect(); blockObs.disconnect(); procObs.disconnect();
+      timers.forEach(clearTimeout);
     };
   }, []);
 
@@ -218,8 +238,8 @@ export default function Landing() {
             <h2>A Seamless Journey from Concept to Creation</h2>
           </div>
           <div className="psteps rv">
-            {PROCESS.map((s, i) => (
-              <div className={`pstp ${i < 3 ? 'on' : ''}`} key={s.n}>
+            {PROCESS.map((s) => (
+              <div className="pstp" key={s.n}>
                 <div className="pc">{s.n}</div>
                 <h3>{s.t}</h3>
                 <p>{s.p}</p>

@@ -7,7 +7,6 @@
   background: var(--d-bg); color: var(--d-text); font-family: var(--ui);
   scroll-snap-type: y proximity;
 }
-.landing a { color: inherit; }
 .landing .lwrap { max-width: 1280px; margin-inline: auto; padding-inline: var(--pad); width: 100%; }
 .landing .panel { position: relative; scroll-snap-align: start; }
 .landing .full { min-height: 100svh; display: flex; align-items: center; }
@@ -112,13 +111,16 @@
 @media (max-width: 680px) { .gal { grid-template-columns: 1fr; } .g-a, .g-b, .g-c { grid-column: auto; grid-row: auto; aspect-ratio: 16/10; } }
 
 /* Process — circular steps (Option 10) */
-.proc-head { text-align: center; max-width: 30ch; margin: 0 auto; }
-.proc-head h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; margin-top: 14px; }
+.proc-head { text-align: center; margin: 0 auto; }
+.proc-head h2 { font-size: clamp(1.7rem, 3.3vw, 2.9rem); font-weight: 600; margin-top: 14px; text-wrap: balance; }
 .psteps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; position: relative; margin-top: 52px; }
-.psteps::before { content: ""; position: absolute; top: 21px; left: 8%; right: 8%; height: 2px; background: var(--d-line); }
+.psteps::before { content: ""; position: absolute; top: 21px; left: 8%; right: 8%; height: 2px; background: var(--d-line); z-index: 0; }
+/* red progress line that grows across the steps when the section scrolls in */
+.psteps::after { content: ""; position: absolute; top: 21px; left: 8%; width: 0; height: 2px; background: var(--red); z-index: 0; transition: width 1.7s var(--ease-out-expo); }
+.psteps.run::after { width: 84%; }
 .pstp { position: relative; padding: 0 12px; text-align: center; }
-.pstp .pc { width: 44px; height: 44px; border-radius: 50%; background: var(--d-bg); border: 2px solid var(--d-line-strong); display: grid; place-items: center; font-weight: 700; font-size: 13px; color: var(--d-text-dim); margin: 0 auto 16px; position: relative; z-index: 1; }
-.pstp.on .pc { background: var(--red); border-color: var(--red); color: #fff; }
+.pstp .pc { width: 44px; height: 44px; border-radius: 50%; background: var(--d-bg); border: 2px solid var(--d-line-strong); display: grid; place-items: center; font-weight: 700; font-size: 13px; color: var(--d-text-dim); margin: 0 auto 16px; position: relative; z-index: 1; transition: background .45s var(--ease-out-expo), border-color .45s var(--ease-out-expo), color .45s var(--ease-out-expo), transform .45s var(--ease-out-expo), box-shadow .45s var(--ease-out-expo); }
+.pstp.on .pc { background: var(--red); border-color: var(--red); color: #fff; transform: scale(1.08); box-shadow: 0 0 0 5px rgba(200,16,46,.16); }
 .pstp h3 { font-size: 1rem; font-weight: 600; }
 .pstp p { color: var(--d-text-dim); font-weight: 300; font-size: 12.5px; line-height: 1.5; margin-top: 8px; }
 .pstp .fmt { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px; }
