@@ -1,0 +1,18 @@
+{
+  "name": "century-joy",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Century Joy — invite-only 3D visualisation service portal (monorepo: client + server).",
+  "scripts": {
+    "postinstall": "npm --prefix century-joy/server install && npm --prefix century-joy/client install",
+    "dev": "concurrently -k -n api,web -c magenta,cyan \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "npm --prefix century-joy/server run dev",
+    "dev:client": "npm --prefix century-joy/client run dev",
+    "build": "npm --prefix century-joy/server run build && npm --prefix century-joy/client run build",
+    "seed": "npm --prefix century-joy/server run seed",
+    "setup:storage": "npm --prefix century-joy/server run setup:storage"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
