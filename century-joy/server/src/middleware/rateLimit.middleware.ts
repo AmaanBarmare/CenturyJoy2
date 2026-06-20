@@ -52,3 +52,13 @@ export const generalLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+/** Support chatbot — keep OpenAI spend bounded per visitor. */
+export const chatLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 15,
+  keyGenerator: userOrIp,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: { code: 'rate_limited', message: 'Too many messages. Please wait a moment.' } },
+});

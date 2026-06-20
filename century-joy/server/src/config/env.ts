@@ -39,6 +39,9 @@ export const env = {
   emailFrom: optional('EMAIL_FROM', 'Century Joy <noreply@centuryjoy.in>'),
   appBaseUrl: optional('APP_BASE_URL', 'http://localhost:5173'),
   adminAlertEmail: optional('ADMIN_ALERT_EMAIL'),
+
+  // ── OpenAI (support chatbot) ──
+  openaiApiKey: optional('OPENAI_API_KEY'),
 };
 
 export type Env = typeof env;

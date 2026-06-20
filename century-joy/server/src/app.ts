@@ -13,6 +13,7 @@ import projectRoutes from './routes/projects.routes';
 import uploadRoutes from './routes/upload.routes';
 import studioRoutes from './routes/studio.routes';
 import adminRoutes from './routes/admin.routes';
+import chatRoutes from './routes/chat.routes';
 
 export function createApp() {
   const app = express();
@@ -65,6 +66,7 @@ export function createApp() {
   app.use('/api/upload', uploadRoutes);
   app.use('/api/studio', studioRoutes);
   app.use('/api/admin', adminRoutes);
+  app.use('/api/chat', chatRoutes);
 
   app.use((_req, _res, next) => next(notFound('Route not found')));
   app.use(errorMiddleware);

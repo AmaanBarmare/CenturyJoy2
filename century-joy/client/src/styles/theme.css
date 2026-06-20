@@ -1,0 +1,135 @@
+/* ============================================================
+   Century Joy — light / dark theme
+   LIGHT = the original site, untouched (dark cinematic landing
+   sections + light panels + light portal). DARK = the exact
+   inverse: every neutral flips to its opposite. The brand red is
+   the only constant. Imagery and the red panels stay legible.
+
+   Default token values (light/original) live in tokens.css and
+   portal.css. Light mode therefore needs NO token overrides — it
+   IS the default. Dark mode swaps the two neutral token sets.
+   ============================================================ */
+
+/* ---- LIGHT MODE : the original colours, nothing overridden --- */
+[data-theme="light"] { color-scheme: light; }
+
+/* ---- DARK MODE : exact inverse of the original (red constant) -- */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* The "light" neutral set (body, landing light panels, auth form)
+     flips to warm dark. */
+  --bg: #16110b;
+  --surface: #1e1810;
+  --surface-2: #241d14;
+  --text: #f4efe6;
+  --text-dim: rgba(244, 239, 230, 0.66);
+  --text-faint: rgba(244, 239, 230, 0.42);
+  --line: rgba(244, 239, 230, 0.14);
+  --line-strong: rgba(244, 239, 230, 0.26);
+  --red-tint: #34161a;
+
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lift: 0 24px 48px -28px rgba(0, 0, 0, 0.7);
+
+  /* The "dark" neutral set (landing cinematic sections) flips to
+     warm light. */
+  --d-bg: #faf8f3;
+  --d-panel: #fefdfb;
+  --d-text: #1e1a15;
+  --d-text-dim: #6b6457;
+  --d-text-faint: #9a9183;
+  --d-line: #e7e1d6;
+  --d-line-strong: #d8d0c2;
+}
+
+/* Portal shell hard-codes its cool-neutral light palette on .shell,
+   so the inverse must be re-scoped there to win specificity. */
+[data-theme="dark"] .shell {
+  --bg: #0f1116;
+  --surface: #171a20;
+  --surface-2: #1f232b;
+  --text: #e9ebef;
+  --text-dim: #9aa1ab;
+  --text-faint: #6b727c;
+  --line: #272c34;
+  --line-strong: #353b45;
+  --red-tint: #34161a;
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-lift: 0 18px 40px -22px rgba(0, 0, 0, 0.75);
+}
+
+/* ============================================================
+   Dark-mode pins — in dark mode the landing's neutrals invert to
+   light, but the hero/gallery sit over dark photographs and a few
+   elements are hard-coded. Keep them correct.
+   ============================================================ */
+
+/* Hero content always sits over a dark photo + gradient */
+[data-theme="dark"] .hero .hero-c { color: #f4efe6; }
+[data-theme="dark"] .hero .btn-line { color: #f4efe6; border-color: rgba(255, 255, 255, 0.45); }
+[data-theme="dark"] .hero .btn-line:hover:not(:disabled) { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
+
+/* Nav over the hero (top, not scrolled) must read light over the photo */
+[data-theme="dark"] .lnav:not(.scrolled) { color: #f4efe6; }
+[data-theme="dark"] .lnav:not(.scrolled) .ln-link { color: rgba(244, 239, 230, 0.82); }
+[data-theme="dark"] .lnav:not(.scrolled) .ln-link:hover { color: #fff; }
+
+/* Once scrolled, the nav floats over the now-light landing sections */
+[data-theme="dark"] .lnav.scrolled { background: rgba(250, 248, 243, 0.85); border-bottom-color: var(--d-line); color: var(--d-text); }
+[data-theme="dark"] .lnav.scrolled .ln-link { color: var(--d-text-dim); }
+[data-theme="dark"] .lnav.scrolled .ln-link:hover { color: var(--d-text); }
+
+/* Gallery captions sit over a dark image overlay */
+[data-theme="dark"] .gtile .cap { color: #f4efe6; }
+
+/* Process format chips need a visible surface on the now-light section */
+[data-theme="dark"] .pstp .fmt span { background: #ece7de; color: var(--d-text); }
+
+/* Hard-coded dark footer inverts to light */
+[data-theme="dark"] .lfoot { background: #f2eee6; color: #6b6457; }
+
+/* Auth brand panel is a photographic hero, keep it dark in both modes */
+[data-theme="dark"] .auth-brand { background: #16110b; color: #f4efe6; }
+[data-theme="dark"] .auth-brand .ab-sub { color: rgba(244, 239, 230, 0.62); }
+[data-theme="dark"] .auth-brand .ab-foot { color: rgba(244, 239, 230, 0.4); }
+
+/* ============================================================
+   Theme toggle control (adapts to whatever surface it sits on)
+   ============================================================ */
+.theme-toggle {
+  width: 40px; height: 40px; flex: none;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, currentColor 28%, transparent);
+  background: transparent; color: inherit;
+  display: grid; place-items: center; cursor: pointer;
+  opacity: 0.85;
+  transition: opacity var(--t), background var(--t), border-color var(--t), transform var(--t-fast);
+}
+.theme-toggle:hover { opacity: 1; background: color-mix(in srgb, currentColor 12%, transparent); }
+.theme-toggle:active { transform: scale(0.94); }
+.theme-toggle svg { width: 18px; height: 18px; }
+
+/* ============================================================
+   Smooth crossfade when the theme flips (bounded set of surfaces)
+   ============================================================ */
+body,
+.landing .panel, .lnav, .lnav.scrolled, .ben,
+.shell, .rail, .content, .topbar, .card, .overview, .ov-seg, .stat,
+.input, .textarea, .select, .table-wrap, .dtile,
+.auth-brand, .auth-form, .lfoot {
+  transition: background-color 0.35s var(--ease-out-quint),
+              color 0.35s var(--ease-out-quint),
+              border-color 0.35s var(--ease-out-quint);
+}
+/* .landing keeps its menu-push transform transition; add colour crossfade to it */
+.landing {
+  transition: transform 0.3s ease,
+              background-color 0.35s var(--ease-out-quint),
+              color 0.35s var(--ease-out-quint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, .landing, .landing .panel, .lnav, .ben, .shell, .rail, .content,
+  .topbar, .card, .input, .auth-brand, .auth-form, .lfoot { transition: none; }
+}

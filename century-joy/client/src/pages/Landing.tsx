@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Wordmark } from '../components/Logo';
+import { ThemeToggle } from '../components/ThemeToggle';
+import { ChatWidget } from '../components/ChatWidget';
 
 const IMG = (id: string, w = 1400) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
@@ -91,14 +93,26 @@ export default function Landing() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const procObs = new IntersectionObserver(
       (entries) => entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        document.querySelector('.psteps')?.classList.add('run');
+        const psteps = document.querySelector('.psteps');
         const steps = [...document.querySelectorAll('.psteps .pstp')];
-        steps.forEach((s, i) => {
-          if (reduce) s.classList.add('on');
-          else timers.push(setTimeout(() => s.classList.add('on'), 200 + i * 260));
-        });
-        procObs.disconnect();
+        if (e.isIntersecting) {
+          // replay from scratch each time it enters view
+          timers.forEach(clearTimeout); timers.length = 0;
+          steps.forEach((s) => s.classList.remove('on'));
+          psteps?.classList.remove('run');
+          // force reflow so the line transition restarts
+          void (psteps as HTMLElement | null)?.offsetWidth;
+          psteps?.classList.add('run');
+          steps.forEach((s, i) => {
+            if (reduce) s.classList.add('on');
+            else timers.push(setTimeout(() => s.classList.add('on'), 200 + i * 260));
+          });
+        } else {
+          // reset when it leaves so the next entry animates again
+          timers.forEach(clearTimeout); timers.length = 0;
+          psteps?.classList.remove('run');
+          steps.forEach((s) => s.classList.remove('on'));
+        }
       }),
       { threshold: 0.45 },
     );
@@ -121,6 +135,7 @@ export default function Landing() {
           <div className="lnav-cta">
             <a className="ln-link" href={REQUEST_ACCESS}>Request access</a>
             <Link to="/login" className="btn btn-primary btn-sm">Log in</Link>
+            <ThemeToggle />
             <button className={`menu-btn ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen((o) => !o)} aria-label="Menu"><span /><span /><span /></button>
           </div>
         </div>
@@ -139,7 +154,7 @@ export default function Landing() {
         <div className="hero-bg"><img src={IMG('photo-1749930206000-179d0b85aa7e', 2000)} alt="Photoreal residential interior render" /></div>
         <div className="lwrap hero-c">
           <div className="tags"><span>Architects</span><span>Interior Designers</span><span>Design Influencers</span></div>
-          <h1>Bring Your Designs <em>to Life</em> Before They Become Reality</h1>
+          <h1>Bring Your Designs <em>To Life</em> Before They Become Reality</h1>
           <div className="hero-bottom">
             <div>
               <p className="sub">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
@@ -310,10 +325,13 @@ export default function Landing() {
     </div>
 
     <nav className={`lnav-mobile ${menuOpen ? 'open' : ''}`}>
+      <button className="mclose" onClick={() => setMenuOpen(false)} aria-label="Close menu" />
       {SECTIONS.slice(1).map((s) => (
         <a key={s.id} href={`#${s.id}`} onClick={() => setMenuOpen(false)}>{s.label}</a>
       ))}
     </nav>
+
+    <ChatWidget />
     </>
   );
 }

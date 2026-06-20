@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Wordmark } from './Logo';
+import { ThemeToggle } from './ThemeToggle';
 
 const HERO = 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1400&q=80';
 
@@ -19,6 +20,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
         <div className="ab-foot">Your vision. Our visual expertise.</div>
       </div>
       <div className="auth-form">
+        <ThemeToggle className="auth-theme-toggle" />
         <div className="auth-card">{children}</div>
       </div>
     </div>

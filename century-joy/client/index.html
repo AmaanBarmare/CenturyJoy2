@@ -7,6 +7,19 @@
     <meta name="description" content="Century Joy — photorealistic 3D visualisation for architects and interior designers." />
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
     <title>Century Joy</title>
+    <script>
+      // Set the theme before first paint to avoid a flash of the wrong palette.
+      (function () {
+        try {
+          var s = localStorage.getItem('cj_theme');
+          var t = (s === 'light' || s === 'dark')
+            ? s
+            : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', t);
+          document.documentElement.style.colorScheme = t;
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

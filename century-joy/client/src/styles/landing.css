@@ -25,11 +25,14 @@
 .lnav .menu-btn { background: var(--red); color: #fff; border: none; width: 44px; height: 44px; border-radius: 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: .3s; }
 .lnav .menu-btn:hover { background: #a01a1f; }
 .lnav .menu-btn span { width: 22px; height: 2px; background: #fff; display: block; transition: .3s; }
-.lnav .menu-btn.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.lnav .menu-btn.open span:nth-child(2) { opacity: 0; }
-.lnav .menu-btn.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.lnav .menu-btn.open { opacity: 0; pointer-events: none; }
 .lnav-mobile { position: fixed; top: 0; right: 0; bottom: 0; background: var(--red); width: 280px; display: flex; flex-direction: column; gap: 0; padding-top: 96px; z-index: 70; transform: translateX(100%); transition: transform .3s ease; }
 .lnav-mobile.open { transform: translateX(0); }
+.lnav-mobile .mclose { position: absolute; top: 22px; left: 24px; width: 40px; height: 40px; border: none; background: transparent; cursor: pointer; display: grid; place-items: center; }
+.lnav-mobile .mclose::before, .lnav-mobile .mclose::after { content: ""; position: absolute; width: 22px; height: 2px; background: #fff; transition: background .2s; }
+.lnav-mobile .mclose::before { transform: rotate(45deg); }
+.lnav-mobile .mclose::after { transform: rotate(-45deg); }
+.lnav-mobile .mclose:hover::before, .lnav-mobile .mclose:hover::after { background: rgba(255,255,255,.7); }
 .lnav-mobile a { color: #fff; padding: 14px 28px; font-size: 15px; font-weight: 500; text-decoration: none; transition: background .2s; }
 .lnav-mobile a:hover { background: rgba(255,255,255,.12); }
 .landing { transition: transform .3s ease; }
@@ -90,10 +93,10 @@ body.menu-open { overflow-y: hidden; }
 .about-grid p.body { color: var(--text-dim); font-weight: 300; margin-top: 14px; max-width: 46ch; line-height: 1.7; letter-spacing: .01em; }
 .about-grid .ab-img { border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 4/4.4; }
 .about-grid .ab-img img { width: 100%; height: 100%; object-fit: cover; }
-.benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: clamp(36px, 5vw, 60px); }
-.ben { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 22px 20px 26px; }
+.benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: clamp(36px, 5vw, 60px); }
+.ben { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 22px 16px 26px; }
 .ben .n { font-weight: 700; font-size: 13px; color: var(--red); }
-.ben h3 { font-size: 1rem; font-weight: 600; margin-top: 14px; letter-spacing: -.01em; }
+.ben h3 { font-size: .92rem; font-weight: 600; margin-top: 14px; text-wrap: balance; }
 @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } .about-grid .ab-img { aspect-ratio: 16/11; order: -1; } .benefits { grid-template-columns: 1fr 1fr; } }
 
 /* Services — sticky image split (Option 7) */
@@ -145,7 +148,7 @@ body.menu-open { overflow-y: hidden; }
 .pstp .pc { width: 44px; height: 44px; border-radius: 50%; background: var(--d-bg); border: 2px solid var(--d-line-strong); display: grid; place-items: center; font-weight: 700; font-size: 13px; color: var(--d-text-dim); margin: 0 auto 16px; position: relative; z-index: 1; transition: background .45s var(--ease-out-expo), border-color .45s var(--ease-out-expo), color .45s var(--ease-out-expo), transform .45s var(--ease-out-expo), box-shadow .45s var(--ease-out-expo); }
 .pstp.on .pc { background: var(--red); border-color: var(--red); color: #fff; transform: scale(1.08); box-shadow: 0 0 0 5px rgba(200,16,46,.16); }
 .pstp h3 { font-size: 1rem; font-weight: 600; }
-.pstp p { color: var(--d-text-dim); font-weight: 300; font-size: 12.5px; line-height: 1.5; margin-top: 8px; }
+.pstp p { color: var(--d-text-dim); font-weight: 300; font-size: 12.5px; line-height: 1.5; margin-top: 8px; text-wrap: balance; }
 .pstp .fmt { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px; }
 .pstp .fmt span { font-size: 9.5px; color: var(--d-text); background: rgba(244,239,230,.1); padding: 3px 7px; border-radius: var(--pill); }
 @media (max-width: 900px) { .psteps { grid-template-columns: 1fr 1fr 1fr; gap: 34px 10px; } .psteps::before { display: none; } }

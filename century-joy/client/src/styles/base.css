@@ -191,7 +191,8 @@ table.tbl .right { text-align: right; }
 .auth-brand .ab-tag { font-size: clamp(1.6rem, 2.6vw, 2.4rem); font-weight: 600; letter-spacing: -0.03em; max-width: 16ch; line-height: 1.1; }
 .auth-brand .ab-sub { color: var(--d-text-dim); margin-top: 14px; max-width: 40ch; font-weight: 300; }
 .auth-brand .ab-foot { font-size: 12px; color: var(--d-text-faint); }
-.auth-form { display: grid; place-items: center; padding: clamp(28px, 4vw, 56px); }
+.auth-form { position: relative; display: grid; place-items: center; padding: clamp(28px, 4vw, 56px); }
+.auth-theme-toggle { position: absolute; top: 22px; right: 22px; }
 .auth-card { width: min(400px, 100%); }
 .auth-card h1 { font-size: 1.65rem; margin-bottom: 6px; }
 .auth-card .lead { color: var(--text-dim); margin-bottom: 26px; font-size: 14px; }

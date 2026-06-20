@@ -74,6 +74,7 @@
   padding: 14px var(--pad);
 }
 .tb-left { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.tb-right { display: flex; align-items: center; gap: 12px; flex: none; }
 .btn-back {
   width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line-strong);
   background: var(--surface); color: var(--text); cursor: pointer; flex: none;

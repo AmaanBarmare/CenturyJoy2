@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Wordmark } from './Logo';
+import { ThemeToggle } from './ThemeToggle';
 import type { Role } from '../types';
 
 type IconName = 'grid' | 'plus' | 'list' | 'users' | 'doc';
@@ -116,7 +117,10 @@ export function PortalLayout({ title, subtitle, actions, back, children }: Props
               {subtitle && <div className="sub">{subtitle}</div>}
             </div>
           </div>
-          {actions && <div className="row">{actions}</div>}
+          <div className="tb-right">
+            {actions && <div className="row">{actions}</div>}
+            <ThemeToggle />
+          </div>
         </header>
         <main className="page">{children}</main>
       </div>
