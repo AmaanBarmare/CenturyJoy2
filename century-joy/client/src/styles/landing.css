@@ -68,6 +68,14 @@ body.menu-open { overflow-y: hidden; }
 .hero .hero-support { margin-top: 18px; font-size: 12px; font-weight: 600; color: rgba(244,239,230,.78); letter-spacing: .02em; }
 .hero .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
 
+/* Marquee banner */
+.landing .marquee { overflow: hidden; background: var(--red); padding-block: 16px; }
+.landing .mtrack { display: inline-flex; white-space: nowrap; will-change: transform; animation: marq 32s linear infinite; }
+.landing .mtrack span { font-family: var(--display); font-stretch: condensed; font-size: clamp(1.1rem, 2vw, 1.7rem); font-weight: 600; letter-spacing: .01em; color: #fff; padding: 0 26px; display: inline-flex; align-items: center; gap: 26px; }
+.landing .mtrack span::after { content: ""; width: 6px; height: 6px; background: #fff; border-radius: 50%; opacity: .8; }
+@keyframes marq { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .landing .mtrack { animation: none; } }
+
 /* Light panel base */
 .panel.light { background: var(--bg); color: var(--text); }
 .panel.light .eyebrow { color: var(--red); }

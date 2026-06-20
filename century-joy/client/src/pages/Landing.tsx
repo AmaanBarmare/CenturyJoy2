@@ -16,6 +16,8 @@ const SECTIONS = [
   { id: 'contact', label: 'Contact' },
 ];
 
+const MARQUEE = ['Architects', 'Interior Designers', 'Design Influencers', 'Photorealistic Renders', 'Virtual Walkthroughs', 'Material Visualisation'];
+
 const SERVICES = [
   { n: '01', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
   { n: '02', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', chips: ['Residential', 'Commercial', 'Facade studies'] },
@@ -150,6 +152,13 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* MARQUEE */}
+      <div className="marquee" aria-hidden="true">
+        <div className="mtrack">
+          {[...MARQUEE, ...MARQUEE].map((t, i) => <span key={i}>{t}</span>)}
+        </div>
+      </div>
 
       {/* ABOUT */}
       <section className="panel light" id="about">
