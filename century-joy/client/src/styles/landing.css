@@ -6,7 +6,14 @@
 .landing {
   background: var(--d-bg); color: var(--d-text); font-family: var(--ui);
   scroll-snap-type: y proximity;
+  letter-spacing: .01em; /* baseline tracking inherited by all body copy */
 }
+/* Unified heading system — one weight + one tracking for every title,
+   overriding the global h1–h4 default (700 / -0.01em) so sections match
+   "Where Design Meets / Visual Storytelling" exactly. */
+.landing h1, .landing h2, .landing h3 { font-weight: 600; letter-spacing: .01em; }
+/* Consistent red accent on the trailing phrase of every heading */
+.landing h1 em, .landing h2 em, .landing h1 .red, .landing h2 .red { font-style: normal; color: var(--red); }
 .landing .lwrap { max-width: 1280px; margin-inline: auto; padding-inline: var(--pad); width: 100%; }
 .landing .panel { position: relative; scroll-snap-align: start; }
 .landing .full { min-height: 100svh; display: flex; align-items: center; }
@@ -87,7 +94,7 @@ body.menu-open { overflow-y: hidden; }
 
 /* About */
 .about-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(28px, 4vw, 64px); align-items: center; }
-.about-grid h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; max-width: 24ch; margin: 16px 0 0; letter-spacing: .01em;  }
+.about-grid h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.08; max-width: 24ch; margin: 16px 0 0; letter-spacing: .01em; }
 .about-grid h2 .red { color: var(--red); }
 .about-grid .big { font-size: 1.25rem; margin-top: 22px; max-width: 32ch; letter-spacing: .01em; }
 .about-grid p.body { color: var(--text-dim); font-weight: 300; margin-top: 14px; max-width: 46ch; line-height: 1.7; letter-spacing: .01em; }
@@ -100,7 +107,7 @@ body.menu-open { overflow-y: hidden; }
 @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; } .about-grid .ab-img { aspect-ratio: 16/11; order: -1; } .benefits { grid-template-columns: 1fr 1fr; } }
 
 /* Services — sticky image split (Option 7) */
-.svc-head h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; margin-top: 14px; letter-spacing: .01em; }
+.svc-head h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.08; margin-top: 14px; letter-spacing: .01em; }
 .split { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 5vw, 64px); align-items: start; margin-top: 28px; }
 .sticky-img { position: sticky; top: 0; height: 100svh; }
 .sticky-img .frame { position: absolute; inset: clamp(20px,4vw,48px) 0; border-radius: var(--r-xl); overflow: hidden; }
@@ -111,7 +118,7 @@ body.menu-open { overflow-y: hidden; }
 .svc-b { min-height: 78svh; display: flex; flex-direction: column; justify-content: center; padding-block: 36px; border-bottom: 1px solid var(--d-line); }
 .svc-b:last-child { border-bottom: 0; }
 .svc-b .bn { font-weight: 700; font-size: 13px; color: var(--red); }
-.svc-b h3 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 600; margin-top: 8px; letter-spacing: -.02em; }
+.svc-b h3 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 600; margin-top: 8px; letter-spacing: .01em; }
 .svc-b p { color: var(--d-text-dim); font-weight: 300; margin-top: 14px; max-width: 42ch; line-height: 1.7; }
 .svc-b .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .svc-b .chips span { font-size: 12px; color: var(--d-text-dim); border: 1px solid var(--d-line-strong); padding: 6px 13px; border-radius: var(--pill); }
@@ -121,7 +128,7 @@ body.menu-open { overflow-y: hidden; }
 
 /* Gallery — mosaic (Option 1) */
 .gal-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
-.gal-head h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; margin-top: 14px; letter-spacing: .01em; }
+.gal-head h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.08; margin-top: 14px; letter-spacing: .01em; }
 .gal { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: clamp(150px, 18vw, 230px); gap: 16px; margin-top: 40px; }
 .gtile { position: relative; overflow: hidden; border-radius: var(--r-lg); }
 .gtile img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease-out-expo); }
@@ -138,7 +145,7 @@ body.menu-open { overflow-y: hidden; }
 
 /* Process — circular steps (Option 10) */
 .proc-head { text-align: center; margin: 0 auto; }
-.proc-head h2 { font-size: clamp(1.7rem, 3.3vw, 2.9rem); font-weight: 600; margin-top: 14px; text-wrap: balance; letter-spacing: .01em; }
+.proc-head h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.08; margin-top: 14px; text-wrap: balance; letter-spacing: .01em; }
 .psteps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; position: relative; margin-top: 52px; }
 .psteps::before { content: ""; position: absolute; top: 21px; left: 8%; right: 8%; height: 2px; background: var(--d-line); z-index: 0; }
 /* red progress line that grows across the steps when the section scrolls in */
@@ -156,7 +163,7 @@ body.menu-open { overflow-y: hidden; }
 
 /* FAQ */
 .faq-in { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
-.faq-in h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 700; white-space: nowrap; }
+.faq-in h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.08; letter-spacing: .01em; }
 .landing details { border-bottom: 1px solid var(--line); }
 .landing summary { list-style: none; cursor: pointer; padding: 20px 0; display: flex; justify-content: space-between; gap: 18px; font-size: 1.1rem; font-weight: 600; }
 .landing summary::-webkit-details-marker { display: none; }
@@ -168,10 +175,29 @@ body.menu-open { overflow-y: hidden; }
 .landing details .ans { padding: 0 40px 22px 0; color: var(--text-dim); font-weight: 300; line-height: 1.7; }
 @media (max-width: 680px) { .faq-in { grid-template-columns: 1fr; } .faq-in h2 { white-space: normal; } }
 
+/* Start here — collage CTA band */
+.cta-band { background: var(--bg); color: var(--text); overflow: hidden; }
+.cta-mosaic { position: relative; }
+.cta-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: clamp(60px, 7.4vw, 104px); gap: 12px;
+  -webkit-mask-image: radial-gradient(118% 128% at 50% 44%, #000 38%, rgba(0,0,0,0) 80%);
+  mask-image: radial-gradient(118% 128% at 50% 44%, #000 38%, rgba(0,0,0,0) 80%);
+}
+.cta-grid .ct { grid-column: span 3; border-radius: 14px; overflow: hidden; background: var(--surface-2); }
+.cta-grid .ct img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* the centre four sit taller so they read as the focal row */
+.cta-grid .ct:nth-child(n+5):nth-child(-n+8) { grid-row: span 2; }
+.cta-foot { text-align: center; max-width: 760px; margin: clamp(28px, 4vw, 52px) auto 0; }
+.cta-foot h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.08; letter-spacing: .01em; }
+.cta-foot h2 em { font-style: normal; color: var(--red); }
+.cta-foot .cta-sub { font-size: clamp(1rem, 1.4vw, 1.2rem); font-weight: 300; color: var(--text-dim); margin-top: 18px; max-width: 46ch; margin-inline: auto; letter-spacing: .01em; }
+.cta-foot .cta-row { display: flex; justify-content: center; margin-top: 30px; }
+.cta-foot .cta-btn { padding: 14px 30px; font-size: 15px; }
+@media (max-width: 680px) { .cta-grid { gap: 8px; } .cta-grid .ct { border-radius: 10px; } }
+
 /* Contact — red drenched */
 .contact { position: relative; overflow: hidden; background: var(--red-deep); color: #fff; }
 .contact .c-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 4vw, 64px); align-items: center; }
-.contact h2 { font-size: clamp(2.2rem, 4.6vw, 4rem); font-weight: 600; letter-spacing: -.03em; line-height: 1.02; }
+.contact h2 { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; letter-spacing: .01em; line-height: 1.08; }
 .contact .support { font-weight: 300; font-size: 1.15rem; margin-top: 16px; color: rgba(255,255,255,.86); }
 .contact .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
 .contact .c-info { border-left: 1px solid rgba(255,255,255,.3); padding-left: clamp(22px,3vw,38px); }

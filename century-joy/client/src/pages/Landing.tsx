@@ -43,6 +43,14 @@ const FAQ = [
   ['How do I track my request?', 'Every status update is visible on your portal, with email notifications at each milestone.'],
 ];
 
+// Collage band for the "Start here" CTA — center four read as prominent,
+// the surrounding tiles fade out via the radial mask in CSS.
+const CTA_TILES = [
+  'photo-1613545325278-f24b0cae1224', 'photo-1536501483244-925da0b87089', 'photo-1478979464727-af7d24e18554', 'photo-1581783748410-2c5377ad72ee',
+  'photo-1599696848652-f0ff23bc911f', 'photo-1564078516393-cf04bd966897', 'photo-1621293954908-907159247fc8', 'photo-1606744824163-985d376605aa',
+  'photo-1749930206000-179d0b85aa7e', 'photo-1478979464727-af7d24e18554', 'photo-1536501483244-925da0b87089', 'photo-1613545325278-f24b0cae1224',
+];
+
 export default function Landing() {
   const navRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -201,7 +209,7 @@ export default function Landing() {
         <div className="lwrap lsec">
           <div className="svc-head rv">
             <span className="eyebrow">Services Offered</span>
-            <h2>Visualising Every Design Possibility</h2>
+            <h2>Visualising Every <span className="red">Design Possibility</span></h2>
           </div>
           <div className="split">
             <div className="sticky-img" aria-hidden="true">
@@ -234,7 +242,7 @@ export default function Landing() {
           <div className="gal-head rv">
             <div>
               <span className="eyebrow">Sample Gallery</span>
-              <h2>Explore Possibilities Through Visualisation</h2>
+              <h2>Explore Possibilities Through <span className="red">Visualisation</span></h2>
             </div>
           </div>
           <div className="gal rv">
@@ -262,7 +270,7 @@ export default function Landing() {
         <div className="lwrap lsec">
           <div className="proc-head rv">
             <span className="eyebrow" style={{ justifyContent: 'center' }}>How It Works</span>
-            <h2>A Seamless Journey from Concept to Creation</h2>
+            <h2>A Seamless Journey from <span className="red">Concept to Creation</span></h2>
           </div>
           <div className="psteps rv">
             {PROCESS.map((s) => (
@@ -282,7 +290,7 @@ export default function Landing() {
         <div className="lwrap lsec faq-in">
           <div className="rv">
             <span className="eyebrow">FAQ</span>
-            <h2 style={{ marginTop: 16 }}>Frequently Asked Questions</h2>
+            <h2 style={{ marginTop: 16 }}>Frequently Asked <span className="red">Questions</span></h2>
           </div>
           <div className="rv">
             {FAQ.map(([q, a], i) => (
@@ -295,6 +303,26 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* START HERE — collage CTA */}
+      <section className="panel light cta-band">
+        <div className="lwrap lsec">
+          <div className="cta-mosaic rv" aria-hidden="true">
+            <div className="cta-grid">
+              {CTA_TILES.map((id, i) => (
+                <div className="ct" key={i}><img src={IMG(id, 700)} alt="" loading="lazy" /></div>
+              ))}
+            </div>
+          </div>
+          <div className="cta-foot rv">
+            <h2>Your Next Great<br />Design <em>Starts Here</em></h2>
+            <p className="cta-sub">Trusted by architects and interior designers. Sign in to submit your first visualisation request.</p>
+            <div className="cta-row">
+              <Link to="/login" className="btn btn-primary cta-btn">Log in <span className="ar">→</span></Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CONTACT */}
       <section className="panel contact" id="contact">
         <div className="lwrap lsec c-grid">
@@ -302,10 +330,6 @@ export default function Landing() {
             <span className="eyebrow dim" style={{ color: 'rgba(255,255,255,.7)' }}>Get Started</span>
             <h2 style={{ marginTop: 16 }}>Your vision.<br />Our visual expertise.</h2>
             <p className="support">Already a partner? Sign in to submit your first request. New here? Request access and our team will be in touch.</p>
-            <div className="cta-row">
-              <Link to="/login" className="btn btn-bone">Log in <span className="ar">→</span></Link>
-              <a href={REQUEST_ACCESS} className="btn btn-line" style={{ color: '#fff', borderColor: 'rgba(255,255,255,.5)' }}>Request access</a>
-            </div>
           </div>
           <div className="c-info rv">
             <div className="h">Need assistance? We are here to help</div>
