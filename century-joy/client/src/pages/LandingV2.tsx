@@ -30,15 +30,15 @@ const HERO_SHOTS = [
 const STATS = [
   { n: '500+', l: 'Projects rendered', d: 'Across residential, commercial & hospitality.' },
   { n: '48 hrs', l: 'Typical first draft', d: 'Fast enough to make every pitch.' },
-  { n: '2', l: 'Free revisions', d: 'Refine every frame — always included.' },
+  { n: '2', l: 'Free revisions', d: 'Refine every frame, always included.' },
   { n: '100%', l: 'Photoreal output', d: 'Studio-grade, true-to-life detail.' },
 ];
 
 const WHY = [
-  { ic: 'spark', t: 'Photorealistic Quality', p: 'Renders crafted by a dedicated studio team — detailed enough that clients mistake them for photographs.' },
+  { ic: 'spark', t: 'Photorealistic Quality', p: 'Renders crafted by a dedicated studio team, detailed enough that clients mistake them for photographs.' },
   { ic: 'bolt', t: 'Built for Speed', p: 'Most first drafts land within 48 hours, so a tight deadline never costs you the room.' },
   { ic: 'revise', t: 'Two Free Revisions', p: 'Every project includes two revision rounds at no extra cost, tracked on your dashboard.' },
-  { ic: 'shield', t: 'Confidential & Secure', p: 'Your drawings stay private — protected storage and signed links guard every file you share.' },
+  { ic: 'shield', t: 'Confidential & Secure', p: 'Your drawings stay private. Protected storage and signed links guard every file you share.' },
   { ic: 'layers', t: 'True Material Accuracy', p: 'See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.' },
   { ic: 'grid', t: 'One Simple Portal', p: 'Submit briefs, upload drawings and follow every milestone from a single, clear dashboard.' },
 ];
@@ -47,7 +47,7 @@ const SERVICES = [
   { n: '01', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
   { n: '02', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', chips: ['Residential', 'Commercial', 'Facade studies'] },
   { n: '03', img: 'photo-1581783748410-2c5377ad72ee', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
-  { n: '04', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room — for meetings, proposals and presentations.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
+  { n: '04', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
 ];
 
 const PROCESS = [
@@ -61,20 +61,20 @@ const PROCESS = [
 
 const TESTIMONIALS = [
   { q: 'The renders closed the project in a single client meeting. They genuinely could not believe it was not a photograph.', nm: 'Ananya Rao', rl: 'Principal Architect · Studio Verge', i: 'AR' },
-  { q: 'Turnaround was the real surprise — first drafts in two days, revisions handled overnight. It has changed how we pitch.', nm: 'Rohan Mehta', rl: 'Interior Designer · Mehta & Co.', i: 'RM' },
+  { q: 'Turnaround was the real surprise. First drafts in two days, revisions handled overnight. It has changed how we pitch.', nm: 'Rohan Mehta', rl: 'Interior Designer · Mehta & Co.', i: 'RM' },
   { q: 'Material accuracy is unmatched. Clients finally see the exact Century Ply finish before a single board is cut.', nm: 'Priya Nair', rl: 'Design Lead · Aether Interiors', i: 'PN' },
 ];
 
 const BLOGS = [
-  { cat: 'Visualisation', img: 'photo-1613545325278-f24b0cae1224', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings — and how to brief for it.', read: '6 min read' },
+  { cat: 'Visualisation', img: 'photo-1613545325278-f24b0cae1224', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings, and how to brief for it.', read: '6 min read' },
   { cat: 'Process', img: 'photo-1536501483244-925da0b87089', t: 'From CAD to Camera-Ready: Inside Our Render Pipeline', p: 'A look at how a set of plans becomes a finished, presentation-grade visualisation, step by step.', read: '8 min read' },
-  { cat: 'Materials', img: 'photo-1581783748410-2c5377ad72ee', t: 'Choosing the Right Finish: Reading Light in 3D', p: 'How textures and finishes behave under different lighting — and what that means for your specification.', read: '5 min read' },
+  { cat: 'Materials', img: 'photo-1581783748410-2c5377ad72ee', t: 'Choosing the Right Finish: Reading Light in 3D', p: 'How textures and finishes behave under different lighting, and what that means for your specification.', read: '5 min read' },
 ];
 
 const FAQ: [string, string][] = [
   ['What projects can be submitted?', 'Residential, commercial, hospitality and architectural visualisation projects are all welcome.'],
   ['What files can I upload?', 'CAD drawings (.dwg), PDFs, and reference images (.jpg) covering your plans, elevations and any moodboards.'],
-  ['How long does a visualisation take?', 'Most first drafts are delivered within 48 hours. More complex scenes can take a little longer — you will always see an ETA on your dashboard.'],
+  ['How long does a visualisation take?', 'Most first drafts are delivered within 48 hours. More complex scenes can take a little longer, and you will always see an ETA on your dashboard.'],
   ['Can I request modifications?', 'Yes. Each project includes up to two revision rounds at no extra cost, tracked on your dashboard.'],
   ['How do I get access?', 'Century Joy is invite-only for Century Ply partners. Request access and our team will set up your account, or simply sign in if you already have one.'],
   ['How do I track my request?', 'Every status update is visible on your portal, with email notifications at each milestone from brief to final delivery.'],
@@ -126,7 +126,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
       <div className="gate__mid">
         <div className="gate__kicker">Century Joy · Visualisation Studio</div>
         <h1 className="gate__title">Step Inside Your Design<br /><em>Before It Is Built</em></h1>
-        <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers — your vision, brought to life frame by frame.</p>
+        <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers. Your vision, brought to life frame by frame.</p>
       </div>
 
       <div className="gate__bottom">
@@ -149,7 +149,7 @@ function Landing() {
   const [hi, setHi] = useState(0);
   const dir = useRef(1);
 
-  // hero rotation — ping-pong through the set on a timer
+  // hero rotation: ping-pong through the set on a timer
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const t = setInterval(() => {
@@ -268,7 +268,7 @@ function Landing() {
             <span className="eyebrow">About Century Joy</span>
             <h2>Where Design Meets <span className="red">Visual Storytelling</span></h2>
             <p className="lead">Great designs deserve to be experienced, not just explained.</p>
-            <p className="body">An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals — driving faster decisions and stronger client engagement.</p>
+            <p className="body">An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals that drive faster decisions and stronger client engagement.</p>
           </div>
           <div className="about-img rv d1"><img src={IMG('photo-1599696848652-f0ff23bc911f', 1100)} alt="Photoreal interior visualisation" /></div>
         </div>
@@ -280,7 +280,7 @@ function Landing() {
           <div className="shead center rv">
             <span className="eyebrow">Why Century Joy</span>
             <h2>Why Studios <span className="red">Choose Us</span></h2>
-            <p className="lead">Everything a design practice needs to present with confidence — quality, speed and trust, in one place.</p>
+            <p className="lead">Everything a design practice needs to present with confidence: quality, speed and trust, in one place.</p>
           </div>
           <div className="stats rv">
             {STATS.map((s) => (
@@ -299,7 +299,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* SERVICES — sticky split */}
+      {/* SERVICES: sticky split */}
       <section className="sec" id="services">
         <div className="wrap">
           <div className="shead rv">
@@ -487,7 +487,7 @@ function Landing() {
 }
 
 /* ============================================================
-   PAGE — gate, then landing
+   PAGE: gate, then landing
    ============================================================ */
 export default function LandingV2() {
   const [entered, setEntered] = useState(() => {
