@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BrandLogo } from '../components/Logo';
 import { ChatWidget } from '../components/ChatWidget';
+import { SOCIALS } from '../components/Socials';
 
 /* ── helpers & content ─────────────────────────────────── */
 const IMG = (id: string, w = 1400) =>
@@ -580,6 +581,11 @@ function Landing() {
             <div><div className="k">Email</div><div className="v">3DServices@centuryply.com</div></div>
             <div><div className="k">Phone</div><div className="v">9004901699</div></div>
             <div><div className="k">Support Hours</div><div className="v">9:30 AM to 5:30 PM IST</div></div>
+            <div className="c-social">
+              {SOCIALS.map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>{s.icon}</a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
