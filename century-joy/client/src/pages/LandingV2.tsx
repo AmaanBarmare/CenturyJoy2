@@ -123,7 +123,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
         <Wordmark />
         <nav className="gate__nav">
           <a className="gate__link" href={REQUEST_ACCESS}>Request Access</a>
-          <Link to="/login" className="btn btn-light">Log in</Link>
+          <Link to="/login" className="btn btn-light btn-sm">Log in</Link>
         </nav>
       </div>
 
@@ -320,7 +320,7 @@ function Landing() {
               <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
             </div>
             <div className="hero-cta">
-              <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
+              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
             </div>
             <div className="hero-trust">
               <div className="ht"><div className="n">500+</div><div className="l">Projects rendered</div></div>
@@ -379,7 +379,7 @@ function Landing() {
               <div><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
               <div><div className="n">2</div><div className="l">Free revisions</div></div>
             </div>
-            <a href={REQUEST_ACCESS} className="btn btn-red">Request access <span className="ar">→</span></a>
+            <a href={REQUEST_ACCESS} className="btn btn-red btn-sm">Request access <span className="ar">→</span></a>
           </div>
           <div className="why2-list rv d1">
             {WHY.map((w) => (
@@ -559,7 +559,7 @@ function Landing() {
             <h2>Your Next Great Design <em>Starts Here</em></h2>
             <p className="cta-sub lead">Trusted by architects and interior designers. Sign in to submit your first visualisation request.</p>
             <div className="cta-row">
-              <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
+              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
             </div>
           </div>
         </div>
