@@ -5,6 +5,7 @@ import { FullScreenLoading } from './components/Loading';
 import type { Role } from './types';
 
 import Landing from './pages/Landing';
+import LandingV2 from './pages/LandingV2';
 import Login from './pages/Login';
 import SetPassword from './pages/SetPassword';
 import ForgotPassword from './pages/ForgotPassword';
@@ -41,7 +42,8 @@ function RoleRedirect() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<LandingV2 />} />
+      <Route path="/v1" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/set-password" element={<SetPassword />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />

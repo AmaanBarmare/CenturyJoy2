@@ -1,0 +1,516 @@
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Wordmark } from '../components/Logo';
+import { ChatWidget } from '../components/ChatWidget';
+
+/* ── helpers & content ─────────────────────────────────── */
+const IMG = (id: string, w = 1400) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+const REQUEST_ACCESS = 'mailto:3DServices@centuryply.com?subject=Century%20Joy%20access%20request';
+
+const NAV = [
+  { id: 'about', label: 'About' },
+  { id: 'why', label: 'Why Us' },
+  { id: 'services', label: 'Services' },
+  { id: 'work', label: 'Work' },
+  { id: 'insights', label: 'Insights' },
+  { id: 'contact', label: 'Contact' },
+];
+
+const MARQUEE = ['Architects', 'Interior Designers', 'Design Influencers', 'Photorealistic Renders', 'Virtual Walkthroughs', 'Material Visualisation'];
+
+const HERO_SHOTS = [
+  { id: 'photo-1564078516393-cf04bd966897', cap: 'Residential · Living Room' },
+  { id: 'photo-1749930206000-179d0b85aa7e', cap: 'Luxury Interior' },
+  { id: 'photo-1599696848652-f0ff23bc911f', cap: 'Material & Finish Study' },
+  { id: 'photo-1606744824163-985d376605aa', cap: 'Presentation Visual' },
+];
+
+const STATS = [
+  { n: '500+', l: 'Projects rendered', d: 'Across residential, commercial & hospitality.' },
+  { n: '48 hrs', l: 'Typical first draft', d: 'Fast enough to make every pitch.' },
+  { n: '2', l: 'Free revisions', d: 'Refine every frame — always included.' },
+  { n: '100%', l: 'Photoreal output', d: 'Studio-grade, true-to-life detail.' },
+];
+
+const WHY = [
+  { ic: 'spark', t: 'Photorealistic Quality', p: 'Renders crafted by a dedicated studio team — detailed enough that clients mistake them for photographs.' },
+  { ic: 'bolt', t: 'Built for Speed', p: 'Most first drafts land within 48 hours, so a tight deadline never costs you the room.' },
+  { ic: 'revise', t: 'Two Free Revisions', p: 'Every project includes two revision rounds at no extra cost, tracked on your dashboard.' },
+  { ic: 'shield', t: 'Confidential & Secure', p: 'Your drawings stay private — protected storage and signed links guard every file you share.' },
+  { ic: 'layers', t: 'True Material Accuracy', p: 'See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.' },
+  { ic: 'grid', t: 'One Simple Portal', p: 'Submit briefs, upload drawings and follow every milestone from a single, clear dashboard.' },
+];
+
+const SERVICES = [
+  { n: '01', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
+  { n: '02', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', chips: ['Residential', 'Commercial', 'Facade studies'] },
+  { n: '03', img: 'photo-1581783748410-2c5377ad72ee', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
+  { n: '04', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room — for meetings, proposals and presentations.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
+];
+
+const PROCESS = [
+  { n: '01', t: 'Register & Access', p: 'Receive your invite and sign in to the Century Joy portal.' },
+  { n: '02', t: 'Submit Request', p: 'Share project details, requirements and expected outcomes.' },
+  { n: '03', t: 'Upload Materials', p: 'Upload drawings, plans and reference images.', fmt: ['.DWG', 'PDF', 'JPG'] },
+  { n: '04', t: 'Visualisation', p: 'Our studio team builds realistic renders from your brief.' },
+  { n: '05', t: 'Review & Revise', p: 'Review the draft and request up to two revisions.' },
+  { n: '06', t: 'Final Delivery', p: 'Download your completed high-resolution renders.' },
+];
+
+const TESTIMONIALS = [
+  { q: 'The renders closed the project in a single client meeting. They genuinely could not believe it was not a photograph.', nm: 'Ananya Rao', rl: 'Principal Architect · Studio Verge', i: 'AR' },
+  { q: 'Turnaround was the real surprise — first drafts in two days, revisions handled overnight. It has changed how we pitch.', nm: 'Rohan Mehta', rl: 'Interior Designer · Mehta & Co.', i: 'RM' },
+  { q: 'Material accuracy is unmatched. Clients finally see the exact Century Ply finish before a single board is cut.', nm: 'Priya Nair', rl: 'Design Lead · Aether Interiors', i: 'PN' },
+];
+
+const BLOGS = [
+  { cat: 'Visualisation', img: 'photo-1613545325278-f24b0cae1224', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings — and how to brief for it.', read: '6 min read' },
+  { cat: 'Process', img: 'photo-1536501483244-925da0b87089', t: 'From CAD to Camera-Ready: Inside Our Render Pipeline', p: 'A look at how a set of plans becomes a finished, presentation-grade visualisation, step by step.', read: '8 min read' },
+  { cat: 'Materials', img: 'photo-1581783748410-2c5377ad72ee', t: 'Choosing the Right Finish: Reading Light in 3D', p: 'How textures and finishes behave under different lighting — and what that means for your specification.', read: '5 min read' },
+];
+
+const FAQ: [string, string][] = [
+  ['What projects can be submitted?', 'Residential, commercial, hospitality and architectural visualisation projects are all welcome.'],
+  ['What files can I upload?', 'CAD drawings (.dwg), PDFs, and reference images (.jpg) covering your plans, elevations and any moodboards.'],
+  ['How long does a visualisation take?', 'Most first drafts are delivered within 48 hours. More complex scenes can take a little longer — you will always see an ETA on your dashboard.'],
+  ['Can I request modifications?', 'Yes. Each project includes up to two revision rounds at no extra cost, tracked on your dashboard.'],
+  ['How do I get access?', 'Century Joy is invite-only for Century Ply partners. Request access and our team will set up your account, or simply sign in if you already have one.'],
+  ['How do I track my request?', 'Every status update is visible on your portal, with email notifications at each milestone from brief to final delivery.'],
+];
+
+/* ── line icons (Lucide-style, single stroke family) ───── */
+function Icon({ name }: { name: string }) {
+  const p: Record<string, JSX.Element> = {
+    spark: <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" />,
+    bolt: <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />,
+    revise: <><path d="M21 3v6h-6" /><path d="M3 12a9 9 0 0 1 15-6.7L21 9" /><path d="M3 21v-6h6" /><path d="M21 12a9 9 0 0 1-15 6.7L3 15" /></>,
+    shield: <><path d="M12 3l8 3.5v5c0 5-3.4 8-8 9.5-4.6-1.5-8-4.5-8-9.5v-5z" /><path d="m9 12 2 2 4-4" /></>,
+    layers: <><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="m2 12 10 5 10-5" /><path d="m2 17 10 5 10-5" /></>,
+    grid: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></>,
+  };
+  return <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{p[name]}</svg>;
+}
+
+function Star() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.3l6.5-.9z" /></svg>;
+}
+
+/* ============================================================
+   INTRO GATE
+   ============================================================ */
+function Gate({ onEnter }: { onEnter: () => void }) {
+  const [leaving, setLeaving] = useState(false);
+
+  const enter = () => {
+    setLeaving(true);
+    setTimeout(onEnter, 700);
+  };
+
+  return (
+    <div className={`gate ${leaving ? 'leaving' : ''}`}>
+      <video className="gate__video" autoPlay muted loop playsInline preload="auto">
+        <source src="/videos/intro.mp4" type="video/mp4" />
+      </video>
+      <div className="gate__scrim" />
+
+      <div className="gate__top">
+        <Wordmark />
+        <nav className="gate__nav">
+          <a className="gate__link" href={REQUEST_ACCESS}>Request Access</a>
+          <Link to="/login" className="btn btn-light">Log in</Link>
+        </nav>
+      </div>
+
+      <div className="gate__mid">
+        <div className="gate__kicker">Century Joy · Visualisation Studio</div>
+        <h1 className="gate__title">Step Inside Your Design<br /><em>Before It Is Built</em></h1>
+        <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers — your vision, brought to life frame by frame.</p>
+      </div>
+
+      <div className="gate__bottom">
+        <button className="gate__enter" onClick={enter} aria-label="Enter the site">
+          <span className="lbl">Enter</span>
+          <svg className="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        </button>
+        <span className="gate__hint">Begin the experience</span>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   LANDING (white)
+   ============================================================ */
+function Landing() {
+  const navRef = useRef<HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hi, setHi] = useState(0);
+  const dir = useRef(1);
+
+  // hero rotation — ping-pong through the set on a timer
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const t = setInterval(() => {
+      setHi((prev) => {
+        let d = dir.current;
+        if (prev + d > HERO_SHOTS.length - 1 || prev + d < 0) { d = -d; dir.current = d; }
+        return prev + d;
+      });
+    }, 4200);
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 30);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const revealObs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), revealObs.unobserve(e.target))),
+      { threshold: 0.12 },
+    );
+    document.querySelectorAll('.lv2 .rv').forEach((el) => revealObs.observe(el));
+
+    // sticky image swap for services
+    const sis = [...document.querySelectorAll('.sticky-shot .si')];
+    const blockObs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const i = (e.target as HTMLElement).dataset.i;
+          sis.forEach((s) => s.classList.toggle('on', (s as HTMLElement).dataset.i === i));
+        }
+      }),
+      { rootMargin: '-45% 0px -45% 0px' },
+    );
+    document.querySelectorAll('.svc-b').forEach((b) => blockObs.observe(b));
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      revealObs.disconnect();
+      blockObs.disconnect();
+    };
+  }, []);
+
+  useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : ''; }, [menuOpen]);
+
+  return (
+    <div className="lv2">
+      {/* NAV */}
+      <header className="nav" ref={navRef}>
+        <div className="wrap nav-in">
+          <Wordmark />
+          <div className="nav-links">
+            {NAV.map((n) => <a key={n.id} className="txt" href={`#${n.id}`}>{n.label}</a>)}
+            <a className="btn btn-ghost" href={REQUEST_ACCESS}>Request access</a>
+            <Link to="/login" className="btn btn-red">Log in <span className="ar">→</span></Link>
+            <button className="menu-btn" aria-label="Open menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
+          </div>
+        </div>
+      </header>
+
+      {/* mobile drawer */}
+      <div className={`lv2-scrim ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
+      <nav className={`lv2-drawer ${menuOpen ? 'open' : ''}`}>
+        <button className="x" aria-label="Close menu" onClick={() => setMenuOpen(false)}>✕</button>
+        {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)}>{n.label}</a>)}
+        <a className="btn btn-ghost" href={REQUEST_ACCESS} onClick={() => setMenuOpen(false)}>Request access</a>
+        <Link to="/login" className="btn btn-red" onClick={() => setMenuOpen(false)}>Log in <span className="ar">→</span></Link>
+      </nav>
+
+      {/* HERO */}
+      <section className="sec hero" id="top">
+        <div className="wrap hero-grid">
+          <div className="rv">
+            <div className="hero-tags"><span>Architects</span><span>Interior Designers</span><span>Design Influencers</span></div>
+            <h1>Bring Your Designs <em>To Life</em> Before They Become Reality</h1>
+            <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
+            <div className="hero-cta">
+              <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
+              <a href={REQUEST_ACCESS} className="btn btn-ghost btn-lg">Request access</a>
+            </div>
+            <div className="hero-trust">
+              <div className="ht"><div className="n">500+</div><div className="l">Projects rendered</div></div>
+              <div className="ht"><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
+              <div className="ht"><div className="n">2</div><div className="l">Free revisions</div></div>
+            </div>
+          </div>
+
+          <div className="hero-shot rv d1">
+            {HERO_SHOTS.map((s, i) => (
+              <div key={s.id} className={`slide ${i === hi ? 'on' : ''}`} data-i={i}>
+                <img src={IMG(s.id, 1200)} alt={s.cap} loading={i === 0 ? 'eager' : 'lazy'} />
+              </div>
+            ))}
+            <div className="badge2">
+              <span className="cap">{HERO_SHOTS[hi].cap}</span>
+              <span className="hero-dots">
+                {HERO_SHOTS.map((s, i) => (
+                  <button key={s.id} className={i === hi ? 'on' : ''} aria-label={`Show ${s.cap}`} onClick={() => setHi(i)} />
+                ))}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MARQUEE */}
+      <div className="marquee" aria-hidden="true">
+        <div className="mtrack">{[...MARQUEE, ...MARQUEE].map((t, i) => <span key={i}>{t}</span>)}</div>
+      </div>
+
+      {/* ABOUT */}
+      <section className="sec" id="about">
+        <div className="wrap about-grid">
+          <div className="rv">
+            <span className="eyebrow">About Century Joy</span>
+            <h2>Where Design Meets <span className="red">Visual Storytelling</span></h2>
+            <p className="lead">Great designs deserve to be experienced, not just explained.</p>
+            <p className="body">An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals — driving faster decisions and stronger client engagement.</p>
+          </div>
+          <div className="about-img rv d1"><img src={IMG('photo-1599696848652-f0ff23bc911f', 1100)} alt="Photoreal interior visualisation" /></div>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US (new) */}
+      <section className="sec tint" id="why">
+        <div className="wrap">
+          <div className="shead center rv">
+            <span className="eyebrow">Why Century Joy</span>
+            <h2>Why Studios <span className="red">Choose Us</span></h2>
+            <p className="lead">Everything a design practice needs to present with confidence — quality, speed and trust, in one place.</p>
+          </div>
+          <div className="stats rv">
+            {STATS.map((s) => (
+              <div className="stat" key={s.l}><div className="n">{s.n}</div><div className="l">{s.l}</div><div className="d">{s.d}</div></div>
+            ))}
+          </div>
+          <div className="why-grid">
+            {WHY.map((w, i) => (
+              <div className={`why-card rv ${i % 3 === 1 ? 'd1' : i % 3 === 2 ? 'd2' : ''}`} key={w.t}>
+                <div className="why-ic"><Icon name={w.ic} /></div>
+                <h3>{w.t}</h3>
+                <p>{w.p}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES — sticky split */}
+      <section className="sec" id="services">
+        <div className="wrap">
+          <div className="shead rv">
+            <span className="eyebrow">Services Offered</span>
+            <h2>Visualising Every <span className="red">Design Possibility</span></h2>
+          </div>
+          <div className="split">
+            <div className="sticky-shot" aria-hidden="true">
+              {SERVICES.map((s, i) => (
+                <div key={s.n} className={`si ${i === 0 ? 'on' : ''}`} data-i={i}><img src={IMG(s.img, 1200)} alt="" /></div>
+              ))}
+            </div>
+            <div className="svc-list">
+              {SERVICES.map((s, i) => (
+                <div className="svc-b" data-i={i} key={s.n}>
+                  <div className="mshot"><img src={IMG(s.img, 900)} alt={s.title} /></div>
+                  <div className="num">{s.n}</div>
+                  <h3>{s.title}</h3>
+                  <p>{s.body}</p>
+                  <div className="chips">{s.chips.map((c) => <span key={c}>{c}</span>)}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GALLERY */}
+      <section className="sec tint" id="work">
+        <div className="wrap">
+          <div className="shead rv">
+            <span className="eyebrow">Sample Gallery</span>
+            <h2>Explore Possibilities Through <span className="red">Visualisation</span></h2>
+          </div>
+          <div className="gal rv">
+            <a className="gtile g-a" href={REQUEST_ACCESS}>
+              <img src={IMG('photo-1564078516393-cf04bd966897', 1400)} alt="Residential render" />
+              <span className="tagc">Residential</span>
+              <div className="cap"><div className="t">Residential</div><div className="s">Living Rooms · Bedrooms · Kitchens · Luxury Homes</div></div>
+            </a>
+            <a className="gtile g-b" href={REQUEST_ACCESS}>
+              <img src={IMG('photo-1478979464727-af7d24e18554', 1200)} alt="Commercial render" />
+              <span className="tagc">Commercial</span>
+              <div className="cap"><div className="t">Commercial</div><div className="s">Offices · Retail · Workspaces</div></div>
+            </a>
+            <a className="gtile g-c" href={REQUEST_ACCESS}>
+              <img src={IMG('photo-1621293954908-907159247fc8', 1200)} alt="Hospitality render" />
+              <span className="tagc">Hospitality</span>
+              <div className="cap"><div className="t">Hospitality</div><div className="s">Hotels · Restaurants · Experiences</div></div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS */}
+      <section className="sec" id="process">
+        <div className="wrap">
+          <div className="shead center rv">
+            <span className="eyebrow">How It Works</span>
+            <h2>A Seamless Journey from <span className="red">Concept to Creation</span></h2>
+          </div>
+          <div className="psteps">
+            {PROCESS.map((s, i) => (
+              <div className={`pstp rv ${i % 3 === 1 ? 'd1' : i % 3 === 2 ? 'd2' : ''}`} key={s.n}>
+                <div className="pc">{s.n}</div>
+                <h3>{s.t}</h3>
+                <p>{s.p}</p>
+                {s.fmt && <div className="fmt">{s.fmt.map((f) => <span key={f}>{f}</span>)}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS (new) */}
+      <section className="sec tint" id="testimonials">
+        <div className="wrap">
+          <div className="shead center rv">
+            <span className="eyebrow">Testimonials</span>
+            <h2>Trusted by Designers <span className="red">&amp; Architects</span></h2>
+          </div>
+          <div className="tgrid">
+            {TESTIMONIALS.map((t, i) => (
+              <figure className={`tcard rv ${i === 1 ? 'd1' : i === 2 ? 'd2' : ''}`} key={t.nm}>
+                <div className="stars"><Star /><Star /><Star /><Star /><Star /></div>
+                <blockquote>“{t.q}”</blockquote>
+                <figcaption className="who">
+                  <span className="av">{t.i}</span>
+                  <span><span className="nm">{t.nm}</span><br /><span className="rl">{t.rl}</span></span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* BLOGS (new) */}
+      <section className="sec" id="insights">
+        <div className="wrap">
+          <div className="shead rv">
+            <span className="eyebrow">From the Studio</span>
+            <h2>Latest Articles <span className="red">&amp; Insights</span></h2>
+          </div>
+          <div className="bgrid">
+            {BLOGS.map((b, i) => (
+              <a className={`bcard rv ${i === 1 ? 'd1' : i === 2 ? 'd2' : ''}`} href={REQUEST_ACCESS} key={b.t}>
+                <div className="bimg"><img src={IMG(b.img, 900)} alt={b.t} loading="lazy" /><span className="bcat">{b.cat}</span></div>
+                <div className="bbody">
+                  <h3>{b.t}</h3>
+                  <p>{b.p}</p>
+                  <div className="bfoot">
+                    <span className="meta">{b.read}</span>
+                    <span className="more">Read more <span className="ar">→</span></span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="sec tint" id="faq">
+        <div className="wrap faq-grid">
+          <div className="rv">
+            <span className="eyebrow">FAQ</span>
+            <h2 style={{ marginTop: 16 }}>Frequently Asked <span className="red">Questions</span></h2>
+          </div>
+          <div className="rv d1">
+            {FAQ.map(([q, a], i) => (
+              <details className="faq" key={q} open={i === 0}>
+                <summary>{q}<span className="pl" /></summary>
+                <div className="ans"><p>{a}</p></div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="sec cta">
+        <div className="wrap rv">
+          <span className="eyebrow" style={{ justifyContent: 'center', display: 'inline-flex' }}>Get Started</span>
+          <h2 style={{ marginTop: 18 }}>Your Next Great Design <em>Starts Here</em></h2>
+          <p className="lead">Trusted by architects and interior designers. Sign in to submit your first visualisation request, or request access to join.</p>
+          <div className="row">
+            <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
+            <a href={REQUEST_ACCESS} className="btn btn-ghost btn-lg">Request access</a>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section className="sec contact" id="contact">
+        <div className="wrap c-grid">
+          <div className="rv">
+            <span className="eyebrow">Get In Touch</span>
+            <h2 style={{ marginTop: 16 }}>Your vision.<br />Our visual expertise.</h2>
+            <p className="lead">Already a partner? Sign in to submit your first request. New here? Request access and our team will be in touch.</p>
+            <div className="row">
+              <Link to="/login" className="btn btn-white">Log in <span className="ar">→</span></Link>
+              <a href={REQUEST_ACCESS} className="btn btn-ghost">Request access</a>
+            </div>
+          </div>
+          <div className="c-info rv d1">
+            <div className="h">Need assistance? We are here to help</div>
+            <div className="r"><div className="k">Email</div><div className="v">3DServices@centuryply.com</div></div>
+            <div className="r"><div className="k">Phone</div><div className="v">9004901699</div></div>
+            <div className="r"><div className="k">Support Hours</div><div className="v">9:30 AM – 5:30 PM IST</div></div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="foot">
+        <div className="wrap f-in">
+          <Wordmark />
+          <span>© {new Date().getFullYear()} Century Plyboards (India) Ltd. All rights reserved.</span>
+        </div>
+      </footer>
+
+      <ChatWidget />
+    </div>
+  );
+}
+
+/* ============================================================
+   PAGE — gate, then landing
+   ============================================================ */
+export default function LandingV2() {
+  const [entered, setEntered] = useState(() => {
+    // Skip the intro for in-session returns and for deep links (a section hash).
+    if (typeof window !== 'undefined' && window.location.hash.length > 1) return true;
+    try { return sessionStorage.getItem('cj_entered') === '1'; } catch { return false; }
+  });
+
+  useEffect(() => {
+    document.body.style.overflow = entered ? '' : 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, [entered]);
+
+  const enter = () => {
+    try { sessionStorage.setItem('cj_entered', '1'); } catch { /* ignore */ }
+    window.scrollTo(0, 0);
+    setEntered(true);
+  };
+
+  return (
+    <>
+      <Landing />
+      {!entered && <Gate onEnter={enter} />}
+    </>
+  );
+}

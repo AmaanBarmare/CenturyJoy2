@@ -5,6 +5,7 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/portal.css';
 import './styles/landing.css';
+import './styles/landing-v2.css';
 import './styles/theme.css';
 import './styles/chat.css';
 import { ThemeProvider } from './context/ThemeContext';
