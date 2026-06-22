@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Wordmark } from '../components/Logo';
+import { BrandLogo } from '../components/Logo';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ChatWidget } from '../components/ChatWidget';
+import { SOCIALS } from '../components/Socials';
 
 const IMG = (id: string, w = 1400) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
@@ -139,7 +140,7 @@ export default function Landing() {
     <div className={`landing ${menuOpen ? 'menu-open' : ''}`}>
       <header className="lnav" ref={navRef}>
         <div className="lwrap lnav-in">
-          <Wordmark />
+          <BrandLogo light height={30} />
           <div className="lnav-cta">
             <a className="ln-link" href={REQUEST_ACCESS}>Request access</a>
             <Link to="/login" className="btn btn-primary btn-sm">Log in</Link>
@@ -170,7 +171,7 @@ export default function Landing() {
             </div>
             <div className="cta-row">
               <Link to="/login" className="btn btn-primary">Log in <span className="ar">→</span></Link>
-              <a href={REQUEST_ACCESS} className="btn btn-line">Request access</a>
+              <a href={REQUEST_ACCESS} className="btn btn-line">Discover more</a>
             </div>
           </div>
         </div>
@@ -336,13 +337,18 @@ export default function Landing() {
             <div className="row2"><div className="k">Email</div><div className="v">3DServices@centuryply.com</div></div>
             <div className="row2"><div className="k">Phone</div><div className="v">9004901699</div></div>
             <div className="row2"><div className="k">Support Hours</div><div className="v">9:30 AM – 5:30 PM IST</div></div>
+            <div className="c-social">
+              {SOCIALS.map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>{s.icon}</a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       <footer className="lfoot">
         <div className="lwrap lf">
-          <Wordmark />
+          <BrandLogo light height={28} />
           <span>© {new Date().getFullYear()} Century Plyboards (India) Ltd. All rights reserved.</span>
         </div>
       </footer>

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Wordmark } from '../components/Logo';
+import { BrandLogo } from '../components/Logo';
 import { ChatWidget } from '../components/ChatWidget';
+import { SOCIALS } from '../components/Socials';
 
 /* ── helpers & content ─────────────────────────────────── */
 const IMG = (id: string, w = 1400) =>
@@ -120,15 +121,17 @@ function Gate({ onEnter }: { onEnter: () => void }) {
       <div className="gate__scrim" />
 
       <div className="gate__top">
-        <Wordmark />
-        <nav className="gate__nav">
-          <a className="gate__link" href={REQUEST_ACCESS}>Request Access</a>
-          <Link to="/login" className="btn btn-light btn-sm">Log in</Link>
-        </nav>
+        <div className="gate__top-in">
+          <BrandLogo light height={30} />
+          <nav className="gate__nav">
+            <a className="btn btn-ghost btn-sm" href={REQUEST_ACCESS}>Request access</a>
+            <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
+          </nav>
+        </div>
       </div>
 
       <div className="gate__mid">
-        <div className="gate__kicker">Century Joy · Visualisation Studio</div>
+        <div className="gate__kicker">Visualisation Studio</div>
         <h1 className="gate__title">Step Inside Your Design<br /><em>Before It Is Built</em></h1>
         <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers. Your vision, brought to life frame by frame.</p>
       </div>
@@ -138,7 +141,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
           Enter the Experience
           <svg className="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
         </button>
-        <div className="gate__cue"><span className="line" /><span className="hint">Scroll to explore</span></div>
+        <div className="gate__cue"><span className="line" /><span className="hint">Click to explore</span></div>
       </div>
     </div>
   );
@@ -290,7 +293,7 @@ function Landing() {
       {/* NAV */}
       <header className="nav" ref={navRef}>
         <div className="wrap nav-in">
-          <Wordmark />
+          <BrandLogo height={30} />
           <div className="nav-links">
             {NAV.map((n) => <a key={n.id} className="txt" href={`#${n.id}`}>{n.label}</a>)}
             <div className="nav-cta">
@@ -578,6 +581,11 @@ function Landing() {
             <div><div className="k">Email</div><div className="v">3DServices@centuryply.com</div></div>
             <div><div className="k">Phone</div><div className="v">9004901699</div></div>
             <div><div className="k">Support Hours</div><div className="v">9:30 AM to 5:30 PM IST</div></div>
+            <div className="c-social">
+              {SOCIALS.map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>{s.icon}</a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -585,7 +593,7 @@ function Landing() {
       {/* FOOTER */}
       <footer className="foot">
         <div className="wrap f-in">
-          <Wordmark />
+          <BrandLogo light height={28} />
           <span>© {new Date().getFullYear()} Century Plyboards (India) Ltd. All rights reserved.</span>
         </div>
       </footer>
