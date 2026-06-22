@@ -67,6 +67,13 @@ const TESTIMONIALS = [
   { q: 'Clients approve faster when they can step inside the design. Century Joy has shortened our sign-off cycle dramatically.', nm: 'Meera Iyer', rl: 'Interior Designer · Habitat Studio', i: 'MI' },
 ];
 
+// Collage band tiles for the "Starts Here" CTA (ported from variation 1)
+const CTA_TILES = [
+  'photo-1613545325278-f24b0cae1224', 'photo-1536501483244-925da0b87089', 'photo-1478979464727-af7d24e18554', 'photo-1581783748410-2c5377ad72ee',
+  'photo-1599696848652-f0ff23bc911f', 'photo-1564078516393-cf04bd966897', 'photo-1621293954908-907159247fc8', 'photo-1606744824163-985d376605aa',
+  'photo-1749930206000-179d0b85aa7e', 'photo-1478979464727-af7d24e18554', 'photo-1536501483244-925da0b87089', 'photo-1613545325278-f24b0cae1224',
+];
+
 const BLOGS = [
   { cat: 'Visualisation', img: 'photo-1613545325278-f24b0cae1224', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings, and how to brief for it.', read: '6 min read' },
   { cat: 'Process', img: 'photo-1536501483244-925da0b87089', t: 'From CAD to Camera-Ready: Inside Our Render Pipeline', p: 'A look at how a set of plans becomes a finished, presentation-grade visualisation, step by step.', read: '8 min read' },
@@ -147,6 +154,9 @@ function Landing() {
   const dir = useRef(1);
   const [ti, setTi] = useState(0);
   const [swap, setSwap] = useState(false);
+  const filmRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
 
   const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -163,12 +173,12 @@ function Landing() {
     return () => clearInterval(t);
   }, [reduce]);
 
-  // testimonial carousel auto-advance
+  // testimonial carousel: constant 5s per slide (re-arms on any change)
   useEffect(() => {
     if (reduce) return;
-    const t = setInterval(() => setTi((p) => (p + 1) % TESTIMONIALS.length), 6000);
-    return () => clearInterval(t);
-  }, [reduce]);
+    const t = setTimeout(() => setTi((p) => (p + 1) % TESTIMONIALS.length), 5000);
+    return () => clearTimeout(t);
+  }, [ti, reduce]);
   const tgo = (d: number) => setTi((p) => (p + d + TESTIMONIALS.length) % TESTIMONIALS.length);
   useEffect(() => { setSwap(true); const t = setTimeout(() => setSwap(false), 520); return () => clearTimeout(t); }, [ti]);
 
@@ -238,6 +248,41 @@ function Landing() {
 
   useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : ''; }, [menuOpen]);
 
+  // gallery filmstrip: custom scrollbar that reflects position and is draggable
+  useEffect(() => {
+    const film = filmRef.current, thumb = thumbRef.current, bar = barRef.current;
+    if (!film || !thumb || !bar) return;
+    const sync = () => {
+      const max = film.scrollWidth - film.clientWidth;
+      const ratio = film.clientWidth / film.scrollWidth;
+      const w = Math.max(ratio * 100, 14);
+      thumb.style.width = `${w}%`;
+      thumb.style.left = `${(max > 0 ? film.scrollLeft / max : 0) * (100 - w)}%`;
+    };
+    sync();
+    film.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+
+    let dragging = false, startX = 0, startLeft = 0;
+    const down = (e: PointerEvent) => { dragging = true; startX = e.clientX; startLeft = film.scrollLeft; thumb.setPointerCapture(e.pointerId); e.preventDefault(); };
+    const move = (e: PointerEvent) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      film.scrollLeft = startLeft + (dx / bar.clientWidth) * film.scrollWidth;
+    };
+    const up = () => { dragging = false; };
+    thumb.addEventListener('pointerdown', down);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    return () => {
+      film.removeEventListener('scroll', sync);
+      window.removeEventListener('resize', sync);
+      thumb.removeEventListener('pointerdown', down);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+  }, []);
+
   const t = TESTIMONIALS[ti];
 
   return (
@@ -248,8 +293,10 @@ function Landing() {
           <Wordmark />
           <div className="nav-links">
             {NAV.map((n) => <a key={n.id} className="txt" href={`#${n.id}`}>{n.label}</a>)}
-            <a className="btn btn-ghost" href={REQUEST_ACCESS}>Request access</a>
-            <Link to="/login" className="btn btn-red">Log in <span className="ar">→</span></Link>
+            <div className="nav-cta">
+              <a className="btn btn-ghost btn-sm" href={REQUEST_ACCESS}>Request access</a>
+              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
+            </div>
             <button className="menu-btn" aria-label="Open menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
           </div>
         </div>
@@ -274,7 +321,6 @@ function Landing() {
             </div>
             <div className="hero-cta">
               <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
-              <a href={REQUEST_ACCESS} className="btn btn-ghost btn-lg">Request access</a>
             </div>
             <div className="hero-trust">
               <div className="ht"><div className="n">500+</div><div className="l">Projects rendered</div></div>
@@ -388,7 +434,7 @@ function Landing() {
           </div>
         </div>
         <div className="wrap">
-          <div className="film rv">
+          <div className="film rv" ref={filmRef}>
             {GALLERY.map((g) => (
               <a className="gcard" href={REQUEST_ACCESS} key={g.cat}>
                 <img src={IMG(g.img, 900)} alt={`${g.t} render`} loading="lazy" />
@@ -397,6 +443,7 @@ function Landing() {
               </a>
             ))}
           </div>
+          <div className="film-bar rv" ref={barRef}><div className="film-thumb" ref={thumbRef} /></div>
         </div>
       </section>
 
@@ -498,15 +545,22 @@ function Landing() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="sec cta">
-        <div className="wrap rv">
-          <span className="eyebrow">Get Started</span>
-          <h2>Your Next Great Design <em>Starts Here</em></h2>
-          <p className="lead">Trusted by architects and interior designers. Sign in to submit your first visualisation request, or request access to join.</p>
-          <div className="row">
-            <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
-            <a href={REQUEST_ACCESS} className="btn btn-ghost btn-lg">Request access</a>
+      {/* CTA - collage band (variation 1) */}
+      <section className="sec cta-band">
+        <div className="wrap">
+          <div className="cta-mosaic rv" aria-hidden="true">
+            <div className="cta-grid">
+              {CTA_TILES.map((id, i) => (
+                <div className="ct" key={i}><img src={IMG(id, 700)} alt="" loading="lazy" /></div>
+              ))}
+            </div>
+          </div>
+          <div className="cta-foot rv">
+            <h2>Your Next Great Design <em>Starts Here</em></h2>
+            <p className="cta-sub lead">Trusted by architects and interior designers. Sign in to submit your first visualisation request.</p>
+            <div className="cta-row">
+              <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
+            </div>
           </div>
         </div>
       </section>
@@ -518,10 +572,6 @@ function Landing() {
             <span className="eyebrow">Get In Touch</span>
             <h2>Your vision.<br />Our visual expertise.</h2>
             <p className="lead">Already a partner? Sign in to submit your first request. New here? Request access and our team will be in touch.</p>
-            <div className="row">
-              <Link to="/login" className="btn btn-white">Log in <span className="ar">→</span></Link>
-              <a href={REQUEST_ACCESS} className="btn btn-ghost">Request access</a>
-            </div>
           </div>
           <div className="c-info rv d1">
             <div className="h">Need assistance? We are here to help</div>
