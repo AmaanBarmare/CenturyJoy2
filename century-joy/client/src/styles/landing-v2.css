@@ -210,9 +210,10 @@
 .lv2 .hero-shot::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 56%, rgba(12,9,6,.5)); pointer-events: none; }
 .lv2 .hero-shot .badge2 { position: absolute; z-index: 2; left: 20px; bottom: 20px; right: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .lv2 .hero-shot .badge2 .cap { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .02em; }
-.lv2 .hero-dots { display: inline-flex; gap: 7px; }
-.lv2 .hero-dots button { width: 22px; height: 4px; border-radius: var(--pill); border: 0; background: rgba(255,255,255,.45); cursor: pointer; padding: 20px 0; background-clip: content-box; transition: background .25s, width .25s; }
-.lv2 .hero-dots button.on { background: #fff; width: 30px; }
+.lv2 .hero-dots { display: inline-flex; align-items: center; gap: 8px; }
+.lv2 .hero-dots button { width: 7px; height: 7px; border-radius: 50%; border: 0; background: rgba(255,255,255,.5); cursor: pointer; padding: 0; transition: background .25s var(--ease), transform .25s var(--ease); }
+.lv2 .hero-dots button:hover { background: rgba(255,255,255,.8); }
+.lv2 .hero-dots button.on { background: #fff; transform: scale(1.5); }
 @media (max-width: 880px) { .lv2 .hero-grid { grid-template-columns: 1fr; } .lv2 .hero-shot { aspect-ratio: 16 / 12; } }
 
 /* ── Marquee ──────────────────────────────────────────── */
@@ -344,8 +345,9 @@
 .lv2 .tbig.swap { animation: tfade .5s var(--ease); }
 @keyframes tfade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .lv2 .tdots { display: flex; justify-content: center; gap: 9px; margin-top: 34px; }
-.lv2 .tdots button { width: 9px; height: 9px; border-radius: 50%; border: 0; background: var(--line-2); cursor: pointer; padding: 18px 8px; background-clip: content-box; transition: background .25s, width .25s; }
-.lv2 .tdots button.on { background: var(--red); width: 26px; border-radius: var(--pill); }
+.lv2 .tdots button { width: 8px; height: 8px; border-radius: 50%; border: 0; background: var(--line-2); cursor: pointer; padding: 0; transition: background .25s var(--ease), transform .25s var(--ease); }
+.lv2 .tdots button:hover { background: var(--ink-faint); }
+.lv2 .tdots button.on { background: var(--red); transform: scale(1.5); }
 @media (max-width: 720px) {
   .lv2 .tcar { grid-template-columns: 1fr; }
   .lv2 .tarrow { display: none; }

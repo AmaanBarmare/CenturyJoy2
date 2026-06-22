@@ -154,7 +154,6 @@ function Landing() {
   const navRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hi, setHi] = useState(0);
-  const dir = useRef(1);
   const [ti, setTi] = useState(0);
   const [swap, setSwap] = useState(false);
   const filmRef = useRef<HTMLDivElement>(null);
@@ -163,15 +162,11 @@ function Landing() {
 
   const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // hero rotation: ping-pong through the set on a timer
+  // hero rotation: loop forward only (wraps 4 -> 1), never reverses
   useEffect(() => {
     if (reduce) return;
     const t = setInterval(() => {
-      setHi((prev) => {
-        let d = dir.current;
-        if (prev + d > HERO_SHOTS.length - 1 || prev + d < 0) { d = -d; dir.current = d; }
-        return prev + d;
-      });
+      setHi((prev) => (prev + 1) % HERO_SHOTS.length);
     }, 4200);
     return () => clearInterval(t);
   }, [reduce]);
