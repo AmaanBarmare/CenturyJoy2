@@ -194,7 +194,7 @@
 .lv2 .hero h1 em { font-style: normal; color: var(--red); }
 .lv2 .hero .lead { max-width: 46ch; }
 .lv2 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-.lv2 .hero-trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
+.lv2 .hero-trust { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
 .lv2 .hero-trust .ht .n { font-family: var(--display); font-size: 30px; font-weight: 700; color: var(--ink); letter-spacing: -.02em; line-height: 1; }
 .lv2 .hero-trust .ht .l { font-size: 12.5px; color: var(--ink-faint); margin-top: 8px; }
 
@@ -231,7 +231,7 @@
    ============================================================ */
 .lv2 .why2 { display: grid; grid-template-columns: .92fr 1.08fr; gap: clamp(34px, 6vw, 84px); align-items: start; }
 .lv2 .why2-intro { display: flex; flex-direction: column; gap: 30px; align-items: flex-start; position: sticky; top: 104px; }
-.lv2 .why2-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; padding-top: 30px; border-top: 1px solid var(--line); }
+.lv2 .why2-stats { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; width: 100%; padding-top: 30px; border-top: 1px solid var(--line); }
 .lv2 .why2-stats .n { font-family: var(--display); font-size: clamp(28px, 3vw, 38px); font-weight: 700; color: var(--red); letter-spacing: -.02em; line-height: 1; }
 .lv2 .why2-stats .l { font-size: 13px; color: var(--ink-faint); margin-top: 8px; }
 
@@ -264,7 +264,7 @@
 .lv2 .svc-b:last-child { border-bottom: 0; }
 .lv2 .svc-b .num { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--red); letter-spacing: .04em; }
 .lv2 .svc-b h3 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); margin-top: var(--tgap); }
-.lv2 .svc-b p { margin-top: var(--tgap); max-width: 44ch; }
+.lv2 .svc-b p { margin-top: var(--tgap); max-width: 52ch; }
 .lv2 .svc-b .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .lv2 .svc-b .chips span { font-size: 12.5px; font-weight: 700; color: var(--ink-soft); background: var(--paper-2); border: 1px solid var(--line); padding: 7px 14px; border-radius: var(--pill); }
 .lv2 .svc-b .mshot { display: none; border-radius: var(--r); overflow: hidden; aspect-ratio: 16/10; margin-bottom: 22px; }
@@ -285,7 +285,7 @@
 .lv2 .film { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 2px; scrollbar-width: none; }
 .lv2 .film::-webkit-scrollbar { display: none; }
 /* visible custom scroller so the horizontal scroll is discoverable */
-.lv2 .film-bar { position: relative; height: 6px; border-radius: var(--pill); background: var(--line); margin-top: 26px; }
+.lv2 .film-bar { position: relative; height: 3px; border-radius: var(--pill); background: var(--line); margin-top: 26px; }
 .lv2 .film-thumb { position: absolute; top: 0; left: 0; height: 100%; width: 30%; min-width: 44px; background: var(--red); border-radius: var(--pill); cursor: grab; touch-action: none; }
 .lv2 .film-thumb:active { cursor: grabbing; }
 .lv2 .gcard { position: relative; flex: 0 0 clamp(280px, 36vw, 440px); scroll-snap-align: start; aspect-ratio: 4 / 5; border-radius: var(--r-xl); overflow: hidden; }

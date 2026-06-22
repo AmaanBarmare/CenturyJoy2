@@ -320,7 +320,7 @@ function Landing() {
               <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
             </div>
             <div className="hero-cta">
-              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
+              <a href="#about" className="btn btn-red btn-sm">Discover more <span className="ar">→</span></a>
             </div>
             <div className="hero-trust">
               <div className="ht"><div className="n">500+</div><div className="l">Projects rendered</div></div>
@@ -557,9 +557,9 @@ function Landing() {
           </div>
           <div className="cta-foot rv">
             <h2>Your Next Great Design <em>Starts Here</em></h2>
-            <p className="cta-sub lead">Trusted by architects and interior designers. Sign in to submit your first visualisation request.</p>
+            <p className="cta-sub lead">Trusted by architects and interior designers. Tell us about your project and our team will be in touch.</p>
             <div className="cta-row">
-              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
+              <a href="#contact" className="btn btn-red btn-sm">Get in touch <span className="ar">→</span></a>
             </div>
           </div>
         </div>
