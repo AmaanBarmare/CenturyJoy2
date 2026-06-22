@@ -139,7 +139,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
       <div className="gate__bottom">
         <button className="gate__enter" onClick={enter} aria-label="Enter the site">
           Enter the Experience
-          <svg className="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          <span className="ar">→</span>
         </button>
         <div className="gate__cue"><span className="line" /><span className="hint">Click to explore</span></div>
       </div>

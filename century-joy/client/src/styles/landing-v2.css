@@ -152,7 +152,7 @@
   font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
   transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease), box-shadow .25s var(--ease);
 }
-.gate__enter .ar { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; transition: transform .25s var(--ease); }
+.gate__enter .ar { display: inline-block; transition: transform .25s var(--ease); }
 .gate__enter:hover { background: var(--red); border-color: var(--red); transform: translateY(-2px); box-shadow: 0 18px 44px -14px rgba(184,31,37,.7); }
 .gate__enter:hover .ar { transform: translateX(4px); }
 .gate__cue { display: grid; place-items: center; gap: 8px; }
@@ -310,7 +310,7 @@
 .lv2 .psteps::after { content: ""; position: absolute; top: 22px; left: 8%; width: 0; height: 2px; background: var(--red); z-index: 0; transition: width 1.7s var(--ease); }
 .lv2 .psteps.run::after { width: 84%; }
 .lv2 .pstp { position: relative; padding: 0 12px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--tgap); }
-.lv2 .pstp .pc { width: 46px; height: 46px; border-radius: 50%; background: #fff; border: 2px solid var(--line-2); display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--ink-faint); position: relative; z-index: 1; transition: background .45s var(--ease), border-color .45s var(--ease), color .45s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
+.lv2 .pstp .pc { width: 46px; height: 46px; border-radius: 10px; background: #fff; border: 2px solid var(--line-2); display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--ink-faint); position: relative; z-index: 1; transition: background .45s var(--ease), border-color .45s var(--ease), color .45s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease); }
 .lv2 .pstp.on .pc { background: var(--red); border-color: var(--red); color: #fff; transform: scale(1.08); box-shadow: 0 0 0 5px var(--red-tint); }
 .lv2 .pstp h3 { font-size: 18px; }
 .lv2 .pstp p { font-size: 14.5px; text-wrap: balance; }
@@ -323,7 +323,7 @@
    TESTIMONIALS - brand carousel
    ============================================================ */
 .lv2 .tcar { display: grid; grid-template-columns: auto minmax(0, 820px) auto; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 28px); }
-.lv2 .tarrow { width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--line-2); background: #fff; color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease); flex: none; }
+.lv2 .tarrow { width: 52px; height: 52px; border-radius: 10px; border: 1.5px solid var(--line-2); background: #fff; color: var(--ink); cursor: pointer; display: grid; place-items: center; transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease); flex: none; }
 .lv2 .tarrow svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 2; fill: none; }
 .lv2 .tarrow:hover { background: var(--red); border-color: var(--red); color: #fff; transform: scale(1.06); }
 .lv2 .tstage { position: relative; }
@@ -337,7 +337,7 @@
 .lv2 .tbig .tstars svg { width: 18px; height: 18px; fill: currentColor; }
 .lv2 .tbig blockquote { margin: 0; font-size: clamp(19px, 2vw, 26px); line-height: 1.5; color: var(--ink); font-weight: 700; letter-spacing: -.01em; }
 .lv2 .tbig .twho { display: flex; align-items: center; gap: 14px; padding-top: 22px; border-top: 1px solid var(--line); }
-.lv2 .tbig .tav { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; background: var(--red-tint); color: var(--red); font-weight: 700; font-size: 16px; flex: none; }
+.lv2 .tbig .tav { width: 50px; height: 50px; border-radius: 10px; display: grid; place-items: center; background: var(--red-tint); color: var(--red); font-weight: 700; font-size: 16px; flex: none; }
 .lv2 .tbig .tnm { font-size: 15px; font-weight: 700; color: var(--ink); }
 .lv2 .tbig .trl { font-size: 13.5px; color: var(--ink-faint); margin-top: 2px; }
 .lv2 .tbig.swap { animation: tfade .5s var(--ease); }
@@ -421,10 +421,10 @@
 .lv2 .contact .c-info .h { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.74); }
 .lv2 .contact .c-info .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.66); }
 .lv2 .contact .c-info .v { font-size: 17px; font-weight: 700; margin-top: 3px; }
-.lv2 .contact .c-info .c-social { display: flex; align-items: center; gap: 16px; margin-top: 6px; }
-.lv2 .contact .c-info .c-social a { color: rgba(255,255,255,.8); display: inline-flex; transition: color .2s var(--ease), transform .2s var(--ease); }
-.lv2 .contact .c-info .c-social a:hover { color: #fff; transform: translateY(-2px); }
-.lv2 .contact .c-info .c-social svg { width: 20px; height: 20px; }
+.lv2 .contact .c-info .c-social { display: flex; align-items: center; gap: 10px; margin-top: 16px; }
+.lv2 .contact .c-info .c-social a { width: 42px; height: 42px; border-radius: 10px; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.07); color: rgba(255,255,255,.82); display: inline-flex; align-items: center; justify-content: center; transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease); }
+.lv2 .contact .c-info .c-social a:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.6); color: #fff; transform: translateY(-2px); }
+.lv2 .contact .c-info .c-social svg { width: 18px; height: 18px; }
 @media (max-width: 820px) { .lv2 .contact .c-grid { grid-template-columns: 1fr; } .lv2 .contact .c-info { border-left: 0; border-top: 1px solid rgba(255,255,255,.3); padding-left: 0; padding-top: 26px; } }
 
 .lv2 .foot { background: var(--ink); color: rgba(255,255,255,.6); }
