@@ -27,27 +27,19 @@ const HERO_SHOTS = [
   { id: 'photo-1606744824163-985d376605aa', cap: 'Presentation Visual' },
 ];
 
-const STATS = [
-  { n: '500+', l: 'Projects rendered', d: 'Across residential, commercial & hospitality.' },
-  { n: '48 hrs', l: 'Typical first draft', d: 'Fast enough to make every pitch.' },
-  { n: '2', l: 'Free revisions', d: 'Refine every frame, always included.' },
-  { n: '100%', l: 'Photoreal output', d: 'Studio-grade, true-to-life detail.' },
-];
-
-const WHY = [
-  { ic: 'spark', t: 'Photorealistic Quality', p: 'Renders crafted by a dedicated studio team, detailed enough that clients mistake them for photographs.' },
-  { ic: 'bolt', t: 'Built for Speed', p: 'Most first drafts land within 48 hours, so a tight deadline never costs you the room.' },
-  { ic: 'revise', t: 'Two Free Revisions', p: 'Every project includes two revision rounds at no extra cost, tracked on your dashboard.' },
-  { ic: 'shield', t: 'Confidential & Secure', p: 'Your drawings stay private. Protected storage and signed links guard every file you share.' },
-  { ic: 'layers', t: 'True Material Accuracy', p: 'See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.' },
-  { ic: 'grid', t: 'One Simple Portal', p: 'Submit briefs, upload drawings and follow every milestone from a single, clear dashboard.' },
-];
-
 const SERVICES = [
   { n: '01', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
   { n: '02', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', chips: ['Residential', 'Commercial', 'Facade studies'] },
   { n: '03', img: 'photo-1581783748410-2c5377ad72ee', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
   { n: '04', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
+];
+
+const GALLERY = [
+  { cat: 'Residential', img: 'photo-1564078516393-cf04bd966897', t: 'Residential', s: 'Living Rooms · Bedrooms · Kitchens' },
+  { cat: 'Commercial', img: 'photo-1478979464727-af7d24e18554', t: 'Commercial', s: 'Offices · Retail · Workspaces' },
+  { cat: 'Hospitality', img: 'photo-1621293954908-907159247fc8', t: 'Hospitality', s: 'Hotels · Restaurants · Experiences' },
+  { cat: 'Architectural', img: 'photo-1536501483244-925da0b87089', t: 'Architectural', s: 'Facades · Exteriors · Massing' },
+  { cat: 'Interiors', img: 'photo-1599696848652-f0ff23bc911f', t: 'Interiors', s: 'Materials · Finishes · Styling' },
 ];
 
 const PROCESS = [
@@ -63,6 +55,8 @@ const TESTIMONIALS = [
   { q: 'The renders closed the project in a single client meeting. They genuinely could not believe it was not a photograph.', nm: 'Ananya Rao', rl: 'Principal Architect · Studio Verge', i: 'AR' },
   { q: 'Turnaround was the real surprise. First drafts in two days, revisions handled overnight. It has changed how we pitch.', nm: 'Rohan Mehta', rl: 'Interior Designer · Mehta & Co.', i: 'RM' },
   { q: 'Material accuracy is unmatched. Clients finally see the exact Century Ply finish before a single board is cut.', nm: 'Priya Nair', rl: 'Design Lead · Aether Interiors', i: 'PN' },
+  { q: 'We brief once and get back visuals that feel finished. The lighting and material detail are genuinely studio quality.', nm: 'Kabir Shah', rl: 'Architect · Form & Field', i: 'KS' },
+  { q: 'Clients approve faster when they can step inside the design. Century Joy has shortened our sign-off cycle dramatically.', nm: 'Meera Iyer', rl: 'Interior Designer · Habitat Studio', i: 'MI' },
 ];
 
 const BLOGS = [
@@ -80,7 +74,7 @@ const FAQ: [string, string][] = [
   ['How do I track my request?', 'Every status update is visible on your portal, with email notifications at each milestone from brief to final delivery.'],
 ];
 
-/* ── line icons (Lucide-style, single stroke family) ───── */
+/* ── line icons (single stroke family) ─────────────────── */
 function Icon({ name }: { name: string }) {
   const p: Record<string, JSX.Element> = {
     spark: <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" />,
@@ -88,7 +82,6 @@ function Icon({ name }: { name: string }) {
     revise: <><path d="M21 3v6h-6" /><path d="M3 12a9 9 0 0 1 15-6.7L21 9" /><path d="M3 21v-6h6" /><path d="M21 12a9 9 0 0 1-15 6.7L3 15" /></>,
     shield: <><path d="M12 3l8 3.5v5c0 5-3.4 8-8 9.5-4.6-1.5-8-4.5-8-9.5v-5z" /><path d="m9 12 2 2 4-4" /></>,
     layers: <><path d="M12 2 2 7l10 5 10-5-10-5z" /><path d="m2 12 10 5 10-5" /><path d="m2 17 10 5 10-5" /></>,
-    grid: <><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></>,
   };
   return <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{p[name]}</svg>;
 }
@@ -102,11 +95,7 @@ function Star() {
    ============================================================ */
 function Gate({ onEnter }: { onEnter: () => void }) {
   const [leaving, setLeaving] = useState(false);
-
-  const enter = () => {
-    setLeaving(true);
-    setTimeout(onEnter, 700);
-  };
+  const enter = () => { setLeaving(true); setTimeout(onEnter, 700); };
 
   return (
     <div className={`gate ${leaving ? 'leaving' : ''}`}>
@@ -131,10 +120,10 @@ function Gate({ onEnter }: { onEnter: () => void }) {
 
       <div className="gate__bottom">
         <button className="gate__enter" onClick={enter} aria-label="Enter the site">
-          <span className="lbl">Enter</span>
-          <svg className="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          Enter the Experience
+          <svg className="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
         </button>
-        <span className="gate__hint">Begin the experience</span>
+        <div className="gate__cue"><span className="line" /><span className="hint">Scroll to explore</span></div>
       </div>
     </div>
   );
@@ -148,10 +137,14 @@ function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hi, setHi] = useState(0);
   const dir = useRef(1);
+  const [ti, setTi] = useState(0);
+  const [swap, setSwap] = useState(false);
+
+  const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // hero rotation: ping-pong through the set on a timer
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (reduce) return;
     const t = setInterval(() => {
       setHi((prev) => {
         let d = dir.current;
@@ -160,19 +153,31 @@ function Landing() {
       });
     }, 4200);
     return () => clearInterval(t);
-  }, []);
+  }, [reduce]);
+
+  // testimonial carousel auto-advance
+  useEffect(() => {
+    if (reduce) return;
+    const t = setInterval(() => setTi((p) => (p + 1) % TESTIMONIALS.length), 6000);
+    return () => clearInterval(t);
+  }, [reduce]);
+  const tgo = (d: number) => setTi((p) => (p + d + TESTIMONIALS.length) % TESTIMONIALS.length);
+  useEffect(() => { setSwap(true); const t = setTimeout(() => setSwap(false), 520); return () => clearTimeout(t); }, [ti]);
 
   useEffect(() => {
     const nav = navRef.current;
     const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 30);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
 
-    const revealObs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), revealObs.unobserve(e.target))),
-      { threshold: 0.12 },
-    );
-    document.querySelectorAll('.lv2 .rv').forEach((el) => revealObs.observe(el));
+    // reveal: bulletproof, scroll-driven; every .rv ends fully visible
+    const reveal = () => {
+      const h = window.innerHeight * 0.9;
+      document.querySelectorAll('.lv2 .rv:not(.in)').forEach((el) => {
+        if (el.getBoundingClientRect().top < h) el.classList.add('in');
+      });
+    };
+    onScroll(); reveal();
+    window.addEventListener('scroll', () => { onScroll(); reveal(); }, { passive: true });
+    window.addEventListener('resize', reveal);
 
     // sticky image swap for services
     const sis = [...document.querySelectorAll('.sticky-shot .si')];
@@ -187,14 +192,45 @@ function Landing() {
     );
     document.querySelectorAll('.svc-b').forEach((b) => blockObs.observe(b));
 
+    // process stepper: fill 01 -> 06 sequentially when scrolled in
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const procObs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        const psteps = document.querySelector('.lv2 .psteps');
+        const steps = [...document.querySelectorAll('.lv2 .psteps .pstp')];
+        if (e.isIntersecting) {
+          timers.forEach(clearTimeout); timers.length = 0;
+          steps.forEach((s) => s.classList.remove('on'));
+          psteps?.classList.remove('run');
+          void (psteps as HTMLElement | null)?.offsetWidth;
+          psteps?.classList.add('run');
+          steps.forEach((s, i) => {
+            if (reduce) s.classList.add('on');
+            else timers.push(setTimeout(() => s.classList.add('on'), 200 + i * 260));
+          });
+        } else {
+          timers.forEach(clearTimeout); timers.length = 0;
+          psteps?.classList.remove('run');
+          steps.forEach((s) => s.classList.remove('on'));
+        }
+      }),
+      { threshold: 0.4 },
+    );
+    const procEl = document.getElementById('process');
+    if (procEl) procObs.observe(procEl);
+
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      revealObs.disconnect();
+      window.removeEventListener('scroll', reveal);
+      window.removeEventListener('resize', reveal);
       blockObs.disconnect();
+      procObs.disconnect();
+      timers.forEach(clearTimeout);
     };
-  }, []);
+  }, [reduce]);
 
   useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : ''; }, [menuOpen]);
+
+  const t = TESTIMONIALS[ti];
 
   return (
     <div className="lv2">
@@ -211,7 +247,6 @@ function Landing() {
         </div>
       </header>
 
-      {/* mobile drawer */}
       <div className={`lv2-scrim ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
       <nav className={`lv2-drawer ${menuOpen ? 'open' : ''}`}>
         <button className="x" aria-label="Close menu" onClick={() => setMenuOpen(false)}>✕</button>
@@ -224,9 +259,11 @@ function Landing() {
       <section className="sec hero" id="top">
         <div className="wrap hero-grid">
           <div className="rv">
-            <div className="hero-tags"><span>Architects</span><span>Interior Designers</span><span>Design Influencers</span></div>
-            <h1>Bring Your Designs <em>To Life</em> Before They Become Reality</h1>
-            <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
+            <div className="tstack">
+              <div className="hero-tags"><span>Architects</span><span>Interior Designers</span><span>Design Influencers</span></div>
+              <h1>Bring Your Designs <em>To Life</em> Before They Become Reality</h1>
+              <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
+            </div>
             <div className="hero-cta">
               <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
               <a href={REQUEST_ACCESS} className="btn btn-ghost btn-lg">Request access</a>
@@ -258,23 +295,23 @@ function Landing() {
 
       {/* MARQUEE */}
       <div className="marquee" aria-hidden="true">
-        <div className="mtrack">{[...MARQUEE, ...MARQUEE].map((t, i) => <span key={i}>{t}</span>)}</div>
+        <div className="mtrack">{[...MARQUEE, ...MARQUEE].map((m, i) => <span key={i}>{m}</span>)}</div>
       </div>
 
       {/* ABOUT */}
       <section className="sec" id="about">
         <div className="wrap about-grid">
-          <div className="rv">
+          <div className="tstack rv">
             <span className="eyebrow">About Century Joy</span>
             <h2>Where Design Meets <span className="red">Visual Storytelling</span></h2>
             <p className="lead">Great designs deserve to be experienced, not just explained.</p>
-            <p className="body">An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals that drive faster decisions and stronger client engagement.</p>
+            <p>An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals that drive faster decisions and stronger client engagement.</p>
           </div>
           <div className="about-img rv d1"><img src={IMG('photo-1599696848652-f0ff23bc911f', 1100)} alt="Photoreal interior visualisation" /></div>
         </div>
       </section>
 
-      {/* WHY CHOOSE US (new) */}
+      {/* WHY CHOOSE US - bento */}
       <section className="sec tint" id="why">
         <div className="wrap">
           <div className="shead center rv">
@@ -282,24 +319,31 @@ function Landing() {
             <h2>Why Studios <span className="red">Choose Us</span></h2>
             <p className="lead">Everything a design practice needs to present with confidence: quality, speed and trust, in one place.</p>
           </div>
-          <div className="stats rv">
-            {STATS.map((s) => (
-              <div className="stat" key={s.l}><div className="n">{s.n}</div><div className="l">{s.l}</div><div className="d">{s.d}</div></div>
-            ))}
-          </div>
-          <div className="why-grid">
-            {WHY.map((w, i) => (
-              <div className={`why-card rv ${i % 3 === 1 ? 'd1' : i % 3 === 2 ? 'd2' : ''}`} key={w.t}>
-                <div className="why-ic"><Icon name={w.ic} /></div>
-                <h3>{w.t}</h3>
-                <p>{w.p}</p>
+          <div className="bento rv">
+            <div className="bt bt-hero">
+              <div className="why-ic"><Icon name="spark" /></div>
+              <div>
+                <div className="k">Built for studios</div>
+                <h3>Quality, speed and trust, in one studio.</h3>
+                <p>A dedicated team turns your brief into photorealistic visuals detailed enough that clients mistake them for photographs.</p>
               </div>
-            ))}
+            </div>
+            <div className="bt bt-img"><img src={IMG('photo-1564078516393-cf04bd966897', 1100)} alt="Photoreal residential render" loading="lazy" /><span className="cap">Photoreal output, true to life</span></div>
+            <div className="bt bt-stat"><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
+            <div className="bt bt-stat"><div className="n">2</div><div className="l">Free revision rounds</div></div>
+            <div className="bt bt-wide">
+              <div className="why-ic"><Icon name="shield" /></div>
+              <div className="bt-txt"><h3>Confidential &amp; Secure</h3><p>Your drawings stay private. Protected storage and signed links guard every file you share.</p></div>
+            </div>
+            <div className="bt bt-wide">
+              <div className="why-ic"><Icon name="layers" /></div>
+              <div className="bt-txt"><h3>True Material Accuracy</h3><p>See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.</p></div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SERVICES: sticky split */}
+      {/* SERVICES - sticky split (variation 1) */}
       <section className="sec" id="services">
         <div className="wrap">
           <div className="shead rv">
@@ -308,9 +352,11 @@ function Landing() {
           </div>
           <div className="split">
             <div className="sticky-shot" aria-hidden="true">
-              {SERVICES.map((s, i) => (
-                <div key={s.n} className={`si ${i === 0 ? 'on' : ''}`} data-i={i}><img src={IMG(s.img, 1200)} alt="" /></div>
-              ))}
+              <div className="frame">
+                {SERVICES.map((s, i) => (
+                  <div key={s.n} className={`si ${i === 0 ? 'on' : ''}`} data-i={i}><img src={IMG(s.img, 1200)} alt="" /></div>
+                ))}
+              </div>
             </div>
             <div className="svc-list">
               {SERVICES.map((s, i) => (
@@ -327,43 +373,40 @@ function Landing() {
         </div>
       </section>
 
-      {/* GALLERY */}
+      {/* GALLERY - filmstrip */}
       <section className="sec tint" id="work">
         <div className="wrap">
-          <div className="shead rv">
-            <span className="eyebrow">Sample Gallery</span>
-            <h2>Explore Possibilities Through <span className="red">Visualisation</span></h2>
+          <div className="gal-head rv">
+            <div className="tstack">
+              <span className="eyebrow">Sample Gallery</span>
+              <h2>Explore Possibilities Through <span className="red">Visualisation</span></h2>
+            </div>
+            <span className="gal-hint">Scroll to browse</span>
           </div>
-          <div className="gal rv">
-            <a className="gtile g-a" href={REQUEST_ACCESS}>
-              <img src={IMG('photo-1564078516393-cf04bd966897', 1400)} alt="Residential render" />
-              <span className="tagc">Residential</span>
-              <div className="cap"><div className="t">Residential</div><div className="s">Living Rooms · Bedrooms · Kitchens · Luxury Homes</div></div>
-            </a>
-            <a className="gtile g-b" href={REQUEST_ACCESS}>
-              <img src={IMG('photo-1478979464727-af7d24e18554', 1200)} alt="Commercial render" />
-              <span className="tagc">Commercial</span>
-              <div className="cap"><div className="t">Commercial</div><div className="s">Offices · Retail · Workspaces</div></div>
-            </a>
-            <a className="gtile g-c" href={REQUEST_ACCESS}>
-              <img src={IMG('photo-1621293954908-907159247fc8', 1200)} alt="Hospitality render" />
-              <span className="tagc">Hospitality</span>
-              <div className="cap"><div className="t">Hospitality</div><div className="s">Hotels · Restaurants · Experiences</div></div>
-            </a>
+        </div>
+        <div className="wrap">
+          <div className="film rv">
+            {GALLERY.map((g) => (
+              <a className="gcard" href={REQUEST_ACCESS} key={g.cat}>
+                <img src={IMG(g.img, 900)} alt={`${g.t} render`} loading="lazy" />
+                <span className="tagc">{g.cat}</span>
+                <div className="cap"><div className="t">{g.t}</div><div className="s">{g.s}</div></div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* PROCESS */}
+      {/* HOW IT WORKS - stepper (variation 1) */}
       <section className="sec" id="process">
         <div className="wrap">
           <div className="shead center rv">
             <span className="eyebrow">How It Works</span>
             <h2>A Seamless Journey from <span className="red">Concept to Creation</span></h2>
           </div>
-          <div className="psteps">
-            {PROCESS.map((s, i) => (
-              <div className={`pstp rv ${i % 3 === 1 ? 'd1' : i % 3 === 2 ? 'd2' : ''}`} key={s.n}>
+          <div className="psteps rv">
+            {PROCESS.map((s) => (
+              <div className="pstp" key={s.n}>
                 <div className="pc">{s.n}</div>
                 <h3>{s.t}</h3>
                 <p>{s.p}</p>
@@ -374,29 +417,42 @@ function Landing() {
         </div>
       </section>
 
-      {/* TESTIMONIALS (new) */}
+      {/* TESTIMONIALS - carousel */}
       <section className="sec tint" id="testimonials">
         <div className="wrap">
           <div className="shead center rv">
             <span className="eyebrow">Testimonials</span>
-            <h2>Trusted by Designers <span className="red">&amp; Architects</span></h2>
+            <h2>Loved by Designers <span className="red">&amp; Architects</span></h2>
+            <p className="lead">Real words from the studios and practices who present with Century Joy.</p>
           </div>
-          <div className="tgrid">
-            {TESTIMONIALS.map((t, i) => (
-              <figure className={`tcard rv ${i === 1 ? 'd1' : i === 2 ? 'd2' : ''}`} key={t.nm}>
-                <div className="stars"><Star /><Star /><Star /><Star /><Star /></div>
-                <blockquote>“{t.q}”</blockquote>
-                <figcaption className="who">
-                  <span className="av">{t.i}</span>
-                  <span><span className="nm">{t.nm}</span><br /><span className="rl">{t.rl}</span></span>
+          <div className="tcar rv">
+            <button className="tarrow" onClick={() => tgo(-1)} aria-label="Previous testimonial">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" /></svg>
+            </button>
+            <div className="tstage">
+              <figure className={`tbig ${swap ? 'swap' : ''}`} key={ti}>
+                <span className="tquote" aria-hidden="true">&rdquo;</span>
+                <div className="tstars"><Star /><Star /><Star /><Star /><Star /></div>
+                <blockquote>{t.q}</blockquote>
+                <figcaption className="twho">
+                  <span className="tav">{t.i}</span>
+                  <span><span className="tnm">{t.nm}</span><br /><span className="trl">{t.rl}</span></span>
                 </figcaption>
               </figure>
+            </div>
+            <button className="tarrow" onClick={() => tgo(1)} aria-label="Next testimonial">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
+            </button>
+          </div>
+          <div className="tdots">
+            {TESTIMONIALS.map((tt, i) => (
+              <button key={tt.nm} className={i === ti ? 'on' : ''} aria-label={`Testimonial ${i + 1}`} onClick={() => setTi(i)} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* BLOGS (new) */}
+      {/* BLOGS */}
       <section className="sec" id="insights">
         <div className="wrap">
           <div className="shead rv">
@@ -424,9 +480,9 @@ function Landing() {
       {/* FAQ */}
       <section className="sec tint" id="faq">
         <div className="wrap faq-grid">
-          <div className="rv">
+          <div className="tstack rv">
             <span className="eyebrow">FAQ</span>
-            <h2 style={{ marginTop: 16 }}>Frequently Asked <span className="red">Questions</span></h2>
+            <h2>Frequently Asked <span className="red">Questions</span></h2>
           </div>
           <div className="rv d1">
             {FAQ.map(([q, a], i) => (
@@ -442,8 +498,8 @@ function Landing() {
       {/* CTA */}
       <section className="sec cta">
         <div className="wrap rv">
-          <span className="eyebrow" style={{ justifyContent: 'center', display: 'inline-flex' }}>Get Started</span>
-          <h2 style={{ marginTop: 18 }}>Your Next Great Design <em>Starts Here</em></h2>
+          <span className="eyebrow">Get Started</span>
+          <h2>Your Next Great Design <em>Starts Here</em></h2>
           <p className="lead">Trusted by architects and interior designers. Sign in to submit your first visualisation request, or request access to join.</p>
           <div className="row">
             <Link to="/login" className="btn btn-red btn-lg">Log in <span className="ar">→</span></Link>
@@ -455,9 +511,9 @@ function Landing() {
       {/* CONTACT */}
       <section className="sec contact" id="contact">
         <div className="wrap c-grid">
-          <div className="rv">
+          <div className="tstack rv">
             <span className="eyebrow">Get In Touch</span>
-            <h2 style={{ marginTop: 16 }}>Your vision.<br />Our visual expertise.</h2>
+            <h2>Your vision.<br />Our visual expertise.</h2>
             <p className="lead">Already a partner? Sign in to submit your first request. New here? Request access and our team will be in touch.</p>
             <div className="row">
               <Link to="/login" className="btn btn-white">Log in <span className="ar">→</span></Link>
@@ -466,9 +522,9 @@ function Landing() {
           </div>
           <div className="c-info rv d1">
             <div className="h">Need assistance? We are here to help</div>
-            <div className="r"><div className="k">Email</div><div className="v">3DServices@centuryply.com</div></div>
-            <div className="r"><div className="k">Phone</div><div className="v">9004901699</div></div>
-            <div className="r"><div className="k">Support Hours</div><div className="v">9:30 AM – 5:30 PM IST</div></div>
+            <div><div className="k">Email</div><div className="v">3DServices@centuryply.com</div></div>
+            <div><div className="k">Phone</div><div className="v">9004901699</div></div>
+            <div><div className="k">Support Hours</div><div className="v">9:30 AM to 5:30 PM IST</div></div>
           </div>
         </div>
       </section>
@@ -491,7 +547,6 @@ function Landing() {
    ============================================================ */
 export default function LandingV2() {
   const [entered, setEntered] = useState(() => {
-    // Skip the intro for in-session returns and for deep links (a section hash).
     if (typeof window !== 'undefined' && window.location.hash.length > 1) return true;
     try { return sessionStorage.getItem('cj_entered') === '1'; } catch { return false; }
   });
