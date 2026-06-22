@@ -34,6 +34,14 @@ const SERVICES = [
   { n: '04', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
 ];
 
+const WHY = [
+  { ic: 'spark', t: 'Photorealistic Quality', p: 'A dedicated studio team turns your brief into visuals detailed enough that clients mistake them for photographs.' },
+  { ic: 'bolt', t: 'Built for Speed', p: 'Most first drafts land within 48 hours, so a tight deadline never costs you the room.' },
+  { ic: 'revise', t: 'Two Free Revisions', p: 'Every project includes two revision rounds at no extra cost, tracked on your dashboard.' },
+  { ic: 'shield', t: 'Confidential & Secure', p: 'Your drawings stay private. Protected storage and signed links guard every file you share.' },
+  { ic: 'layers', t: 'True Material Accuracy', p: 'See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.' },
+];
+
 const GALLERY = [
   { cat: 'Residential', img: 'photo-1564078516393-cf04bd966897', t: 'Residential', s: 'Living Rooms · Bedrooms · Kitchens' },
   { cat: 'Commercial', img: 'photo-1478979464727-af7d24e18554', t: 'Commercial', s: 'Offices · Retail · Workspaces' },
@@ -311,34 +319,29 @@ function Landing() {
         </div>
       </section>
 
-      {/* WHY CHOOSE US - bento */}
+      {/* WHY CHOOSE US - sticky intro + uniform feature rows */}
       <section className="sec tint" id="why">
-        <div className="wrap">
-          <div className="shead center rv">
-            <span className="eyebrow">Why Century Joy</span>
-            <h2>Why Studios <span className="red">Choose Us</span></h2>
-            <p className="lead">Everything a design practice needs to present with confidence: quality, speed and trust, in one place.</p>
+        <div className="wrap why2">
+          <div className="why2-intro rv">
+            <div className="tstack">
+              <span className="eyebrow">Why Century Joy</span>
+              <h2>Why Studios <span className="red">Choose Us</span></h2>
+              <p className="lead">Everything a design practice needs to present with confidence: quality, speed and trust, in one place.</p>
+            </div>
+            <div className="why2-stats">
+              <div><div className="n">500+</div><div className="l">Projects rendered</div></div>
+              <div><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
+              <div><div className="n">2</div><div className="l">Free revisions</div></div>
+            </div>
+            <a href={REQUEST_ACCESS} className="btn btn-red">Request access <span className="ar">→</span></a>
           </div>
-          <div className="bento rv">
-            <div className="bt bt-hero">
-              <div className="why-ic"><Icon name="spark" /></div>
-              <div>
-                <div className="k">Built for studios</div>
-                <h3>Quality, speed and trust, in one studio.</h3>
-                <p>A dedicated team turns your brief into photorealistic visuals detailed enough that clients mistake them for photographs.</p>
+          <div className="why2-list rv d1">
+            {WHY.map((w) => (
+              <div className="wrow" key={w.t}>
+                <div className="wic"><Icon name={w.ic} /></div>
+                <div className="wtxt"><h3>{w.t}</h3><p>{w.p}</p></div>
               </div>
-            </div>
-            <div className="bt bt-img"><img src={IMG('photo-1564078516393-cf04bd966897', 1100)} alt="Photoreal residential render" loading="lazy" /><span className="cap">Photoreal output, true to life</span></div>
-            <div className="bt bt-stat"><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
-            <div className="bt bt-stat"><div className="n">2</div><div className="l">Free revision rounds</div></div>
-            <div className="bt bt-wide">
-              <div className="why-ic"><Icon name="shield" /></div>
-              <div className="bt-txt"><h3>Confidential &amp; Secure</h3><p>Your drawings stay private. Protected storage and signed links guard every file you share.</p></div>
-            </div>
-            <div className="bt bt-wide">
-              <div className="why-ic"><Icon name="layers" /></div>
-              <div className="bt-txt"><h3>True Material Accuracy</h3><p>See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.</p></div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
