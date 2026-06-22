@@ -6,7 +6,7 @@
 
 /* Launcher */
 .chatw-fab {
-  width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer; flex: none;
+  width: 56px; height: 56px; border-radius: 10px; border: none; cursor: pointer; flex: none;
   background: var(--red); color: #fff;
   display: grid; place-items: center;
   box-shadow: 0 10px 30px -8px rgba(184, 31, 37, 0.55);
