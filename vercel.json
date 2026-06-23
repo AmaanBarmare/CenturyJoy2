@@ -1,0 +1,16 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "experimentalServices": {
+    "frontend": {
+      "entrypoint": "century-joy/client",
+      "routePrefix": "/",
+      "framework": "vite"
+    },
+    "backend": {
+      "entrypoint": "century-joy/server",
+      "routePrefix": "/api",
+      "framework": "express",
+      "maxDuration": 60
+    }
+  }
+}
