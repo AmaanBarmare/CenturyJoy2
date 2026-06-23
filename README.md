@@ -262,6 +262,27 @@ project's **Ignored Build Step** (Settings → Git), e.g. for `main`:
 `bash -c 'if [ "$VERCEL_GIT_COMMIT_REF" = "main" ]; then exit 1; else exit 0; fi'`
 (exit 1 = build, exit 0 = skip; use `landing-v2-experience` for the V2 project).
 
+#### "Configuration Settings in the current Production deployment differ from your current Project Settings"
+
+This banner is **informational, not an error**: the *live* production deployment was
+built with different Build/Framework settings than the project's *current* settings, so
+Vercel flags the drift until production is rebuilt. For a Services project it almost
+always means the **Framework Preset is still auto-detected as `Vite`** instead of
+`Services`. The repo-root [`vercel.json`](vercel.json) is already the correct Services
+config ([docs](https://vercel.com/docs/services)) — the fix is in the dashboard:
+
+1. **Settings → Build and Deployment → Framework Settings →** set **Framework Preset =
+   `Services`** (required whenever `experimentalServices` is present).
+2. **Clear any manual overrides** for Build Command, Output Directory, and Install
+   Command — leave them to per-service framework detection (toggle "Override" off).
+3. Confirm **Root Directory = `./`** (repo root).
+4. **Save**, then **Deployments → ⋯ → Redeploy** the current Production deployment so the
+   live build matches the saved settings. The banner clears once production is rebuilt.
+
+Do this in **both** projects (`century-joy` and `century-joy-v2`). The per-service
+`framework` keys in `vercel.json` (`vite`, `express`) pin each service so it isn't
+re-detected on every build.
+
 ### Background jobs (email queue + cleanup) via Supabase cron
 
 The serverless API can't run the in-process interval workers, so they're exposed as protected
