@@ -213,41 +213,71 @@ proxies `/api` to the single backend on **:8080**.
 
 ## Deploying to Vercel
 
-Each branch is deployed as its **own Vercel project** (Vercel is connected to the GitHub repo),
-so the two landing options get separate URLs:
+**You do not need a second repository.** Vercel can connect the **same GitHub repo to multiple
+projects**, each with its own **Production Branch** — so both landings *and* the API deploy from
+this one repo. Three projects off this single repo:
 
-| Vercel project (example) | Production branch | Site |
-|---|---|---|
-| `century-joy` | `main` | Option 1 — dark landing |
-| `century-joy-v2` | `landing-v2-experience` | Option 2 — video-intro landing |
+| Vercel project (example) | Root Directory | Production Branch | Serves |
+|---|---|---|---|
+| `century-joy` | `century-joy/client` | `main` | Option 1 landing (dark) |
+| `century-joy-v2` | `century-joy/client` | `landing-v2-experience` | Option 2 landing (video intro) |
+| `century-joy-api` | `century-joy/server` | `main` | Express API (chatbot, auth, uploads) |
 
-Create two projects from the same repo, then in **each** project's settings:
+> A second repo would also work but only adds duplication + sync overhead — branches in one repo
+> is the standard approach.
 
-1. **Root Directory:** `century-joy/client` — the SPA lives here, not at the repo root.
-2. **Framework / Build / Output:** read from [`century-joy/client/vercel.json`](century-joy/client/vercel.json)
-   — Vite, `npm run build`, output `dist`. Its **SPA rewrite** routes every path to `index.html`
-   so deep links (`/login`, `/admin`, …) survive a refresh.
-3. **Production Branch** (Settings → Git): set Project 1 → `main`, Project 2 →
-   `landing-v2-experience`. Vercel defaults this to `main`, so the **V2 project must be changed**.
-4. **Environment Variables** (Settings → Environment Variables) — Vite inlines `VITE_*` at
-   **build time**, so set these *before* deploying (and redeploy after any change):
+### Frontend projects (the two landings)
 
-   | Key | Needed for | Notes |
+1. **Root Directory:** `century-joy/client`.
+2. **Build/Output:** from [`century-joy/client/vercel.json`](century-joy/client/vercel.json) —
+   Vite, `npm run build`, `dist`, with an SPA rewrite so deep links (`/login`, `/admin`) survive
+   a refresh.
+3. **Production Branch** (Settings → Git): Project 1 → `main`, Project 2 →
+   `landing-v2-experience`. Vercel defaults to `main`, so the **V2 project must be changed**.
+4. **Environment Variables** (Vite inlines `VITE_*` at **build time** — set before deploying):
+
+   | Key | For | Notes |
    |---|---|---|
-   | `VITE_API_URL` | chatbot, login, uploads | Origin of the deployed API, e.g. `https://api.example.com` (no trailing `/api`). If unset, the landing still works but `/api` calls 404. |
-   | `VITE_SUPABASE_URL` | uploads | from Supabase |
-   | `VITE_SUPABASE_ANON_KEY` | uploads | from Supabase |
-   | `VITE_SUPABASE_STORAGE_BUCKET` | uploads | `century-joy-files` |
+   | `VITE_API_URL` | chatbot, login, uploads | The API project's URL, e.g. `https://century-joy-api.vercel.app` (no trailing `/api`). Unset → landing still works, `/api` calls 404. |
+   | `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` / `VITE_SUPABASE_STORAGE_BUCKET` | uploads | from Supabase |
 
-### A note on the API
+### API project (Express on Vercel — free Hobby serverless)
 
-Vercel here hosts the **static SPA only** — it does not run the Express server
-(`century-joy/server`), which has long-running workers (email queue, orphan cleanup) and
-streaming uploads that don't suit static hosting. The **landing pages need no API** and will
-deploy and display on their own. To make the **chatbot and login** work in production, host the
-API separately (Render / Railway / any Node host), point `VITE_API_URL` at its origin, and allow
-CORS from the Vercel domain (the client sends cookies for token refresh, so credentials must be
-permitted).
+The Express server runs as a **single serverless function** (free on Hobby: 100K invocations/mo,
+30s timeout). [`century-joy/server/api/index.ts`](century-joy/server/api/index.ts) exports the
+app and [`century-joy/server/vercel.json`](century-joy/server/vercel.json) rewrites every path to
+it, so Express keeps its own `/api/*` routes.
+
+1. **Root Directory:** `century-joy/server`.
+2. **Environment Variables:** the server's `.env` keys — `SUPABASE_URL`,
+   `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_ANON_KEY`, `SUPABASE_STORAGE_BUCKET`,
+   `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, `OPENAI_API_KEY`, `RESEND_API_KEY` (optional),
+   `EMAIL_FROM`, `APP_BASE_URL`, and **`CLIENT_ORIGIN` set to both frontend URLs, comma-separated**
+   (CORS already accepts a comma list), e.g.
+   `https://century-joy.vercel.app,https://century-joy-v2.vercel.app`.
+
+### Avoid redundant cross-branch builds
+
+Sharing one repo, a push to one branch can trigger *preview* builds in the other projects. To
+stop that, set each project's **Ignored Build Step** (Settings → Git) to skip refs that aren't
+its branch — e.g. for the `main` project:
+
+```bash
+bash -c 'if [ "$VERCEL_GIT_COMMIT_REF" = "main" ]; then exit 1; else exit 0; fi'
+```
+
+Vercel runs this per build: **exit 1 = build, exit 0 = skip** (use `landing-v2-experience` for the V2 project).
+
+### Deferred to "upgrade later" (fine for the demo)
+
+- **Background workers** (email queue ~1/min, orphan cleanup daily) don't run in the serverless
+  model, so they're simply **off in the demo** (queued emails won't send). When upgrading, drive
+  them with **Supabase `pg_cron` + `pg_net`** hitting two protected endpoints — no Vercel Pro
+  needed (Hobby cron is once/day only; Supabase cron runs any frequency, free).
+- **Login across split origins:** the refresh token is an httpOnly cookie; with the SPA and API
+  on different `*.vercel.app` subdomains it needs `SameSite=None; Secure`. The **public chatbot
+  works regardless**; portal login is cleanest on a shared domain or after that cookie tweak.
+- **Vercel Hobby is non-commercial** — fine for a demo; move to Pro for production use.
 
 ---
 
