@@ -7,7 +7,7 @@
       "framework": "vite"
     },
     "backend": {
-      "entrypoint": "server/api/index.ts",
+      "entrypoint": "server/src/serverless.ts",
       "routePrefix": "/api",
       "framework": "express",
       "maxDuration": 60

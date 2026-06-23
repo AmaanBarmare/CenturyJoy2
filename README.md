@@ -304,7 +304,7 @@ Setup, once the API is deployed:
 
 > Services is an experimental, access-gated Vercel feature (our other repos already use it). If a
 > deploy can't locate the Express entry from the folder, point the backend `entrypoint` at
-> `server/api/index.ts` (which exports the app) instead.
+> `server/src/serverless.ts` (which exports the app) instead.
 
 ---
 

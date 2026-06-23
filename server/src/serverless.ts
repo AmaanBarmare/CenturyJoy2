@@ -4,6 +4,6 @@
 // background email/cleanup workers). Serverless functions are ephemeral, so
 // those interval workers do NOT run here; on Vercel they are driven by
 // Supabase pg_cron hitting protected endpoints (see README → Deploying).
-import { createApp } from '../src/app';
+import { createApp } from './app';
 
 export default createApp();
