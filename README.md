@@ -76,8 +76,8 @@ type scale and one spacing rhythm across sections. The original dark landing sta
 
 | Layer | Tech |
 |---|---|
-| Frontend | React 18 + Vite + TypeScript (`century-joy/client/`) |
-| Backend | Node 22 + Express 5 + TypeScript (`century-joy/server/`) |
+| Frontend | React 18 + Vite + TypeScript (`client/`) |
+| Backend | Node 22 + Express 5 + TypeScript (`server/`) |
 | Database | Supabase (PostgreSQL) |
 | File storage | Supabase Storage (private bucket + signed URLs) |
 | Email | Resend (sends are logged & skipped if no key) |
@@ -90,7 +90,7 @@ Design system and product rationale: see [`PRODUCT.md`](PRODUCT.md) and [`DESIGN
 ## Repository layout
 
 ```
-century-joy/
+.
 ├── client/                         React SPA — landings, login, client/studio/admin portals
 │   ├── src/
 │   │   ├── pages/
@@ -124,13 +124,13 @@ century-joy/
 
 1. Create a Supabase project. From **Project Settings → API**, copy the **Project URL**, the
    **anon** key, and the **service_role** key.
-2. **SQL Editor →** paste and run [`server/src/db/schema.sql`](century-joy/server/src/db/schema.sql).
+2. **SQL Editor →** paste and run [`server/src/db/schema.sql`](server/src/db/schema.sql).
 3. **Storage →** create a **private** bucket named `century-joy-files`.
 
 ### 2. Backend
 
 ```bash
-cd century-joy/server
+cd server
 cp .env.example .env          # fill in the values below
 npm install
 npm run seed                  # creates demo accounts (prints credentials)
@@ -145,7 +145,7 @@ npm run dev                   # http://localhost:8080
 ### 3. Frontend
 
 ```bash
-cd century-joy/client
+cd client
 cp .env.example .env          # VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_SUPABASE_STORAGE_BUCKET
 npm install
 npm run dev                   # http://localhost:5173
@@ -190,10 +190,10 @@ git worktree add ../CenturyJoy-v1 main
 git worktree add ../CenturyJoy-v2 landing-v2-experience
 
 # terminal 1
-cd ../CenturyJoy-v1/century-joy/client && npm install && npm run dev   # → :5173
+cd ../CenturyJoy-v1/client && npm install && npm run dev   # → :5173
 
 # terminal 2
-cd ../CenturyJoy-v2/century-joy/client && npm install && npm run dev   # → :5174 (auto-bumps)
+cd ../CenturyJoy-v2/client && npm install && npm run dev   # → :5174 (auto-bumps)
 ```
 
 Vite uses **5173** by default and **auto-increments** (5174, 5175, …) for each extra instance,
@@ -222,8 +222,8 @@ The repo-root [`vercel.json`](vercel.json) declares the two services:
 ```json
 {
   "experimentalServices": {
-    "frontend": { "entrypoint": "century-joy/client", "routePrefix": "/",    "framework": "vite" },
-    "backend":  { "entrypoint": "century-joy/server", "routePrefix": "/api", "framework": "express" }
+    "frontend": { "entrypoint": "client", "routePrefix": "/",    "framework": "vite" },
+    "backend":  { "entrypoint": "server", "routePrefix": "/api", "framework": "express" }
   }
 }
 ```
@@ -243,7 +243,7 @@ Create **two projects**, both importing this same repo:
 In each project's settings:
 
 1. **Root Directory:** the **repo root** (`./`) — the service `entrypoint`s are relative to it.
-   (Do *not* set it to `century-joy/client`.)
+   (Do *not* set it to `client`.)
 2. **Framework Preset:** **Services** — required whenever `experimentalServices` is present.
 3. **Production Branch** (Settings → Git): `main` for one, `landing-v2-experience` for the other.
    Vercel defaults to `main`, so the V2 project must be changed.
@@ -294,7 +294,7 @@ Setup, once the API is deployed:
 
 1. Add **`CRON_SECRET`** (any long random string, e.g. `openssl rand -hex 32`) to the Vercel
    project's env vars.
-2. In the Supabase **SQL Editor**, run [`server/src/db/cron.sql`](century-joy/server/src/db/cron.sql)
+2. In the Supabase **SQL Editor**, run [`server/src/db/cron.sql`](server/src/db/cron.sql)
    — edit the two `vault.create_secret(...)` values first: your deployment URL and the **same**
    `CRON_SECRET`. It enables `pg_cron`/`pg_net` and schedules the email queue (every minute) and
    orphan cleanup (daily).
@@ -304,7 +304,7 @@ Setup, once the API is deployed:
 
 > Services is an experimental, access-gated Vercel feature (our other repos already use it). If a
 > deploy can't locate the Express entry from the folder, point the backend `entrypoint` at
-> `century-joy/server/api/index.ts` (which exports the app) instead.
+> `server/api/index.ts` (which exports the app) instead.
 
 ---
 
