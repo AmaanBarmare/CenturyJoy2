@@ -42,6 +42,9 @@ export const env = {
 
   // ── OpenAI (support chatbot) ──
   openaiApiKey: optional('OPENAI_API_KEY'),
+
+  // ── Cron (Supabase pg_cron drives /api/internal/* with this shared secret) ──
+  cronSecret: optional('CRON_SECRET'),
 };
 
 export type Env = typeof env;

@@ -262,13 +262,24 @@ project's **Ignored Build Step** (Settings → Git), e.g. for `main`:
 `bash -c 'if [ "$VERCEL_GIT_COMMIT_REF" = "main" ]; then exit 1; else exit 0; fi'`
 (exit 1 = build, exit 0 = skip; use `landing-v2-experience` for the V2 project).
 
-### Deferred to "upgrade later"
+### Background jobs (email queue + cleanup) via Supabase cron
 
-- **Background workers** (email queue, orphan cleanup) don't run in the serverless model, so
-  they're **off in the demo** (queued emails won't send). When upgrading, drive them with
-  **Supabase `pg_cron` + `pg_net`** hitting protected endpoints — free, any frequency, no Vercel
-  Pro cron needed.
-- **Vercel Hobby is non-commercial** — fine for a demo; move to Pro for production use.
+The serverless API can't run the in-process interval workers, so they're exposed as protected
+endpoints (`POST /api/internal/email-queue`, `POST /api/internal/orphan-cleanup`, guarded by
+`CRON_SECRET`) and driven by **Supabase `pg_cron` + `pg_net`** — free, any frequency, no Vercel
+Pro cron needed. (Locally, the interval workers still run as before.)
+
+Setup, once the API is deployed:
+
+1. Add **`CRON_SECRET`** (any long random string, e.g. `openssl rand -hex 32`) to the Vercel
+   project's env vars.
+2. In the Supabase **SQL Editor**, run [`server/src/db/cron.sql`](century-joy/server/src/db/cron.sql)
+   — edit the two `vault.create_secret(...)` values first: your deployment URL and the **same**
+   `CRON_SECRET`. It enables `pg_cron`/`pg_net` and schedules the email queue (every minute) and
+   orphan cleanup (daily).
+3. Verify: `select * from cron.job_run_details order by start_time desc limit 10;`
+
+> **Vercel Hobby is non-commercial** — fine for a demo; move to Pro for production use.
 
 > Services is an experimental, access-gated Vercel feature (our other repos already use it). If a
 > deploy can't locate the Express entry from the folder, point the backend `entrypoint` at
