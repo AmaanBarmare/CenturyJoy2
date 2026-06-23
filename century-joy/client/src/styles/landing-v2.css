@@ -196,7 +196,7 @@
 .lv2 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .lv2 .hero-tags span { font-size: 12px; font-weight: 700; letter-spacing: .03em; color: var(--ink-soft); background: var(--paper-2); border: 1px solid var(--line); padding: 7px 14px; border-radius: var(--pill); }
 .lv2 .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 4.3rem); line-height: 1; letter-spacing: -.025em; max-width: 15ch; }
-.lv2 .hero h1 em { font-style: normal; color: var(--red); white-space: nowrap; }
+.lv2 .hero h1 em { display: block; font-style: normal; color: var(--red); white-space: nowrap; }
 .lv2 .hero .lead { max-width: 46ch; }
 .lv2 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 .lv2 .hero-trust { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
