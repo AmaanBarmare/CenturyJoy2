@@ -222,16 +222,22 @@ The repo-root [`vercel.json`](vercel.json) declares the two services:
 ```json
 {
   "experimentalServices": {
-    "frontend": { "entrypoint": "client", "routePrefix": "/",    "framework": "vite" },
-    "backend":  { "entrypoint": "server", "routePrefix": "/api", "framework": "express" }
+    "frontend": { "entrypoint": "client", "routePrefix": "/", "framework": "vite" },
+    "backend": { "entrypoint": "server/src/serverless.ts", "routePrefix": "/api", "framework": "express", "maxDuration": 60 }
   }
 }
 ```
 
-**Routing:** the Vite frontend is the catch-all at `/`; `/api/*` (the longer, more specific
-prefix) routes to the Express service, which **receives the full path** (`GET /api/chat` → Express
-sees `/api/chat`). The app already mounts every route under `/api/*`, so **no server code changes
-are needed**.
+The backend `entrypoint` is **[`server/src/serverless.ts`](server/src/serverless.ts)** — a thin
+adapter that `export default`s an Express **app instance** — *not* the `server/` folder and *not*
+`src/app.ts` (which only exports a `createApp()` factory). See pitfalls #3–#4 below for why.
+
+**Routing — important, and counter-intuitive:** the Vite frontend is the catch-all at `/`;
+`/api/*` (the longer, more specific prefix) routes to the Express service. **Vercel Services
+strips the `routePrefix` before invoking the backend** — so `GET /api/chat` reaches Express as
+`GET /chat`, *not* `/api/chat`. Because our app mounts every route under `/api/*`, the adapter
+**re-adds the `/api` prefix** on the way in (see pitfall #5). Locally the Vite proxy preserves
+`/api`, so `npm run dev` is unaffected.
 
 Create **two projects**, both importing this same repo:
 
@@ -283,6 +289,72 @@ Do this in **both** projects (`century-joy` and `century-joy-v2`). The per-servi
 `framework` keys in `vercel.json` (`vite`, `express`) pin each service so it isn't
 re-detected on every build.
 
+### Services deployment — every error we hit, and the permanent fix
+
+Getting this repo live on Vercel Services surfaced **six distinct failures**, in this order. Each
+is now fixed in code/config so it should not recur. If a deploy breaks, match the symptom here.
+The fixes are already committed — this section explains *why*, so nobody "simplifies" them back
+into breakage.
+
+**1 — `vercel.json` ignored / Framework auto-detected as `Vite`.**
+- *Symptom:* the "Configuration Settings… differ" banner; Services config never applied.
+- *Cause:* Vercel reads `vercel.json` **only from the project Root Directory**, and a Services
+  project must have **Framework Preset = Services**.
+- *Fix:* everything lives at the **repo root** (`client/`, `server/`, `vercel.json`), Root
+  Directory = `./`, Framework Preset = `Services`. (This is why the repo is flat — there is no
+  `century-joy/` wrapper folder.) See the dashboard checklist above.
+
+**2 — Server build fails: `TS2339: Property 'user' does not exist on type 'Request'` (×~27).**
+- *Symptom:* the Vite build passes, then the server step fails type-checking on every `req.user`.
+- *Cause:* `req.user` is added by a global type augmentation that lived in an **ambient**
+  `src/types/express.d.ts` which **nothing imported**. Vercel's `@vercel/backends` runs its own
+  type-check **rooted at the entrypoint, following imports only**, so the ambient file was never
+  in its program. (Our own `tsc -p tsconfig.json` passes because its `include` globs pick it up —
+  which is why this only fails on Vercel.)
+- *Fix:* make the augmentation a real, **imported** module —
+  [`server/src/types/express.ts`](server/src/types/express.ts) (renamed from `.d.ts`) — and
+  `import './types/express'` at the top of [`server/src/app.ts`](server/src/app.ts). Do **not**
+  turn it back into an un-imported `.d.ts`.
+
+**3 — Runtime `FUNCTION_INVOCATION_FAILED` ("This Serverless Function has crashed").**
+- *Symptom:* build is green, but every request 500s with `FUNCTION_INVOCATION_FAILED`.
+- *Cause:* Vercel auto-picked `src/app.ts` as the entrypoint, which exports a `createApp()`
+  **factory**, not an app instance — there was no handler to invoke.
+- *Fix:* pin the backend `entrypoint` in `vercel.json` to a file that `export default`s an app
+  instance (see #4 for which file).
+
+**4 — Server build fails: `TS6059: File '…' is not under rootDir '…/src'`.**
+- *Symptom:* after pinning the entrypoint to `server/api/index.ts`, the type-check fails TS6059.
+- *Cause:* `@vercel/backends` type-checks the entrypoint with the project `tsconfig.json`
+  (`rootDir: "src"`); the entry sat **outside** `src/`.
+- *Fix:* keep the serverless adapter **inside** `src/` —
+  [`server/src/serverless.ts`](server/src/serverless.ts) — and point `entrypoint` there.
+
+**5 — Every `/api/*` route returns `404 {"error":{"code":"not_found"}}`.**
+- *Symptom:* the function boots (you get the app's **own** JSON 404), but `/api/health`,
+  `/api/auth/refresh`, `/api/chat`… all 404.
+- *Cause:* **Vercel Services strips the `routePrefix` (`/api`) before invoking the backend**, so
+  Express receives `/health`, `/auth/refresh`, … — none of which match our `/api/*` mounts.
+  (Locally the Vite proxy **preserves** `/api`, which is why dev always worked.) Proof: if it
+  weren't stripped, `/api/health` would have matched and returned `{status:ok}` instead of 404.
+- *Fix:* the adapter in [`server/src/serverless.ts`](server/src/serverless.ts) re-adds `/api` to
+  `req.url` (guarded, so it's a no-op if a prefix is ever present). App routes and local dev are
+  untouched.
+
+**6 — Localhost values in prod / `Missing required environment variable` crash at boot.**
+- *Symptom:* emails link to `localhost`; or `FUNCTION_INVOCATION_FAILED` with
+  `Missing required environment variable: …` in the **Logs** tab.
+- *Cause:* `config/env.ts` validates **required** vars at import, so a missing/empty one crashes
+  the function at boot; and dev defaults (`localhost`) are wrong in production.
+- *Fix:* in each Vercel project set production values — `APP_BASE_URL` and `CLIENT_ORIGIN` to the
+  deployed `https://…` origin (**no trailing slash**), `VITE_API_URL` **blank** (same-origin), and
+  all required `SUPABASE_*` / `JWT_*`. **Env-var changes apply only to deployments built *after*
+  the change — always redeploy.** `VITE_*` are compiled into the bundle at build time.
+
+> **Smoke-test after any deploy:** `GET /api/health` → `{"status":"ok",…}` and `GET /api/health/db`
+> → `{"status":"ok","db":true}` (confirms Supabase). If `/api/health` 404s → it's #5; if it
+> `FUNCTION_INVOCATION_FAILED`s → #3/#6 (check **Logs**); if the build fails type-check → #2/#4.
+
 ### Background jobs (email queue + cleanup) via Supabase cron
 
 The serverless API can't run the in-process interval workers, so they're exposed as protected
@@ -302,9 +374,9 @@ Setup, once the API is deployed:
 
 > **Vercel Hobby is non-commercial** — fine for a demo; move to Pro for production use.
 
-> Services is an experimental, access-gated Vercel feature (our other repos already use it). If a
-> deploy can't locate the Express entry from the folder, point the backend `entrypoint` at
-> `server/src/serverless.ts` (which exports the app) instead.
+> Services is an experimental, access-gated Vercel feature. The backend `entrypoint` is already
+> pinned to `server/src/serverless.ts` (an app instance inside `src/`), so there's nothing to
+> auto-detect — see "every error we hit" above, pitfalls #3–#4, before changing it.
 
 ---
 
