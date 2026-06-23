@@ -211,6 +211,46 @@ proxies `/api` to the single backend on **:8080**.
 
 ---
 
+## Deploying to Vercel
+
+Each branch is deployed as its **own Vercel project** (Vercel is connected to the GitHub repo),
+so the two landing options get separate URLs:
+
+| Vercel project (example) | Production branch | Site |
+|---|---|---|
+| `century-joy` | `main` | Option 1 — dark landing |
+| `century-joy-v2` | `landing-v2-experience` | Option 2 — video-intro landing |
+
+Create two projects from the same repo, then in **each** project's settings:
+
+1. **Root Directory:** `century-joy/client` — the SPA lives here, not at the repo root.
+2. **Framework / Build / Output:** read from [`century-joy/client/vercel.json`](century-joy/client/vercel.json)
+   — Vite, `npm run build`, output `dist`. Its **SPA rewrite** routes every path to `index.html`
+   so deep links (`/login`, `/admin`, …) survive a refresh.
+3. **Production Branch** (Settings → Git): set Project 1 → `main`, Project 2 →
+   `landing-v2-experience`. Vercel defaults this to `main`, so the **V2 project must be changed**.
+4. **Environment Variables** (Settings → Environment Variables) — Vite inlines `VITE_*` at
+   **build time**, so set these *before* deploying (and redeploy after any change):
+
+   | Key | Needed for | Notes |
+   |---|---|---|
+   | `VITE_API_URL` | chatbot, login, uploads | Origin of the deployed API, e.g. `https://api.example.com` (no trailing `/api`). If unset, the landing still works but `/api` calls 404. |
+   | `VITE_SUPABASE_URL` | uploads | from Supabase |
+   | `VITE_SUPABASE_ANON_KEY` | uploads | from Supabase |
+   | `VITE_SUPABASE_STORAGE_BUCKET` | uploads | `century-joy-files` |
+
+### A note on the API
+
+Vercel here hosts the **static SPA only** — it does not run the Express server
+(`century-joy/server`), which has long-running workers (email queue, orphan cleanup) and
+streaming uploads that don't suit static hosting. The **landing pages need no API** and will
+deploy and display on their own. To make the **chatbot and login** work in production, host the
+API separately (Render / Railway / any Node host), point `VITE_API_URL` at its origin, and allow
+CORS from the Vercel domain (the client sends cookies for token refresh, so credentials must be
+permitted).
+
+---
+
 ## Routes
 
 Public:
