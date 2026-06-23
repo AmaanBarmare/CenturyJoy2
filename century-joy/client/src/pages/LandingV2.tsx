@@ -314,7 +314,7 @@ function Landing() {
           <div className="rv">
             <div className="tstack">
               <div className="hero-tags"><span>Architects</span><span>Interior Designers</span><span>Design Influencers</span></div>
-              <h1>Bring Your Designs <em>To Life</em> Before They Become Reality</h1>
+              <h1>Bring Your Designs <em>To Life</em> Before They <em>Become Reality</em></h1>
               <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
             </div>
             <div className="hero-cta">
