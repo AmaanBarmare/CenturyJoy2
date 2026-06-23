@@ -12,12 +12,10 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = 'cj_theme';
 
 function resolveInitial(): Theme {
-  if (typeof window === 'undefined') return 'light';
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === 'light' || stored === 'dark') return stored;
-  // No saved choice: light is the original site, so default to it unless the
-  // user's OS explicitly prefers dark.
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // V2 is a single, fixed light experience — the dashboard and login no longer
+  // expose a theme switch, so always render light. (The /v1 dark landing keeps
+  // its own fixed palette and is unaffected by this.)
+  return 'light';
 }
 
 function apply(theme: Theme) {

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BrandLogo } from '../components/Logo';
-import { ThemeToggle } from '../components/ThemeToggle';
 import { ChatWidget } from '../components/ChatWidget';
 
 const IMG = (id: string, w = 1400) =>
@@ -143,7 +142,6 @@ export default function Landing() {
           <div className="lnav-cta">
             <a className="ln-link" href={REQUEST_ACCESS}>Request access</a>
             <Link to="/login" className="btn btn-primary btn-sm">Log in</Link>
-            <ThemeToggle />
             <button className={`menu-btn ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen((o) => !o)} aria-label="Menu"><span /><span /><span /></button>
           </div>
         </div>

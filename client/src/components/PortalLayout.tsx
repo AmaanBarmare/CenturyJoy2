@@ -1,8 +1,7 @@
 import { useState, type ReactNode } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Wordmark } from './Logo';
-import { ThemeToggle } from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 import type { Role } from '../types';
 
 type IconName = 'grid' | 'plus' | 'list' | 'users' | 'doc';
@@ -49,6 +48,7 @@ interface Props {
 
 export function PortalLayout({ title, subtitle, actions, back, children }: Props) {
   const { user, logout } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('cj_nav_collapsed') === '1');
 
@@ -71,7 +71,9 @@ export function PortalLayout({ title, subtitle, actions, back, children }: Props
           {collapsed ? (
             <NavLink to={home} className="rail-mark" aria-label="Century Joy home">CJ</NavLink>
           ) : (
-            <Wordmark to={home} />
+            <Link to={home} className="brand-logo" aria-label="Century Joy home">
+              <img src={theme === 'dark' ? '/logo-light.png' : '/logo.png'} alt="Century Joy" style={{ height: 26, width: 'auto', display: 'block' }} />
+            </Link>
           )}
           <button className="collapse-btn" onClick={toggle} aria-label={collapsed ? 'Expand menu' : 'Collapse menu'} title={collapsed ? 'Expand' : 'Collapse'}>
             {collapsed ? '»' : '«'}
@@ -119,7 +121,6 @@ export function PortalLayout({ title, subtitle, actions, back, children }: Props
           </div>
           <div className="tb-right">
             {actions && <div className="row">{actions}</div>}
-            <ThemeToggle />
           </div>
         </header>
         <main className="page">{children}</main>
