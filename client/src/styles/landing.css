@@ -158,7 +158,7 @@ body.menu-open { overflow-y: hidden; }
 .pstp p { color: var(--d-text-dim); font-weight: 300; font-size: 12.5px; line-height: 1.5; margin-top: 8px; text-wrap: balance; }
 .pstp .fmt { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px; }
 .pstp .fmt span { font-size: 9.5px; color: var(--d-text); background: rgba(244,239,230,.1); padding: 3px 7px; border-radius: var(--pill); }
-@media (max-width: 900px) { .psteps { grid-template-columns: 1fr 1fr 1fr; gap: 34px 10px; } .psteps::before { display: none; } }
+@media (max-width: 900px) { .psteps { grid-template-columns: 1fr 1fr 1fr; gap: 34px 10px; } .psteps::before, .psteps::after { display: none; } }
 @media (max-width: 520px) { .psteps { grid-template-columns: 1fr 1fr; } }
 
 /* FAQ */
