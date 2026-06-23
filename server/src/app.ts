@@ -1,3 +1,4 @@
+import './types/express'; // registers the Express.Request.user type augmentation (must be imported, not just ambient, so Vercel's entrypoint-rooted type-check includes it)
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
