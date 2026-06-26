@@ -29,10 +29,10 @@ const HERO_SHOTS = [
 ];
 
 const SERVICES = [
-  { n: '01', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
-  { n: '02', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', chips: ['Residential', 'Commercial', 'Facade studies'] },
-  { n: '03', img: 'photo-1581783748410-2c5377ad72ee', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
-  { n: '04', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
+  { n: '01', tag: 'Interior', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', short: 'Photorealistic interior spaces with precise material and lighting accuracy.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
+  { n: '02', tag: 'Exterior', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', short: 'Complete architectural visualisations shown in context and surroundings.', chips: ['Residential', 'Commercial', 'Facade studies'] },
+  { n: '03', tag: 'Material', img: 'photo-1581783748410-2c5377ad72ee', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', short: 'True-to-life colour, texture and finish studies for confident choices.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
+  { n: '04', tag: 'Presentation', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', short: 'Compelling visual narratives crafted to win meetings and pitches.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
 ];
 
 const WHY = [
@@ -155,10 +155,18 @@ function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hi, setHi] = useState(0);
   const [ti, setTi] = useState(0);
+  const [svc, setSvc] = useState(0);
   const [swap, setSwap] = useState(false);
   const filmRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  // switch service tab; when triggered from the summary grid, bring the tabs/panel back into view
+  const goSvc = (i: number) => {
+    setSvc(i);
+    tabsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const reduce = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -195,19 +203,6 @@ function Landing() {
     window.addEventListener('scroll', () => { onScroll(); reveal(); }, { passive: true });
     window.addEventListener('resize', reveal);
 
-    // sticky image swap for services
-    const sis = [...document.querySelectorAll('.sticky-shot .si')];
-    const blockObs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) {
-          const i = (e.target as HTMLElement).dataset.i;
-          sis.forEach((s) => s.classList.toggle('on', (s as HTMLElement).dataset.i === i));
-        }
-      }),
-      { rootMargin: '-45% 0px -45% 0px' },
-    );
-    document.querySelectorAll('.svc-b').forEach((b) => blockObs.observe(b));
-
     // process stepper: fill 01 -> 06 sequentially when scrolled in
     const timers: ReturnType<typeof setTimeout>[] = [];
     const procObs = new IntersectionObserver(
@@ -238,7 +233,6 @@ function Landing() {
     return () => {
       window.removeEventListener('scroll', reveal);
       window.removeEventListener('resize', reveal);
-      blockObs.disconnect();
       procObs.disconnect();
       timers.forEach(clearTimeout);
     };
@@ -390,32 +384,73 @@ function Landing() {
         </div>
       </section>
 
-      {/* SERVICES - sticky split (variation 1) */}
+      {/* SERVICES - tabbed editorial showcase */}
       <section className="sec" id="services">
         <div className="wrap">
           <div className="shead rv">
             <span className="eyebrow">Services Offered</span>
             <h2>Visualising Every <span className="red">Design Possibility</span></h2>
           </div>
-          <div className="split">
-            <div className="sticky-shot" aria-hidden="true">
-              <div className="frame">
-                {SERVICES.map((s, i) => (
-                  <div key={s.n} className={`si ${i === 0 ? 'on' : ''}`} data-i={i}><img src={IMG(s.img, 1200)} alt="" /></div>
-                ))}
-              </div>
-            </div>
-            <div className="svc-list">
-              {SERVICES.map((s, i) => (
-                <div className="svc-b" data-i={i} key={s.n}>
-                  <div className="mshot"><img src={IMG(s.img, 900)} alt={s.title} /></div>
-                  <div className="num">{s.n}</div>
-                  <h3>{s.title}</h3>
-                  <p>{s.body}</p>
-                  <div className="chips">{s.chips.map((c) => <span key={c}>{c}</span>)}</div>
+
+          {/* tab nav */}
+          <div className="svc2-tabs rv" role="tablist" aria-label="Services" ref={tabsRef}>
+            {SERVICES.map((s, i) => (
+              <button
+                key={s.n}
+                type="button"
+                role="tab"
+                id={`svc2-tab-${i}`}
+                aria-selected={svc === i}
+                aria-controls={`svc2-panel-${i}`}
+                className={`svc2-tab ${svc === i ? 'on' : ''}`}
+                onClick={() => setSvc(i)}
+              >
+                <span className="svc2-tnum">{s.n}</span>{s.title}
+              </button>
+            ))}
+          </div>
+
+          {/* active panel */}
+          <div className="svc2-stage rv">
+            {SERVICES.map((s, i) => (
+              <div
+                key={s.n}
+                id={`svc2-panel-${i}`}
+                role="tabpanel"
+                aria-labelledby={`svc2-tab-${i}`}
+                hidden={svc !== i}
+                className={`svc2-panel ${svc === i ? 'on' : ''}`}
+              >
+                <div className="svc2-media">
+                  <span className="svc2-ghost" aria-hidden="true">{s.n}</span>
+                  <div className="svc2-mat"><img src={IMG(s.img, 1200)} alt={s.title} loading="lazy" /></div>
                 </div>
-              ))}
-            </div>
+                <div className="svc2-content">
+                  <p className="svc2-kicker">{s.n} — {s.tag}</p>
+                  <h3 className="svc2-name">{s.title}</h3>
+                  <div className="svc2-rule" aria-hidden="true" />
+                  <p className="svc2-desc">{s.body}</p>
+                  <p className="svc2-ideal">Ideal For</p>
+                  <div className="svc2-chips">{s.chips.map((c) => <span key={c}>{c}</span>)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* summary grid */}
+          <div className="svc2-summary rv" aria-label="All services at a glance">
+            {SERVICES.map((s, i) => (
+              <button
+                key={s.n}
+                type="button"
+                className={`svc2-sum ${svc === i ? 'on' : ''}`}
+                onClick={() => goSvc(i)}
+              >
+                <span className="svc2-snum">{s.n}</span>
+                <span className="svc2-sname">{s.title}</span>
+                <span className="svc2-sdesc">{s.short}</span>
+              </button>
+            ))}
           </div>
         </div>
       </section>
