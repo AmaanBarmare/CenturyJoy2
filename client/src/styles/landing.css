@@ -82,8 +82,8 @@ body.menu-open { overflow-y: hidden; }
 .landing .marquee { overflow: hidden; background: var(--red); padding-block: 16px; }
 .landing .mtrack { display: flex; width: max-content; white-space: nowrap; will-change: transform; animation: marq 32s linear infinite; }
 .landing .mtrack:hover { animation-play-state: paused; }
-.landing .mtrack span { font-family: var(--display); font-stretch: condensed; font-size: clamp(1.1rem, 2vw, 1.7rem); font-weight: 600; letter-spacing: .01em; color: #fff; padding: 0 26px; display: inline-flex; align-items: center; gap: 26px; }
-.landing .mtrack span::after { content: ""; width: 6px; height: 6px; background: #fff; border-radius: 50%; opacity: .8; }
+.landing .mtrack span { font-family: var(--display); font-stretch: condensed; font-size: clamp(1.1rem, 2vw, 1.7rem); font-weight: 600; letter-spacing: .01em; color: #fff; padding: 0; display: inline-flex; align-items: center; }
+.landing .mtrack span::after { content: ""; width: 6px; height: 6px; background: #fff; border-radius: 50%; opacity: .8; margin: 0 26px; }
 @keyframes marq { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .landing .mtrack { animation: none; } }
 

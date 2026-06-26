@@ -220,8 +220,8 @@
 .lv2 .marquee { overflow: hidden; background: var(--red); padding-block: 15px; }
 .lv2 .mtrack { display: flex; width: max-content; white-space: nowrap; will-change: transform; animation: lv2marq 34s linear infinite; }
 .lv2 .mtrack:hover { animation-play-state: paused; }
-.lv2 .mtrack span { font-size: clamp(1rem, 1.7vw, 1.45rem); font-weight: 700; letter-spacing: .01em; color: #fff; padding: 0 24px; display: inline-flex; align-items: center; gap: 24px; }
-.lv2 .mtrack span::after { content: ""; width: 6px; height: 6px; background: rgba(255,255,255,.85); border-radius: 50%; }
+.lv2 .mtrack span { font-size: clamp(1rem, 1.7vw, 1.45rem); font-weight: 700; letter-spacing: .01em; color: #fff; padding: 0; display: inline-flex; align-items: center; }
+.lv2 .mtrack span::after { content: ""; width: 6px; height: 6px; background: rgba(255,255,255,.85); border-radius: 50%; margin: 0 24px; }
 @keyframes lv2marq { to { transform: translateX(-50%); } }
 
 /* ============================================================

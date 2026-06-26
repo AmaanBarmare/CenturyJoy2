@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Century Ply 3D Services — Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ─── RESET + TOKENS ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --ivory:      #F8F4EF;
+  --cream:      #EDE8DF;
+  --ink:        #0E0C0A;
+  --ink-mid:    #2A2622;
+  --red:        #C8102E;
+  --warm-gray:  #7A756E;
+  --border:     rgba(14,12,10,0.12);
+  --mat-bg:     #EFE9E0;
+}
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--ivory);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 52px;
+  height: 64px;
+  background: rgba(248,244,239,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.nav-logo .sep { color: var(--red); margin: 0 10px; font-weight: 300; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a.active {
+  color: var(--ink);
+  border-bottom: 1.5px solid var(--red);
+  padding-bottom: 2px;
+}
+
+/* ─── SERVICES HEADER ─── */
+.svc-header {
+  padding: 128px 52px 72px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.svc-ghost {
+  position: absolute;
+  right: -0.06em;
+  top: -0.18em;
+  font-family: 'Bodoni Moda', serif;
+  font-weight: 900;
+  font-size: clamp(240px, 35vw, 500px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(14,12,10,0.05);
+  user-select: none;
+  pointer-events: none;
+}
+.svc-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 36px;
+}
+.svc-label::after {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: var(--red);
+}
+.svc-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(52px, 7.5vw, 112px);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  max-width: 740px;
+}
+
+/* ─── TAB NAVIGATION ─── */
+.tab-nav {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+  background: var(--ivory);
+  position: sticky;
+  top: 64px;
+  z-index: 50;
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex: 0 0 auto;
+  padding: 22px 44px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active {
+  color: var(--ink);
+  border-bottom-color: var(--red);
+}
+.tab-num {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--red);
+  letter-spacing: 0.1em;
+}
+
+/* ─── TAB PANELS ─── */
+.tab-panels { position: relative; min-height: 560px; }
+
+.tab-panel {
+  display: none;
+  grid-template-columns: 48fr 52fr;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.tab-panel.active {
+  display: grid;
+}
+.tab-panel.visible {
+  opacity: 1;
+}
+
+/* Image column */
+.panel-image-col {
+  position: relative;
+  overflow: hidden;
+  min-height: 560px;
+}
+.panel-mat {
+  position: absolute;
+  inset: 36px 28px 36px 52px;
+  border: 1px solid var(--border);
+  padding: 8px;
+  background: var(--mat-bg);
+}
+.panel-mat img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Service number ghost behind image */
+.panel-ghost-num {
+  position: absolute;
+  bottom: 10px;
+  left: 52px;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 160px;
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(14,12,10,0.07);
+  user-select: none;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content column */
+.panel-content-col {
+  padding: 64px 52px 64px 56px;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.panel-svc-num {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 18px;
+}
+.panel-svc-name {
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(38px, 4.5vw, 66px);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  margin-bottom: 36px;
+}
+.panel-rule {
+  width: 40px;
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 36px;
+}
+.panel-desc {
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.85;
+  color: var(--ink-mid);
+  max-width: 48ch;
+  margin-bottom: 44px;
+}
+.ideal-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 16px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--ink-mid);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s;
+}
+.chip:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ─── SUMMARY GRID ─── */
+.summary {
+  border-top: 1px solid var(--border);
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.summary-item {
+  padding: 52px 36px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.summary-item:last-child { border-right: none; }
+.summary-item:hover { background: rgba(248,244,239,0.6); }
+.summary-item.is-active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--red);
+}
+.summary-num {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+.summary-name {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+.summary-desc {
+  font-family: 'Jost', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--warm-gray);
+}
+
+/* ─── CTA STRIP ─── */
+.cta-strip {
+  padding: 80px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  border-top: 1px solid var(--border);
+}
+.cta-headline {
+  font-family: 'Bodoni Moda', serif;
+  font-size: clamp(30px, 3.5vw, 52px);
+  font-weight: 400;
+  line-height: 1.2;
+  max-width: 440px;
+}
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ivory);
+  background: var(--ink);
+  padding: 18px 36px;
+  text-decoration: none;
+  transition: background 0.25s;
+}
+.cta-btn:hover { background: var(--red); }
+.cta-btn svg { transition: transform 0.2s; }
+.cta-btn:hover svg { transform: translateX(4px); }
+
+/* ─── FOOTER ─── */
+.footer {
+  background: var(--ink);
+  color: rgba(248,244,239,0.35);
+  padding: 28px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(248,244,239,0.07);
+}
+.footer-logo {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(248,244,239,0.7);
+}
+.footer-copy {
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .nav { padding: 0 24px; }
+  .svc-header { padding: 110px 24px 56px; }
+  .tab-btn { padding: 18px 28px; }
+  .tab-panel { grid-template-columns: 1fr; }
+  .tab-panel.active { display: flex; flex-direction: column; }
+  .panel-image-col { min-height: 320px; }
+  .panel-mat { inset: 24px; }
+  .panel-ghost-num { display: none; }
+  .panel-content-col { padding: 44px 24px; border-left: none; border-top: 1px solid var(--border); }
+  .summary { grid-template-columns: 1fr 1fr; }
+  .summary-item { padding: 36px 24px; }
+  .cta-strip { flex-direction: column; align-items: flex-start; padding: 52px 24px; }
+  .footer { flex-direction: column; gap: 10px; padding: 24px; }
+}
+@media (max-width: 520px) {
+  .summary { grid-template-columns: 1fr; }
+  .summary-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .nav-links { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tab-panel { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav" role="navigation" aria-label="Main">
+  <div class="nav-logo">Century Ply <span class="sep">|</span> 3D Services</div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#" class="active" aria-current="page">Services</a>
+    <a href="#">Gallery</a>
+    <a href="#">Contact</a>
+  </div>
+</nav>
+
+<!-- ── SERVICES HEADER ── -->
+<section class="svc-header">
+  <div class="svc-ghost" aria-hidden="true">03</div>
+  <p class="svc-label">Services — 03</p>
+  <h1 class="svc-title">Visualising Every Design Possibility</h1>
+</section>
+
+<!-- ── TAB NAVIGATION ── -->
+<nav class="tab-nav" role="tablist" aria-label="Services">
+  <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="panel-1" data-panel="panel-1">
+    <span class="tab-num">01</span>Interior Rendering
+  </button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-2" data-panel="panel-2">
+    <span class="tab-num">02</span>Exterior Rendering
+  </button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-3" data-panel="panel-3">
+    <span class="tab-num">03</span>Material &amp; Finish
+  </button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-4" data-panel="panel-4">
+    <span class="tab-num">04</span>Presentation Visuals
+  </button>
+</nav>
+
+<!-- ── TAB PANELS ── -->
+<div class="tab-panels">
+
+  <!-- Panel 1 -->
+  <div class="tab-panel active visible" id="panel-1" role="tabpanel">
+    <div class="panel-image-col">
+      <div class="panel-ghost-num" aria-hidden="true">01</div>
+      <div class="panel-mat">
+        <img
+          src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1000&q=80"
+          alt="Interior rendering sample"
+          loading="eager"
+        />
+      </div>
+    </div>
+    <div class="panel-content-col">
+      <p class="panel-svc-num">01 — Interior</p>
+      <h2 class="panel-svc-name">Interior<br/>Rendering</h2>
+      <div class="panel-rule" aria-hidden="true"></div>
+      <p class="panel-desc">Create photorealistic visualisations of interior spaces, showcasing furniture, materials, lighting and spatial arrangements with exceptional clarity.</p>
+      <p class="ideal-label">Ideal For</p>
+      <div class="chips" aria-label="Ideal use cases">
+        <span class="chip">Residential Projects</span>
+        <span class="chip">Commercial Interiors</span>
+        <span class="chip">Hospitality Design</span>
+        <span class="chip">Retail Space Planning</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 2 -->
+  <div class="tab-panel" id="panel-2" role="tabpanel">
+    <div class="panel-image-col">
+      <div class="panel-ghost-num" aria-hidden="true">02</div>
+      <div class="panel-mat">
+        <img
+          src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1000&q=80"
+          alt="Exterior rendering sample"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <div class="panel-content-col">
+      <p class="panel-svc-num">02 — Exterior</p>
+      <h2 class="panel-svc-name">Exterior<br/>Rendering</h2>
+      <div class="panel-rule" aria-hidden="true"></div>
+      <p class="panel-desc">Visualise the complete architectural design of buildings and landscapes, presenting how the final structure will appear in its surroundings.</p>
+      <p class="ideal-label">Ideal For</p>
+      <div class="chips">
+        <span class="chip">Architectural Firms</span>
+        <span class="chip">Real Estate Developers</span>
+        <span class="chip">Urban Planning Projects</span>
+        <span class="chip">Landscape Design</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 3 -->
+  <div class="tab-panel" id="panel-3" role="tabpanel">
+    <div class="panel-image-col">
+      <div class="panel-ghost-num" aria-hidden="true">03</div>
+      <div class="panel-mat">
+        <img
+          src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1000&q=80"
+          alt="Material and finish visualisation sample"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <div class="panel-content-col">
+      <p class="panel-svc-num">03 — Material</p>
+      <h2 class="panel-svc-name">Material &amp;<br/>Finish Visualisation</h2>
+      <div class="panel-rule" aria-hidden="true"></div>
+      <p class="panel-desc">See exactly how different materials, textures and finishes will look in the actual space before committing to any design decisions.</p>
+      <p class="ideal-label">Ideal For</p>
+      <div class="chips">
+        <span class="chip">Material Selection</span>
+        <span class="chip">Client Design Reviews</span>
+        <span class="chip">Product Specification</span>
+        <span class="chip">Design Iteration</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 4 -->
+  <div class="tab-panel" id="panel-4" role="tabpanel">
+    <div class="panel-image-col">
+      <div class="panel-ghost-num" aria-hidden="true">04</div>
+      <div class="panel-mat">
+        <img
+          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1000&q=80"
+          alt="Presentation visuals sample"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <div class="panel-content-col">
+      <p class="panel-svc-num">04 — Presentation</p>
+      <h2 class="panel-svc-name">Presentation<br/>Visuals</h2>
+      <div class="panel-rule" aria-hidden="true"></div>
+      <p class="panel-desc">Create compelling visual narratives that communicate design intent clearly, making client presentations more engaging and decision-making easier.</p>
+      <p class="ideal-label">Ideal For</p>
+      <div class="chips">
+        <span class="chip">Client Pitch Decks</span>
+        <span class="chip">Competition Submissions</span>
+        <span class="chip">Portfolio Projects</span>
+        <span class="chip">Marketing Materials</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /tab-panels -->
+
+<!-- ── SUMMARY GRID ── -->
+<div class="summary" role="list" aria-label="All services at a glance">
+
+  <div class="summary-item is-active" role="listitem" data-target="panel-1">
+    <p class="summary-num">01</p>
+    <h3 class="summary-name">Interior Rendering</h3>
+    <p class="summary-desc">Photorealistic interior spaces with precise material and lighting accuracy.</p>
+  </div>
+
+  <div class="summary-item" role="listitem" data-target="panel-2">
+    <p class="summary-num">02</p>
+    <h3 class="summary-name">Exterior Rendering</h3>
+    <p class="summary-desc">Complete architectural visualisations in context and surroundings.</p>
+  </div>
+
+  <div class="summary-item" role="listitem" data-target="panel-3">
+    <p class="summary-num">03</p>
+    <h3 class="summary-name">Material &amp; Finish</h3>
+    <p class="summary-desc">Pre-decision material and texture visualisation for confident choices.</p>
+  </div>
+
+  <div class="summary-item" role="listitem" data-target="panel-4">
+    <p class="summary-num">04</p>
+    <h3 class="summary-name">Presentation Visuals</h3>
+    <p class="summary-desc">Compelling visual narratives for client presentations and pitches.</p>
+  </div>
+
+</div>
+
+<!-- ── CTA STRIP ── -->
+<section class="cta-strip">
+  <h2 class="cta-headline">Let's visualise your next project.</h2>
+  <a href="#" class="cta-btn">
+    Get in Touch
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <span class="footer-logo">Century Ply <span style="color:var(--red);margin:0 8px">|</span> 3D Services</span>
+  <span class="footer-copy">© 2025 Century Plyboards (India) Ltd. All rights reserved.</span>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const tabBtns    = document.querySelectorAll('.tab-btn');
+  const panels     = document.querySelectorAll('.tab-panel');
+  const summaryItems = document.querySelectorAll('.summary-item');
+
+  function activatePanel(targetId) {
+    // ── find current active panel and fade it out
+    const current = document.querySelector('.tab-panel.active');
+    if (current && current.id === targetId) return;
+
+    if (current) {
+      current.classList.remove('visible');
+      setTimeout(() => {
+        current.classList.remove('active');
+        showPanel(targetId);
+      }, 280);
+    } else {
+      showPanel(targetId);
+    }
+  }
+
+  function showPanel(targetId) {
+    const next = document.getElementById(targetId);
+    if (!next) return;
+    next.classList.add('active');
+    // force reflow so transition fires
+    void next.offsetWidth;
+    next.classList.add('visible');
+  }
+
+  // Tab buttons
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.panel;
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      // sync summary
+      summaryItems.forEach(s => {
+        s.classList.toggle('is-active', s.dataset.target === target);
+      });
+
+      activatePanel(target);
+    });
+  });
+
+  // Summary items also trigger tabs
+  summaryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.dataset.target;
+      tabBtns.forEach(b => {
+        const match = b.dataset.panel === target;
+        b.classList.toggle('active', match);
+        b.setAttribute('aria-selected', match ? 'true' : 'false');
+      });
+      summaryItems.forEach(s => {
+        s.classList.toggle('is-active', s.dataset.target === target);
+      });
+      activatePanel(target);
+
+      // Scroll up to the tabs so user sees the panel
+      document.querySelector('.tab-nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
