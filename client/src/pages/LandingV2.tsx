@@ -115,7 +115,8 @@ function Gate({ onEnter }: { onEnter: () => void }) {
 
   return (
     <div className={`gate ${leaving ? 'leaving' : ''}`}>
-      <video className="gate__video" autoPlay muted loop playsInline preload="auto">
+      <video className="gate__video" autoPlay muted loop playsInline preload="auto" poster="/videos/intro-poster.jpg">
+        <source src="/videos/intro.webm" type="video/webm" />
         <source src="/videos/intro.mp4" type="video/mp4" />
       </video>
       <div className="gate__scrim" />
@@ -124,7 +125,6 @@ function Gate({ onEnter }: { onEnter: () => void }) {
         <div className="gate__top-in">
           <BrandLogo light height={30} />
           <nav className="gate__nav">
-            <a className="btn btn-ghost btn-sm" href={REQUEST_ACCESS}>Request access</a>
             <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
           </nav>
         </div>
@@ -286,7 +286,6 @@ function Landing() {
           <div className="nav-links">
             {NAV.map((n) => <a key={n.id} className="txt" href={`#${n.id}`}>{n.label}</a>)}
             <div className="nav-cta">
-              <a className="btn btn-ghost btn-sm" href={REQUEST_ACCESS}>Request access</a>
               <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
             </div>
             <button className="menu-btn" aria-label="Open menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
@@ -298,7 +297,6 @@ function Landing() {
       <nav className={`lv2-drawer ${menuOpen ? 'open' : ''}`}>
         <button className="x" aria-label="Close menu" onClick={() => setMenuOpen(false)}>✕</button>
         {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)}>{n.label}</a>)}
-        <a className="btn btn-ghost" href={REQUEST_ACCESS} onClick={() => setMenuOpen(false)}>Request access</a>
         <Link to="/login" className="btn btn-red" onClick={() => setMenuOpen(false)}>Log in <span className="ar">→</span></Link>
       </nav>
 
@@ -371,7 +369,6 @@ function Landing() {
               <div><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
               <div><div className="n">2</div><div className="l">Free revisions</div></div>
             </div>
-            <a href={REQUEST_ACCESS} className="btn btn-red btn-sm">Request access <span className="ar">→</span></a>
           </div>
           <div className="why2-list rv d1">
             {WHY.map((w) => (

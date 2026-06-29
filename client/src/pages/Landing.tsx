@@ -140,7 +140,6 @@ export default function Landing() {
         <div className="lwrap lnav-in">
           <BrandLogo light height={30} />
           <div className="lnav-cta">
-            <a className="ln-link" href={REQUEST_ACCESS}>Request access</a>
             <Link to="/login" className="btn btn-primary btn-sm">Log in</Link>
             <button className={`menu-btn ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen((o) => !o)} aria-label="Menu"><span /><span /><span /></button>
           </div>
@@ -168,7 +167,6 @@ export default function Landing() {
             </div>
             <div className="cta-row">
               <Link to="/login" className="btn btn-primary">Log in <span className="ar">→</span></Link>
-              <a href={REQUEST_ACCESS} className="btn btn-line">Request access</a>
             </div>
           </div>
         </div>

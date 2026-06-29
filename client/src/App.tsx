@@ -1,22 +1,27 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
 import { useAuth } from './context/AuthContext';
 import { FullScreenLoading } from './components/Loading';
 import type { Role } from './types';
 
-import Landing from './pages/Landing';
+// Eager: the public entry points most visitors hit first.
 import LandingV2 from './pages/LandingV2';
 import Login from './pages/Login';
-import SetPassword from './pages/SetPassword';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import ProjectDetail from './pages/ProjectDetail';
-import ClientDashboard from './pages/client/Dashboard';
-import NewProject from './pages/client/NewProject';
-import StudioDashboard from './pages/studio/Dashboard';
-import AdminProjects from './pages/admin/Projects';
-import AdminUsers from './pages/admin/Users';
-import AdminAudit from './pages/admin/AuditLog';
+
+// Lazy: split secondary + authenticated routes into their own chunks so the
+// landing page never downloads the portal/admin code on first load.
+const Landing = lazy(() => import('./pages/Landing'));
+const SetPassword = lazy(() => import('./pages/SetPassword'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const ClientDashboard = lazy(() => import('./pages/client/Dashboard'));
+const NewProject = lazy(() => import('./pages/client/NewProject'));
+const StudioDashboard = lazy(() => import('./pages/studio/Dashboard'));
+const AdminProjects = lazy(() => import('./pages/admin/Projects'));
+const AdminUsers = lazy(() => import('./pages/admin/Users'));
+const AdminAudit = lazy(() => import('./pages/admin/AuditLog'));
 
 function homeFor(role: Role) {
   return role === 'client' ? '/client' : role === 'studio' ? '/studio' : '/admin';
@@ -41,6 +46,7 @@ function RoleRedirect() {
 
 export default function App() {
   return (
+    <Suspense fallback={<FullScreenLoading />}>
     <Routes>
       <Route path="/" element={<LandingV2 />} />
       <Route path="/v1" element={<Landing />} />
@@ -65,5 +71,6 @@ export default function App() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </Suspense>
   );
 }
