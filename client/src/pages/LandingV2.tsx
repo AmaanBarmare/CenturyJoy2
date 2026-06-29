@@ -19,7 +19,7 @@ const NAV = [
   { id: 'contact', label: 'Contact' },
 ];
 
-const MARQUEE = ['Architects', 'Interior Designers', 'Design Influencers', 'Photorealistic Renders', 'Virtual Walkthroughs', 'Material Visualisation'];
+const MARQUEE = ['Joy', 'Imagine', 'Inspire', 'Create', 'Experience', 'Visualise', 'Transform', 'Discover', 'Envision', 'Realise', 'Manifest', 'Bring Alive', 'Reveal', 'Illuminate', 'Celebrate'];
 
 const HERO_SHOTS = [
   { id: 'photo-1564078516393-cf04bd966897', cap: 'Residential · Living Room' },
@@ -37,7 +37,7 @@ const SERVICES = [
 
 const WHY = [
   { ic: 'spark', t: 'Photorealistic Quality', p: 'A dedicated studio team turns your brief into visuals detailed enough that clients mistake them for photographs.' },
-  { ic: 'bolt', t: 'Built for Speed', p: 'Most first drafts land within 48 hours, so a tight deadline never costs you the room.' },
+  // removed — retrieve later: { ic: 'bolt', t: 'Built for Speed', p: 'Most first drafts land within 48 hours, so a tight deadline never costs you the room.' },
   { ic: 'revise', t: 'Two Free Revisions', p: 'Every project includes two revision rounds at no extra cost, tracked on your dashboard.' },
   { ic: 'shield', t: 'Confidential & Secure', p: 'Your drawings stay private. Protected storage and signed links guard every file you share.' },
   { ic: 'layers', t: 'True Material Accuracy', p: 'See exact Century Ply colours, textures and finishes rendered faithfully before anything is built.' },
@@ -51,6 +51,7 @@ const GALLERY = [
   { cat: 'Interiors', img: 'photo-1599696848652-f0ff23bc911f', t: 'Interiors', s: 'Materials · Finishes · Styling' },
 ];
 
+/* changed from:
 const PROCESS = [
   { n: '01', t: 'Register & Access', p: 'Receive your invite and sign in to the Century Joy portal.' },
   { n: '02', t: 'Submit Request', p: 'Share project details, requirements and expected outcomes.' },
@@ -59,13 +60,30 @@ const PROCESS = [
   { n: '05', t: 'Review & Revise', p: 'Review the draft and request up to two revisions.' },
   { n: '06', t: 'Final Delivery', p: 'Download your completed high-resolution renders.' },
 ];
+*/
+const PROCESS = [
+  { n: '01', t: 'Register & Begin Your Journey', p: 'Create your Century Joy 3D Services account.' },
+  { n: '02', t: 'Share Your Vision', p: 'Tell us about your project, design intent and expectations.' },
+  { n: '03', t: 'Upload Your Design Inputs', p: 'Upload drawings, plans and reference images.', fmt: ['.DWG', 'PDF', 'JPG'] },
+  { n: '04', t: 'We Create the Experience', p: 'Our visualisation experts transform your design inputs into realistic renders.' },
+  { n: '05', t: 'Review & Refine', p: 'Collaborate with our team, share feedback and perfect every detail.' },
+  { n: '06', t: 'Receive Your Final Visuals', p: 'Download high-resolution renders ready for presentations and client discussions.' },
+];
 
+/* changed from:
 const TESTIMONIALS = [
   { q: 'The renders closed the project in a single client meeting. They genuinely could not believe it was not a photograph.', nm: 'Ananya Rao', rl: 'Principal Architect · Studio Verge', i: 'AR' },
   { q: 'Turnaround was the real surprise. First drafts in two days, revisions handled overnight. It has changed how we pitch.', nm: 'Rohan Mehta', rl: 'Interior Designer · Mehta & Co.', i: 'RM' },
   { q: 'Material accuracy is unmatched. Clients finally see the exact Century Ply finish before a single board is cut.', nm: 'Priya Nair', rl: 'Design Lead · Aether Interiors', i: 'PN' },
   { q: 'We brief once and get back visuals that feel finished. The lighting and material detail are genuinely studio quality.', nm: 'Kabir Shah', rl: 'Architect · Form & Field', i: 'KS' },
   { q: 'Clients approve faster when they can step inside the design. Century Joy has shortened our sign-off cycle dramatically.', nm: 'Meera Iyer', rl: 'Interior Designer · Habitat Studio', i: 'MI' },
+];
+*/
+const TESTIMONIALS = [
+  { q: 'I am writing to express my sincere appreciation for Century Joy. I had the pleasure of working with them on 3D visualisation service, and I was thoroughly impressed by their professionalism, dedication, and expertise.', nm: 'Ar. Ajay Nayak', rl: 'EdEn, Mumbai', i: 'AN' },
+  { q: 'What stood out about Century Joy was how quickly they turned around high-quality drawings. In a profession where every hour counts, their speed and clarity made a real difference to our delivery timelines.', nm: 'Er. Priyan B', rl: 'Priyan & Associates, Kochi', i: 'PB' },
+  { q: 'It’s rare to find a service partner who speaks the language of interior designers. Century Joy’s team understands nuances, spatial intent, and detailing—making the whole process seamless.', nm: 'Ajay Nayak', rl: 'Partner, EdEn, Mumbai', i: 'AN' },
+  { q: 'It’s refreshing to see a design service model like this that supports architects like us in getting the work done.', nm: 'Kushmita Jain', rl: 'K&Co. Design Initiatives, Bangalore', i: 'KJ' },
 ];
 
 const BLOGS = [
@@ -74,6 +92,7 @@ const BLOGS = [
   { cat: 'Materials', img: 'photo-1581783748410-2c5377ad72ee', t: 'Choosing the Right Finish: Reading Light in 3D', p: 'How textures and finishes behave under different lighting, and what that means for your specification.', read: '5 min read' },
 ];
 
+/* changed from:
 const FAQ: [string, string][] = [
   ['What projects can be submitted?', 'Residential, commercial, hospitality and architectural visualisation projects are all welcome.'],
   ['What files can I upload?', 'CAD drawings (.dwg), PDFs, and reference images (.jpg) covering your plans, elevations and any moodboards.'],
@@ -81,6 +100,16 @@ const FAQ: [string, string][] = [
   ['Can I request modifications?', 'Yes. Each project includes up to two revision rounds at no extra cost, tracked on your dashboard.'],
   ['How do I get access?', 'Century Joy is invite-only for Century Ply partners. Request access and our team will set up your account, or simply sign in if you already have one.'],
   ['How do I track my request?', 'Every status update is visible on your portal, with email notifications at each milestone from brief to final delivery.'],
+];
+*/
+const FAQ: [string, string][] = [
+  ['Can you create renders from conceptual designs or sketches?', 'Yes. We can transform initial concepts, sketches, and design ideas into detailed visual representations, helping designers communicate their vision during early stages of a project.'],
+  ['What information do you need to create a render?', 'We work with architectural drawings, CAD files, sketches, mood boards, material references, furniture specifications, and design concepts provided by the architect or designer.'],
+  ['Can you match specific materials, finishes, and furniture?', 'Yes. We can incorporate finishes, fabrics, textures, furniture pieces, and design elements to accurately reflect the designer’s vision.'],
+  ['How long does it take to complete an interior visualisation project?', 'The timeline depends on the complexity of the space, number of views required, and level of detailing. Typically, a project can range from a few days to a couple of weeks.'],
+  ['How many revisions are included?', 'Two levels of revisions, provided the design should not be modified by over 40% are included per render. We collaborate closely with designers through the process and incorporate feedback at key stages to ensure the final render aligns with the intended design vision.'],
+  ['Do you provide only final renders or complete visualisation support?', 'We provide end-to-end visualisation support, including scene development, material application, lighting setup, camera composition, and final photorealistic rendering.'],
+  ['Can you create renders for presentations and client approvals?', 'Yes. Our renders are designed to help architects and interior designers create compelling presentations, improve client understanding, and support faster design decisions.'],
 ];
 
 /* ── line icons (single stroke family) ─────────────────── */
@@ -124,9 +153,10 @@ function Gate({ onEnter }: { onEnter: () => void }) {
       </div>
 
       <div className="gate__mid">
-        <div className="gate__kicker">Visualisation Studio</div>
-        <h1 className="gate__title">Step Inside Your Design<br /><em>Before It Is Built</em></h1>
-        <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers. Your vision, brought to life frame by frame.</p>
+        {/* deleted — retrieve later: <div className="gate__kicker">Visualisation Studio</div> */}
+        {/* changed from: <h1 className="gate__title">Step Inside Your Design<br /><em>Before It Is Built</em></h1> */}
+        <h1 className="gate__title"><em>3D Visualisation Services</em><span className="gate__title-sub">Transform Imagination Into<br />Immersive Experiences</span></h1>
+        {/* deleted — retrieve later: <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers. Your vision, brought to life frame by frame.</p> */}
       </div>
 
       <div className="gate__bottom">
@@ -134,7 +164,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
           Enter the Experience
           <span className="ar">→</span>
         </button>
-        <div className="gate__cue"><span className="line" /><span className="hint">Click to explore</span></div>
+        {/* deleted — retrieve later: <div className="gate__cue"><span className="line" /><span className="hint">Click to explore</span></div> */}
       </div>
     </div>
   );
@@ -371,9 +401,12 @@ function Landing() {
           <div className="rv">
             <div className="tstack">
               <div className="hero-tags"><span>Architects</span><span>Interior Designers</span><span>Design Influencers</span></div>
-              <h1>Bring Your Designs <em>To Life</em> Before They <em>Become Reality</em></h1>
-              <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p>
+              {/* changed from: <h1>Bring Your Designs <em>To Life</em> Before They <em>Become Reality</em></h1> */}
+              <h1>Bringing<br />Design Visions<br />to Life with <em>Joy</em></h1>
+              {/* changed from: <p className="lead">Century Joy is a dedicated visualisation service that helps architects and interior designers present their ideas with greater clarity, impact and confidence.</p> */}
+              <p className="lead">Century Joy presents 3D Visualisation Services to assist architects and interior designers transform concepts, drawings and design intent into stunningly realistic visual experiences that inspire clients and accelerate decision-making.</p>
             </div>
+            {/* removed — retrieve later:
             <div className="hero-cta">
               <a href="#about" className="btn btn-red btn-sm">Discover more <span className="ar">→</span></a>
             </div>
@@ -382,6 +415,7 @@ function Landing() {
               <div className="ht"><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
               <div className="ht"><div className="n">2</div><div className="l">Free revisions</div></div>
             </div>
+            */}
           </div>
 
           <div className="hero-shot rv d1">
@@ -412,9 +446,12 @@ function Landing() {
         <div className="wrap about-grid">
           <div className="tstack rv">
             <span className="eyebrow">About Century Joy</span>
-            <h2>Where Design Meets <span className="red">Visual Storytelling</span></h2>
-            <p className="lead">Great designs deserve to be experienced, not just explained.</p>
-            <p>An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals that drive faster decisions and stronger client engagement.</p>
+            {/* changed from: <h2>Where Design Meets <span className="red">Visual Storytelling</span></h2> */}
+            <h2>Turning Concepts Into Complete <span className="red">Visual Experiences</span></h2>
+            {/* changed from: <p className="lead">Great designs deserve to be experienced, not just explained.</p> */}
+            <p className="lead">A drawing communicates dimensions.<br />A visual experience communicates emotion.</p>
+            {/* changed from: <p>An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals that drive faster decisions and stronger client engagement.</p> */}
+            <p>From the first concept to the final detail, we help transform design intent into compelling visuals that allow clients to see, understand and believe in the proposed space.</p>
           </div>
           <div className="about-img rv d1"><img src={IMG('photo-1599696848652-f0ff23bc911f', 1100)} alt="Photoreal interior visualisation" /></div>
         </div>
@@ -429,11 +466,13 @@ function Landing() {
               <h2>Why Studios <span className="red">Choose Us</span></h2>
               <p className="lead">Everything a design practice needs to present with confidence: quality, speed and trust, in one place.</p>
             </div>
+            {/* removed — retrieve later:
             <div className="why2-stats">
               <div><div className="n">500+</div><div className="l">Projects rendered</div></div>
               <div><div className="n">48 hrs</div><div className="l">Typical first draft</div></div>
               <div><div className="n">2</div><div className="l">Free revisions</div></div>
             </div>
+            */}
           </div>
           <div className="why2-list rv d1">
             {WHY.map((w) => (
@@ -547,7 +586,8 @@ function Landing() {
         <div className="wrap">
           <div className="shead center rv">
             <span className="eyebrow">How It Works</span>
-            <h2>A Seamless Journey from <span className="red">Concept to Creation</span></h2>
+            {/* changed from: <h2>A Seamless Journey from <span className="red">Concept to Creation</span></h2> */}
+            <h2>A Simple Journey.<br />A <span className="red">Powerful Outcome.</span></h2>
           </div>
           <div className="psteps rv">
             {PROCESS.map((s) => (

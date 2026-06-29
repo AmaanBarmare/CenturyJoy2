@@ -138,7 +138,12 @@
 
 .gate__mid { flex: 1; display: grid; place-content: center; text-align: center; padding: 0 var(--gut); gap: 22px; }
 .gate__kicker { font-size: 12px; font-weight: 700; letter-spacing: .42em; text-transform: uppercase; color: rgba(255,255,255,.7); }
-.gate__title { font-family: var(--font); font-weight: 700; letter-spacing: -.02em; line-height: 1.02; font-size: clamp(2.4rem, 6.6vw, 5.4rem); max-width: 16ch; margin-inline: auto; color: #fff; }
+.gate__title { font-family: var(--font); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; font-size: clamp(1.9rem, 4.4vw, 3.3rem); margin-inline: auto; margin-top: clamp(120px, 22vh, 300px); color: #fff; white-space: nowrap; display: flex; flex-direction: column; align-items: center; }
+/* red headline grouped above, white two-line block separated below */
+.gate__title em { display: block; margin-bottom: .5em; }
+.gate__title-sub { display: block; font-size: .86em; }
+/* phones: let the long lines wrap instead of overflowing the screen */
+@media (max-width: 560px) { .gate__title { white-space: normal; max-width: 16ch; font-size: clamp(1.55rem, 7.2vw, 2.2rem); } }
 .gate__title em { font-style: normal; color: var(--red); }
 .gate__sub { font-size: clamp(15px, 1.4vw, 18px); color: rgba(255,255,255,.82); max-width: 52ch; margin-inline: auto; line-height: 1.6; }
 
@@ -195,8 +200,10 @@
 .lv2 .hero-grid { display: grid; grid-template-columns: 1fr 1.08fr; gap: clamp(34px, 5vw, 72px); align-items: start; }
 .lv2 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .lv2 .hero-tags span { font-size: 12px; font-weight: 700; letter-spacing: .03em; color: var(--ink-soft); background: var(--paper-2); border: 1px solid var(--line); padding: 7px 14px; border-radius: var(--pill); }
-.lv2 .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 4.3rem); line-height: 1; letter-spacing: -.025em; max-width: 15ch; }
-.lv2 .hero h1 em { display: block; font-style: normal; color: var(--red); white-space: nowrap; }
+.lv2 .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.04; letter-spacing: -.025em; max-width: none; white-space: nowrap; }
+.lv2 .hero h1 em { display: inline; font-style: normal; color: var(--red); white-space: nowrap; }
+/* nudge the hero text column down a little */
+.lv2 .hero-grid > .rv:first-child { margin-top: clamp(28px, 5vw, 72px); }
 .lv2 .hero .lead { max-width: 46ch; }
 .lv2 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 .lv2 .hero-trust { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); }
@@ -583,7 +590,7 @@
 .gp-card .gp-play {
   position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; pointer-events: none;
 }
-.gp-card .gp-play svg { width: 26px; height: 26px; fill: #fff; margin-left: 3px; }
+.gp-card .gp-play svg { position: relative; z-index: 1; width: 26px; height: 26px; fill: #fff; margin-left: 3px; }
 .gp-card .gp-play::before {
   content: ""; position: absolute; width: 62px; height: 62px; border-radius: 50%;
   background: var(--red); box-shadow: 0 12px 30px -10px rgba(184,31,37,.7); transition: transform .25s var(--ease);
