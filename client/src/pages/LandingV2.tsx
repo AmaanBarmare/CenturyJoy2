@@ -29,10 +29,10 @@ const HERO_SHOTS = [
 ];
 
 const SERVICES = [
-  { n: '01', tag: 'Interior', img: 'photo-1613545325278-f24b0cae1224', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', short: 'Photorealistic interior spaces with precise material and lighting accuracy.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
-  { n: '02', tag: 'Exterior', img: 'photo-1536501483244-925da0b87089', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', short: 'Complete architectural visualisations shown in context and surroundings.', chips: ['Residential', 'Commercial', 'Facade studies'] },
-  { n: '03', tag: 'Material', img: 'photo-1581783748410-2c5377ad72ee', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', short: 'True-to-life colour, texture and finish studies for confident choices.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
-  { n: '04', tag: 'Presentation', img: 'photo-1606744824163-985d376605aa', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', short: 'Compelling visual narratives crafted to win meetings and pitches.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
+  { n: '01', tag: 'Interior', img: '/gallery/interiors/interior-04.webp', title: 'Interior Rendering', body: 'Transform interior concepts into realistic visual experiences that let clients feel a space before it exists.', short: 'Photorealistic interior spaces with precise material and lighting accuracy.', chips: ['Living spaces', 'Bedrooms', 'Kitchens', 'Luxury interiors'] },
+  { n: '02', tag: 'Exterior', img: '/gallery/exteriors/exterior-03.webp', title: 'Exterior Rendering', body: 'Present architectural concepts with realistic surroundings, materials and finishes.', short: 'Complete architectural visualisations shown in context and surroundings.', chips: ['Residential', 'Commercial', 'Facade studies'] },
+  { n: '03', tag: 'Material', img: '/gallery/interiors/interior-15.webp', title: 'Material & Finish Visualisation', body: 'Help clients understand the impact of colours, textures and surface finishes, rendered true to life.', short: 'True-to-life colour, texture and finish studies for confident choices.', chips: ['Colours', 'Textures', 'Finishes', 'Combinations'] },
+  { n: '04', tag: 'Presentation', img: '/gallery/interiors/interior-26.webp', title: 'Presentation Visuals', body: 'Professional-quality visuals crafted to win the room, for meetings, proposals and presentations.', short: 'Compelling visual narratives crafted to win meetings and pitches.', chips: ['Client meetings', 'Proposals', 'Presentations'] },
 ];
 
 const WHY = [
@@ -44,11 +44,11 @@ const WHY = [
 ];
 
 const GALLERY = [
-  { cat: 'Residential', img: 'photo-1564078516393-cf04bd966897', t: 'Residential', s: 'Living Rooms · Bedrooms · Kitchens' },
-  { cat: 'Commercial', img: 'photo-1478979464727-af7d24e18554', t: 'Commercial', s: 'Offices · Retail · Workspaces' },
-  { cat: 'Hospitality', img: 'photo-1621293954908-907159247fc8', t: 'Hospitality', s: 'Hotels · Restaurants · Experiences' },
-  { cat: 'Architectural', img: 'photo-1536501483244-925da0b87089', t: 'Architectural', s: 'Facades · Exteriors · Massing' },
-  { cat: 'Interiors', img: 'photo-1599696848652-f0ff23bc911f', t: 'Interiors', s: 'Materials · Finishes · Styling' },
+  { cat: 'Residential', img: '/gallery/interiors/interior-03.webp', t: 'Residential', s: 'Living Rooms · Bedrooms · Kitchens' },
+  { cat: 'Commercial', img: '/gallery/exteriors/exterior-02.webp', t: 'Commercial', s: 'Offices · Retail · Workspaces' },
+  { cat: 'Hospitality', img: '/gallery/interiors/interior-21.webp', t: 'Hospitality', s: 'Hotels · Restaurants · Experiences' },
+  { cat: 'Architectural', img: '/gallery/exteriors/exterior-07.webp', t: 'Architectural', s: 'Facades · Exteriors · Massing' },
+  { cat: 'Interiors', img: '/gallery/interiors/interior-19.webp', t: 'Interiors', s: 'Materials · Finishes · Styling' },
 ];
 
 /* changed from:
@@ -87,9 +87,9 @@ const TESTIMONIALS = [
 ];
 
 const BLOGS = [
-  { cat: 'Visualisation', img: 'photo-1613545325278-f24b0cae1224', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings, and how to brief for it.', read: '6 min read' },
-  { cat: 'Process', img: 'photo-1536501483244-925da0b87089', t: 'From CAD to Camera-Ready: Inside Our Render Pipeline', p: 'A look at how a set of plans becomes a finished, presentation-grade visualisation, step by step.', read: '8 min read' },
-  { cat: 'Materials', img: 'photo-1581783748410-2c5377ad72ee', t: 'Choosing the Right Finish: Reading Light in 3D', p: 'How textures and finishes behave under different lighting, and what that means for your specification.', read: '5 min read' },
+  { cat: 'Visualisation', img: '/gallery/interiors/interior-29.webp', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings, and how to brief for it.', read: '6 min read' },
+  { cat: 'Process', img: '/gallery/exteriors/exterior-04.webp', t: 'From CAD to Camera-Ready: Inside Our Render Pipeline', p: 'A look at how a set of plans becomes a finished, presentation-grade visualisation, step by step.', read: '8 min read' },
+  { cat: 'Materials', img: '/gallery/interiors/interior-46.webp', t: 'Choosing the Right Finish: Reading Light in 3D', p: 'How textures and finishes behave under different lighting, and what that means for your specification.', read: '5 min read' },
 ];
 
 /* changed from:
@@ -453,7 +453,7 @@ function Landing() {
             {/* changed from: <p>An exclusive design-support service that turns sketches and project models into compelling, photorealistic visuals that drive faster decisions and stronger client engagement.</p> */}
             <p>From the first concept to the final detail, we help transform design intent into compelling visuals that allow clients to see, understand and believe in the proposed space.</p>
           </div>
-          <div className="about-img rv d1"><img src={IMG('photo-1599696848652-f0ff23bc911f', 1100)} alt="Photoreal interior visualisation" /></div>
+          <div className="about-img rv d1"><img src="/gallery/interiors/interior-31.webp" alt="Photoreal interior visualisation" /></div>
         </div>
       </section>
 
@@ -524,7 +524,7 @@ function Landing() {
               >
                 <div className="svc2-media">
                   <span className="svc2-ghost" aria-hidden="true">{s.n}</span>
-                  <div className="svc2-mat"><img src={IMG(s.img, 1200)} alt={s.title} loading="lazy" /></div>
+                  <div className="svc2-mat"><img src={s.img} alt={s.title} loading="lazy" /></div>
                 </div>
                 <div className="svc2-content">
                   <p className="svc2-kicker">{s.n} — {s.tag}</p>
@@ -571,7 +571,7 @@ function Landing() {
           <div className="film rv" ref={filmRef}>
             {GALLERY.map((g) => (
               <a className="gcard" href={REQUEST_ACCESS} key={g.cat}>
-                <img src={IMG(g.img, 900)} alt={`${g.t} render`} loading="lazy" />
+                <img src={g.img} alt={`${g.t} render`} loading="lazy" />
                 <span className="tagc">{g.cat}</span>
                 <div className="cap"><div className="t">{g.t}</div><div className="s">{g.s}</div></div>
               </a>
@@ -647,7 +647,7 @@ function Landing() {
           <div className="bgrid">
             {BLOGS.map((b, i) => (
               <a className={`bcard rv ${i === 1 ? 'd1' : i === 2 ? 'd2' : ''}`} href={REQUEST_ACCESS} key={b.t}>
-                <div className="bimg"><img src={IMG(b.img, 900)} alt={b.t} loading="lazy" /><span className="bcat">{b.cat}</span></div>
+                <div className="bimg"><img src={b.img} alt={b.t} loading="lazy" /><span className="bcat">{b.cat}</span></div>
                 <div className="bbody">
                   <h3>{b.t}</h3>
                   <p>{b.p}</p>

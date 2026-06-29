@@ -78,11 +78,13 @@ const ITEMS: Item[] = [
   { src: '/gallery/interiors/interior-48.webp', title: 'Master Bedroom', cat: 'Interiors', type: 'image' },
   { src: '/gallery/interiors/interior-49.webp', title: 'Living Room', cat: 'Interiors', type: 'image' },
   { src: '/gallery/interiors/interior-50.webp', title: 'Garage', cat: 'Interiors', type: 'image' },
+  { src: '/gallery/interiors/interior-51.webp', title: 'Master Bedroom · Sunset', cat: 'Interiors', type: 'image' },
   { src: '/gallery/exteriors/exterior-08.webp', title: 'Rooftop Pool', cat: 'Exteriors', type: 'image' },
   { src: '/gallery/exteriors/exterior-09.webp', title: 'Rooftop Terrace', cat: 'Exteriors', type: 'image' },
   { src: '/gallery/exteriors/exterior-10.webp', title: 'Rooftop Pool', cat: 'Exteriors', type: 'image' },
   { src: '/gallery/exteriors/exterior-11.webp', title: 'Rooftop Deck', cat: 'Exteriors', type: 'image' },
   { src: '/gallery/exteriors/exterior-12.webp', title: 'Rooftop Lounge', cat: 'Exteriors', type: 'image' },
+  { src: '/gallery/exteriors/exterior-13.webp', title: 'Residential Tower · Dusk', cat: 'Exteriors', type: 'image' },
 ];
 
 const FILTERS = ['All', 'Interiors', 'Exteriors', 'Walkthroughs'] as const;
