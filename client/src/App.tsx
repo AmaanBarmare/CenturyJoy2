@@ -12,6 +12,7 @@ import Login from './pages/Login';
 // Lazy: split secondary + authenticated routes into their own chunks so the
 // landing page never downloads the portal/admin code on first load.
 const Landing = lazy(() => import('./pages/Landing'));
+const Gallery = lazy(() => import('./pages/Gallery'));
 const SetPassword = lazy(() => import('./pages/SetPassword'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
@@ -49,6 +50,7 @@ export default function App() {
     <Suspense fallback={<FullScreenLoading />}>
     <Routes>
       <Route path="/" element={<LandingV2 />} />
+      <Route path="/gallery" element={<Gallery />} />
       <Route path="/v1" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/set-password" element={<SetPassword />} />

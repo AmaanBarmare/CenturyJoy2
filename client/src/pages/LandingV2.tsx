@@ -15,7 +15,7 @@ const NAV = [
   { id: 'why', label: 'Why Us' },
   { id: 'services', label: 'Services' },
   { id: 'work', label: 'Work' },
-  { id: 'insights', label: 'Insights' },
+  // { id: 'insights', label: 'Insights' },  // hidden with the "Latest Articles & Insights" section
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -108,7 +108,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
 
   return (
     <div className={`gate ${leaving ? 'leaving' : ''}`}>
-      <video className="gate__video" autoPlay muted loop playsInline preload="auto" poster="/videos/intro-poster.jpg">
+      <video className="gate__video" autoPlay muted loop playsInline preload="auto" poster="/videos/intro-poster.webp">
         <source src="/videos/intro.webm" type="video/webm" />
         <source src="/videos/intro.mp4" type="video/mp4" />
       </video>
@@ -348,6 +348,7 @@ function Landing() {
           <BrandLogo height={30} />
           <div className="nav-links">
             {NAV.map((n) => <a key={n.id} className="txt" href={`#${n.id}`}>{n.label}</a>)}
+            <Link className="txt" to="/gallery">Gallery</Link>
             <div className="nav-cta">
               <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
             </div>
@@ -360,6 +361,7 @@ function Landing() {
       <nav className={`lv2-drawer ${menuOpen ? 'open' : ''}`}>
         <button className="x" aria-label="Close menu" onClick={() => setMenuOpen(false)}>✕</button>
         {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)}>{n.label}</a>)}
+        <Link to="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link>
         <Link to="/login" className="btn btn-red" onClick={() => setMenuOpen(false)}>Log in <span className="ar">→</span></Link>
       </nav>
 
@@ -523,7 +525,7 @@ function Landing() {
               <span className="eyebrow">Sample Gallery</span>
               <h2>Explore Possibilities Through <span className="red">Visualisation</span></h2>
             </div>
-            <span className="gal-hint">Scroll to browse</span>
+            <Link className="gal-hint" to="/gallery">View full gallery <span className="ar">→</span></Link>
           </div>
         </div>
         <div className="wrap">
@@ -595,7 +597,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* BLOGS */}
+      {/* BLOGS / Insights — section hidden for now. Uncomment this block (and the "Insights" nav item above) to restore.
       <section className="sec" id="insights">
         <div className="wrap">
           <div className="shead rv">
@@ -619,6 +621,7 @@ function Landing() {
           </div>
         </div>
       </section>
+      */}
 
       {/* FAQ */}
       <section className="sec tint" id="faq">

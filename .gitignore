@@ -40,3 +40,10 @@ logos/
 # (.gitignore only excludes them from git; the files stay in this folder.)
 *.zip
 Email-Version-*/
+
+# Large source masters — kept on disk, NOT committed (too big for GitHub's
+# 100MB limit / would bloat the repo). The optimized, web-served versions live
+# in client/public/ (gallery webp + thumbs, videos) and ARE committed.
+/CenturyPly2Images/
+/anatham3d/
+/videos/
