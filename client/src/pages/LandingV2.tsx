@@ -68,13 +68,6 @@ const TESTIMONIALS = [
   { q: 'Clients approve faster when they can step inside the design. Century Joy has shortened our sign-off cycle dramatically.', nm: 'Meera Iyer', rl: 'Interior Designer · Habitat Studio', i: 'MI' },
 ];
 
-// Collage band tiles for the "Starts Here" CTA (ported from variation 1)
-const CTA_TILES = [
-  'photo-1613545325278-f24b0cae1224', 'photo-1536501483244-925da0b87089', 'photo-1478979464727-af7d24e18554', 'photo-1581783748410-2c5377ad72ee',
-  'photo-1599696848652-f0ff23bc911f', 'photo-1564078516393-cf04bd966897', 'photo-1621293954908-907159247fc8', 'photo-1606744824163-985d376605aa',
-  'photo-1749930206000-179d0b85aa7e', 'photo-1478979464727-af7d24e18554', 'photo-1536501483244-925da0b87089', 'photo-1613545325278-f24b0cae1224',
-];
-
 const BLOGS = [
   { cat: 'Visualisation', img: 'photo-1613545325278-f24b0cae1224', t: 'Five Ways Photoreal Renders Win More Client Approvals', p: 'Why a single convincing image often does more than a folder of drawings, and how to brief for it.', read: '6 min read' },
   { cat: 'Process', img: 'photo-1536501483244-925da0b87089', t: 'From CAD to Camera-Ready: Inside Our Render Pipeline', p: 'A look at how a set of plans becomes a finished, presentation-grade visualisation, step by step.', read: '8 min read' },
@@ -143,6 +136,76 @@ function Gate({ onEnter }: { onEnter: () => void }) {
         </button>
         <div className="gate__cue"><span className="line" /><span className="hint">Click to explore</span></div>
       </div>
+    </div>
+  );
+}
+
+/* ============================================================
+   BEFORE / AFTER SLIDER  (concept sketch ↔ photoreal render)
+   ============================================================ */
+function BeforeAfter() {
+  const [pos, setPos] = useState(50);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const setFromX = (clientX: number) => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    setPos(Math.max(0, Math.min(100, ((clientX - r.left) / r.width) * 100)));
+  };
+
+  useEffect(() => {
+    const move = (e: PointerEvent) => { if (dragging.current) setFromX(e.clientX); };
+    const up = () => { dragging.current = false; };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    return () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+  }, []);
+
+  return (
+    <div
+      className="ba"
+      ref={wrapRef}
+      onPointerDown={(e) => { dragging.current = true; setFromX(e.clientX); }}
+    >
+      {/* render = base layer (revealed on the right) */}
+      <img className="ba-img" src="/images/render.webp" alt="Photorealistic interior render" draggable={false} />
+      {/* sketch = top layer, clipped to the left of the handle */}
+      <img
+        className="ba-img ba-sketch"
+        src="/images/sketch.webp"
+        alt="Concept sketch of the same interior"
+        draggable={false}
+        style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+      />
+
+      <span className="ba-tag ba-tag-l" style={{ opacity: pos > 12 ? 1 : 0 }}>Concept Sketch</span>
+      <span className="ba-tag ba-tag-r" style={{ opacity: pos < 88 ? 1 : 0 }}>Photoreal Render</span>
+
+      <div className="ba-line" style={{ left: `${pos}%` }} aria-hidden="true" />
+      <button
+        type="button"
+        className="ba-grip"
+        style={{ left: `${pos}%` }}
+        role="slider"
+        aria-label="Drag to compare the concept sketch and the photoreal render"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(pos)}
+        onPointerDown={(e) => { dragging.current = true; e.stopPropagation(); }}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowLeft') { setPos((p) => Math.max(0, p - 4)); e.preventDefault(); }
+          else if (e.key === 'ArrowRight') { setPos((p) => Math.min(100, p + 4)); e.preventDefault(); }
+          else if (e.key === 'Home') { setPos(0); e.preventDefault(); }
+          else if (e.key === 'End') { setPos(100); e.preventDefault(); }
+        }}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6-4 6 4 6" /><path d="m15 6 4 6-4 6" /></svg>
+      </button>
     </div>
   );
 }
@@ -578,20 +641,12 @@ function Landing() {
       {/* CTA - collage band (variation 1) */}
       <section className="sec cta-band">
         <div className="wrap">
-          <div className="cta-mosaic rv" aria-hidden="true">
-            <div className="cta-grid">
-              {CTA_TILES.map((id, i) => (
-                <div className="ct" key={i}><img src={IMG(id, 700)} alt="" loading="lazy" /></div>
-              ))}
-            </div>
+          <div className="shead center rv">
+            <span className="eyebrow">From Concept to Render</span>
+            <h2>Where a Sketch Becomes <span className="red">Reality</span></h2>
+            <p className="lead">Drag the handle to reveal the same interior transform from concept sketch to photoreal render.</p>
           </div>
-          <div className="cta-foot rv">
-            <h2>Your Next Great Design <em>Starts Here</em></h2>
-            <p className="cta-sub lead">Trusted by architects and interior designers. Tell us about your project and our team will be in touch.</p>
-            <div className="cta-row">
-              <a href="#contact" className="btn btn-red btn-sm">Get in touch <span className="ar">→</span></a>
-            </div>
-          </div>
+          <div className="rv"><BeforeAfter /></div>
         </div>
       </section>
 

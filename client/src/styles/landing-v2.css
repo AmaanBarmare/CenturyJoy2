@@ -450,6 +450,43 @@
   .lv2 .cta-grid .ct:nth-child(n+5):nth-child(-n+8) { grid-row: span 1; }
 }
 
+/* ── Before/After reveal slider (concept sketch ↔ photoreal render) ── */
+.lv2 .ba {
+  position: relative; width: 100%; aspect-ratio: 16 / 10;
+  border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--shadow);
+  background: var(--paper-3); cursor: ew-resize; touch-action: none; user-select: none;
+}
+.lv2 .ba-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; -webkit-user-drag: none; }
+.lv2 .ba-sketch { background: #fff; }
+
+.lv2 .ba-tag {
+  position: absolute; bottom: 18px; z-index: 4;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff; background: rgba(21,18,14,.62); backdrop-filter: blur(6px);
+  padding: 6px 11px; border-radius: var(--pill); transition: opacity .25s var(--ease);
+}
+.lv2 .ba-tag-l { left: 18px; color: var(--ink); background: rgba(255,255,255,.84); }
+.lv2 .ba-tag-r { right: 18px; }
+
+.lv2 .ba-line { position: absolute; top: 0; bottom: 0; z-index: 3; width: 2px; margin-left: -1px; background: #fff; box-shadow: 0 0 0 1px rgba(21,18,14,.12); pointer-events: none; }
+
+.lv2 .ba-grip {
+  position: absolute; top: 50%; z-index: 5; width: 46px; height: 46px;
+  margin-left: -23px; transform: translateY(-50%); border-radius: 50%;
+  border: 3px solid #fff; background: var(--red); color: #fff; padding: 0;
+  cursor: ew-resize; touch-action: none; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 26px -10px rgba(184,31,37,.7); transition: background .2s var(--ease), transform .12s var(--ease);
+}
+.lv2 .ba-grip:hover { background: var(--red-deep); }
+.lv2 .ba-grip:active { transform: translateY(-50%) scale(.94); }
+.lv2 .ba-grip svg { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (max-width: 680px) {
+  .lv2 .ba { aspect-ratio: 4 / 3; }
+  .lv2 .ba-tag { font-size: 9.5px; padding: 6px 11px; bottom: 12px; letter-spacing: .08em; }
+  .lv2 .ba-tag-l { left: 12px; } .lv2 .ba-tag-r { right: 12px; }
+}
+
 .lv2 .contact { background: var(--red-deep); color: #fff; }
 .lv2 .contact .c-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 4vw, 64px); align-items: center; }
 .lv2 .contact .eyebrow { color: rgba(255,255,255,.78); }
