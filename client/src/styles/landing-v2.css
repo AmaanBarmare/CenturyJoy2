@@ -63,7 +63,8 @@
 .lv2 .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--red); }
 .lv2 h1 { font-family: var(--display); font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: -.025em; }
 .lv2 h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: -.02em; }
-.lv2 h1 .red, .lv2 h2 .red { color: var(--red); }
+/* Red accent inside any heading — works for <span class="red"> and <em> alike */
+.lv2 h1 .red, .lv2 h2 .red, .lv2 h1 em, .lv2 h2 em { color: var(--red); font-style: normal; }
 .lv2 h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: -.01em; }
 .lv2 p  { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--ink-soft); }
 .lv2 .lead { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink-soft); font-weight: 400; }
@@ -141,12 +142,25 @@
 
 .gate__mid { flex: 1; display: grid; place-content: center; text-align: center; padding: 0 var(--gut); gap: 22px; }
 .gate__kicker { font-size: 12px; font-weight: 700; letter-spacing: .42em; text-transform: uppercase; color: rgba(255,255,255,.7); }
-.gate__title { font-family: var(--font); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; font-size: clamp(1.9rem, 4.4vw, 3.3rem); margin-inline: auto; margin-top: clamp(120px, 22vh, 300px); color: #fff; white-space: nowrap; display: flex; flex-direction: column; align-items: center; }
-/* red headline grouped above, white two-line block separated below */
-.gate__title em { display: block; margin-bottom: .5em; }
-.gate__title-sub { display: block; font-size: .86em; }
-/* phones: let the long lines wrap instead of overflowing the screen */
-@media (max-width: 560px) { .gate__title { white-space: normal; max-width: 16ch; font-size: clamp(1.55rem, 7.2vw, 2.2rem); } }
+.gate__title { font-family: var(--font); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; font-size: clamp(1.9rem, 4.4vw, 50px); margin-inline: auto; margin-top: clamp(300px, 40vh, 500px); color: #fff; white-space: nowrap; display: flex; flex-direction: column; align-items: center; gap: var(--text-gap); }
+/* red headline above, regular white two-line block below — brand text rhythm */
+.gate__title em { display: block; }
+/* ~20px between the two sub lines (40px sub × 1.5 leading) */
+.gate__title-sub { display: block; font-size: .8em; font-weight: 400; line-height: 1.5; letter-spacing: -.01em; }
+/* break classes: br-mob shows on phones only, br-desk on desktop only */
+.gate .br-mob { display: none; }
+.gate .br-desk { display: inline; }
+/* phones: re-break the sub line and let long lines wrap, not overflow */
+@media (max-width: 560px) {
+  /* move the whole text block + button down a little on phones */
+  .gate__title { white-space: normal; max-width: 13em; font-size: 30px; margin-top: clamp(350px, 46vh, 520px); }
+  .gate__title-sub { font-size: 26px; }
+  .gate .br-mob { display: inline; }
+  .gate .br-desk { display: none; }
+  /* .gate prefix raises specificity so these beat the base rules defined later */
+  .gate .gate__enter { padding: 11px 18px; font-size: 9.5px; gap: 6px; letter-spacing: .05em; }
+  .gate .gate__bottom { padding-bottom: 104px; }
+}
 .gate__title em { font-style: normal; color: var(--red); }
 .gate__sub { font-size: clamp(15px, 1.4vw, 18px); color: rgba(255,255,255,.82); max-width: 52ch; margin-inline: auto; line-height: 1.6; }
 
@@ -545,6 +559,8 @@
   .lv2 .rv { opacity: 1; transform: none; }
   .lv2 .mtrack, .lv2 .hero-shot .slide, .gate__cue .line::after { animation: none !important; }
   .lv2 .tbig.swap { animation: none !important; }
+  .lv2 .s-step { opacity: 1 !important; animation: none !important; }
+  .lv2 .s-step:hover { transform: none; }
   .gate { transition: none; }
 }
 
@@ -642,3 +658,199 @@
   .gp-lb-nav.prev { left: 8px; } .gp-lb-nav.next { right: 8px; }
   .gp-lb-cap { flex-direction: column; gap: 4px; }
 }
+
+/* ============================================================
+   SHARED MARKETING CHROME — active nav link + richer footer
+   (used by Landing, Gallery, About, Services)
+   ============================================================ */
+.lv2 .nav-links a.cur { color: var(--red); }
+
+.lv2 .foot .wordmark .wm-2 { color: #fff; }
+.lv2 .foot-top { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding-block: 36px 26px; }
+.lv2 .foot-links { display: flex; align-items: center; gap: clamp(16px, 2vw, 30px); flex-wrap: wrap; }
+.lv2 .foot-links a { font-size: 13px; font-weight: 700; letter-spacing: .02em; color: rgba(255,255,255,.66); transition: color .2s var(--ease); }
+.lv2 .foot-links a:hover { color: #fff; }
+.lv2 .foot-social { display: flex; align-items: center; gap: 10px; }
+.lv2 .foot-social a { width: 40px; height: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.05); color: rgba(255,255,255,.7); display: inline-flex; align-items: center; justify-content: center; transition: background .25s var(--ease), border-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease); }
+.lv2 .foot-social a:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.5); color: #fff; transform: translateY(-2px); }
+.lv2 .foot-social svg { width: 17px; height: 17px; }
+.lv2 .foot-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 22px; border-top: 1px solid rgba(255,255,255,.1); font-size: 12.5px; color: rgba(255,255,255,.45); }
+.lv2 .foot-legal { display: flex; align-items: center; gap: clamp(14px, 1.6vw, 24px); flex-wrap: wrap; }
+.lv2 .foot-legal a { color: rgba(255,255,255,.55); transition: color .2s var(--ease); }
+.lv2 .foot-legal a:hover { color: #fff; }
+@media (max-width: 640px) {
+  .lv2 .foot-top { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .lv2 .foot-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .lv2 .foot-legal { gap: 16px; }
+}
+
+/* First section under the fixed nav clears the 74px bar. */
+.lv2 .ph { padding-top: clamp(118px, 16vh, 168px); }
+
+/* Shared display number (stats / step / principle numerals) */
+.lv2 .num-d { font-family: var(--display); font-weight: 700; color: var(--red); letter-spacing: -.02em; line-height: 1; }
+
+/* Pull-quote — lead size, ink, with a red rule (reuses the type scale) */
+.lv2 .pull { padding-left: 22px; border-left: 2px solid var(--red); }
+.lv2 .pull p { font-size: var(--fs-lead); line-height: 1.5; color: var(--ink); font-weight: 700; }
+
+/* ============================================================
+   ABOUT PAGE
+   ============================================================ */
+.lv2 .a-hero .shead { max-width: 860px; }
+.lv2 .a-hero-media { margin-top: clamp(40px, 5vw, 64px); border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 7.4; box-shadow: var(--shadow); }
+.lv2 .a-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 680px) { .lv2 .a-hero-media { aspect-ratio: 16 / 11; } }
+
+/* Statement (belief) band — tinted, centered */
+.lv2 .a-statement .inner { max-width: 940px; margin-inline: auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--tgap); }
+
+/* Story split — sticky image + narrative + pull-quote */
+.lv2 .a-story { display: grid; grid-template-columns: .92fr 1.08fr; gap: clamp(34px, 5vw, 80px); align-items: start; }
+.lv2 .a-story-img { position: sticky; top: 104px; border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 4 / 4.5; box-shadow: var(--shadow); }
+.lv2 .a-story-img img { width: 100%; height: 100%; object-fit: cover; }
+.lv2 .a-story-body { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+.lv2 .a-story-body .pull { margin-top: 8px; }
+@media (max-width: 860px) {
+  .lv2 .a-story { grid-template-columns: 1fr; gap: 34px; }
+  .lv2 .a-story-img { position: static; aspect-ratio: 16 / 10; order: -1; }
+}
+
+/* Stats — 4-up red numerals */
+.lv2 .a-stats { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--paper-2); }
+.lv2 .a-stat { padding: clamp(28px, 3vw, 40px) clamp(20px, 2.4vw, 32px); border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
+.lv2 .a-stat:last-child { border-right: 0; }
+.lv2 .a-stat .num-d { font-size: clamp(2.4rem, 4vw, 3.4rem); }
+.lv2 .a-stat .num-d em { font-style: normal; color: var(--red); }
+.lv2 .a-stat .bar { width: 28px; height: 2px; background: var(--red); }
+.lv2 .a-stat .l { font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+@media (max-width: 640px) {
+  .lv2 .a-stats { grid-template-columns: 1fr; }
+  .lv2 .a-stat { border-right: 0; border-bottom: 1px solid var(--line); }
+  .lv2 .a-stat:last-child { border-bottom: 0; }
+}
+
+/* Principles — 3 numbered cards */
+.lv2 .a-principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.lv2 .a-principle { background: var(--paper); padding: clamp(32px, 3.4vw, 48px) clamp(26px, 2.6vw, 40px); display: flex; flex-direction: column; gap: 16px; transition: background .3s var(--ease); }
+.lv2 .a-principle:hover { background: var(--paper-2); }
+.lv2 .a-principle .pn { font-family: var(--display); font-size: 2.6rem; line-height: 1; color: var(--red); opacity: .2; }
+@media (max-width: 860px) { .lv2 .a-principles { grid-template-columns: 1fr; } }
+
+/* Wide image band */
+.lv2 .a-band-img { border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 16 / 6.4; box-shadow: var(--shadow); }
+.lv2 .a-band-img img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 680px) { .lv2 .a-band-img { aspect-ratio: 16 / 10; } }
+
+/* ============================================================
+   SHARED — red CTA panel (mirrors the landing Contact register)
+   ============================================================ */
+.lv2 .cta2 { background: var(--red-deep); color: #fff; }
+.lv2 .cta2 .inner { max-width: 780px; margin-inline: auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--tgap); }
+.lv2 .cta2 h2 { color: #fff; }
+/* On the red panel the accent stays white (brand-red would vanish into the bg) */
+.lv2 .cta2 h2 .red, .lv2 .cta2 h2 em { color: #fff; }
+.lv2 .cta2 .eyebrow { color: rgba(255,255,255,.78); }
+.lv2 .cta2 .eyebrow::before { background: rgba(255,255,255,.5); }
+.lv2 .cta2 .lead { color: rgba(255,255,255,.88); }
+.lv2 .cta2 .row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.lv2 .cta2 .btn-white { background: #fff; color: var(--red-deep); }
+.lv2 .cta2 .btn-white:hover { background: var(--paper-2); }
+.lv2 .cta2 .btn-ghost, .lv2 .cta2 .btn-ghost:hover { color: #fff; }
+.lv2 .cta2 .btn-ghost { background: transparent; border-color: rgba(255,255,255,.5); }
+.lv2 .cta2 .btn-ghost:hover:not(:disabled) { background: rgba(255,255,255,.12); border-color: #fff; }
+@media (max-width: 480px) { .lv2 .cta2 .row { flex-direction: column; width: 100%; } .lv2 .cta2 .row .btn { width: 100%; } }
+
+/* ============================================================
+   SERVICES PAGE
+   ============================================================ */
+.lv2 .s-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(34px, 5vw, 72px); align-items: end; }
+.lv2 .s-hero-grid .lead { max-width: 42ch; padding-bottom: 8px; }
+/* Stats live in a full-width strip under the hero (mirrors the landing hero-trust) */
+.lv2 .s-hero-trust { display: flex; flex-wrap: wrap; gap: clamp(28px, 4vw, 60px); margin-top: clamp(44px, 5vw, 72px); padding-top: clamp(28px, 3vw, 38px); border-top: 1px solid var(--line); }
+.lv2 .s-count .num-d { font-size: clamp(2.2rem, 3.4vw, 3rem); color: var(--red); }
+.lv2 .s-count .num-d em { font-style: normal; color: var(--red); }
+.lv2 .s-count .l { font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgb(140, 133, 121); margin-top: 10px; }
+@media (max-width: 860px) {
+  .lv2 .s-hero-grid { grid-template-columns: 1fr; gap: 24px; align-items: start; }
+  .lv2 .s-hero-grid .lead { max-width: 56ch; }
+}
+@media (max-width: 560px) { .lv2 .s-count { flex: 0 0 calc(50% - 24px); } }
+
+/* Intro band */
+.lv2 .s-intro-grid { display: grid; grid-template-columns: 200px 1fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+.lv2 .s-intro-grid .lead { max-width: 46ch; }
+@media (max-width: 760px) { .lv2 .s-intro-grid { grid-template-columns: 1fr; gap: 18px; } }
+
+/* Service rows */
+.lv2 .s-list { display: flex; flex-direction: column; }
+.lv2 .s-row { border-top: 1px solid var(--line); padding-block: clamp(44px, 6vw, 80px); }
+.lv2 .s-list .s-row:last-child { border-bottom: 1px solid var(--line); }
+.lv2 .s-row-top { display: flex; align-items: baseline; gap: clamp(16px, 3vw, 40px); margin-bottom: clamp(28px, 3vw, 40px); }
+.lv2 .s-row-num { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--red); letter-spacing: .04em; flex: none; }
+.lv2 .s-row-name { flex: 1; margin: 0; }
+.lv2 .s-row-tag { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); white-space: nowrap; flex: none; }
+.lv2 .s-row-body { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 5vw, 72px); align-items: start; }
+.lv2 .s-row:nth-child(even) .s-row-desc { order: 2; }
+.lv2 .s-row-bullets { margin-top: 24px; display: flex; flex-direction: column; gap: 11px; }
+.lv2 .s-bullet { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--ink-soft); }
+.lv2 .s-bullet::before { content: ""; width: 20px; height: 2px; background: var(--red); flex: none; }
+.lv2 .s-row-media { border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 4 / 3; box-shadow: var(--shadow); }
+.lv2 .s-row-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+.lv2 .s-row:hover .s-row-media img { transform: scale(1.04); }
+@media (max-width: 860px) {
+  .lv2 .s-row-top { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .lv2 .s-row-body { grid-template-columns: 1fr; gap: 26px; }
+  .lv2 .s-row:nth-child(even) .s-row-desc { order: 0; }
+  .lv2 .s-row-media { order: -1; }
+}
+
+/* Process — 4-up steps (segmented panel, matches landing .svc2-summary) */
+.lv2 .s-steps { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--paper-2); }
+.lv2 .s-steps.rv { opacity: 1; transform: none; }
+.lv2 .s-step { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: clamp(26px, 2.8vw, 38px) clamp(22px, 2.4vw, 32px); border-right: 1px solid var(--line); background: none; opacity: 0; transition: background .25s var(--ease), box-shadow .3s var(--ease), transform .25s var(--ease); }
+.lv2 .s-step:last-child { border-right: 0; }
+.lv2 .s-step::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease); }
+.lv2 .s-step:first-child { background: var(--paper); }
+.lv2 .s-step:first-child::before { transform: scaleX(1); }
+/* hover lift + single-selection — only on devices with a real pointer (avoids sticky hover on touch) */
+@media (hover: hover) and (pointer: fine) {
+  /* while the panel is hovered, the hovered card becomes the ONLY selected one;
+     the default highlight on the first card steps aside so two never read as active */
+  .lv2 .s-steps:hover .s-step:first-child:not(:hover) { background: none; }
+  .lv2 .s-steps:hover .s-step:first-child:not(:hover)::before { transform: scaleX(0); transform-origin: right; }
+  .lv2 .s-step:hover { background: var(--paper); transform: translateY(-4px); box-shadow: 0 18px 40px -24px rgba(21, 18, 14, .28); z-index: 1; }
+  .lv2 .s-step:hover::before { transform: scaleX(1); }
+}
+.lv2 .s-step .sn { font-family: var(--font); font-size: 11px; font-weight: 800; letter-spacing: .18em; line-height: 1; color: var(--red); opacity: 1; }
+.lv2 .s-step h3 { font-size: 17px; font-weight: 700; line-height: 1.25; letter-spacing: -.01em; color: var(--ink); margin: 14px 0 10px; }
+.lv2 .s-step p { font-size: 13.5px; line-height: 1.6; color: var(--ink-faint); }
+
+/* staggered entrance — JS toggles .in on the .s-steps container when in view */
+.lv2 .s-steps.in .s-step { animation: stepIn .55s var(--ease) both; }
+.lv2 .s-steps.in .s-step:nth-child(2) { animation-delay: .09s; }
+.lv2 .s-steps.in .s-step:nth-child(3) { animation-delay: .18s; }
+.lv2 .s-steps.in .s-step:nth-child(4) { animation-delay: .27s; }
+@keyframes stepIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 900px) {
+  .lv2 .s-steps { grid-template-columns: 1fr 1fr; }
+  .lv2 .s-step:nth-child(2) { border-right: 0; }
+  .lv2 .s-step:nth-child(1), .lv2 .s-step:nth-child(2) { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 520px) {
+  .lv2 .s-steps { grid-template-columns: 1fr; }
+  .lv2 .s-step { border-right: 0; border-bottom: 1px solid var(--line); }
+  .lv2 .s-step:last-child { border-bottom: 0; }
+}
+
+/* Who we serve — icon cards (black chip + white glyph, like the landing's .wic) */
+.lv2 .s-serve-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.lv2 .s-serve-card { background: var(--paper); padding: clamp(28px, 3vw, 40px) clamp(24px, 2.6vw, 34px); display: flex; flex-direction: column; gap: 14px; transition: background .3s var(--ease); }
+.lv2 .s-serve-card:hover { background: var(--paper-2); }
+.lv2 .s-serve-ic { position: relative; width: 46px; height: 46px; border-radius: 10px; background: var(--ink); color: #fff; display: grid; place-items: center; overflow: hidden; }
+.lv2 .s-serve-ic::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--red); }
+.lv2 .s-serve-ic svg { width: 22px; height: 22px; stroke: #fff; stroke-width: 1.9; fill: none; }
+.lv2 .s-serve-card p { font-size: 14px; }
+@media (max-width: 900px) { .lv2 .s-serve-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .lv2 .s-serve-grid { grid-template-columns: 1fr; } }

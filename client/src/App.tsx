@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import type { ReactNode } from 'react';
 import { useAuth } from './context/AuthContext';
 import { FullScreenLoading } from './components/Loading';
+import { ScrollToHash } from './components/ScrollToHash';
 import type { Role } from './types';
 
 // Eager: the public entry points most visitors hit first.
@@ -13,6 +14,8 @@ import Login from './pages/Login';
 // landing page never downloads the portal/admin code on first load.
 const Landing = lazy(() => import('./pages/Landing'));
 const Gallery = lazy(() => import('./pages/Gallery'));
+const About = lazy(() => import('./pages/About'));
+const Services = lazy(() => import('./pages/Services'));
 const SetPassword = lazy(() => import('./pages/SetPassword'));
 const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
@@ -48,9 +51,12 @@ function RoleRedirect() {
 export default function App() {
   return (
     <Suspense fallback={<FullScreenLoading />}>
+    <ScrollToHash />
     <Routes>
       <Route path="/" element={<LandingV2 />} />
       <Route path="/gallery" element={<Gallery />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/services" element={<Services />} />
       <Route path="/v1" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/set-password" element={<SetPassword />} />

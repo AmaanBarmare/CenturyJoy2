@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { BrandLogo } from '../components/Logo';
 import { ChatWidget } from '../components/ChatWidget';
 import { SOCIALS } from '../components/Socials';
+import { SiteNav } from '../components/SiteNav';
+import { SiteFooter } from '../components/SiteFooter';
 
 /* ── helpers & content ─────────────────────────────────── */
 const IMG = (id: string, w = 1400) =>
@@ -10,16 +12,7 @@ const IMG = (id: string, w = 1400) =>
 
 const REQUEST_ACCESS = 'mailto:3DServices@centuryply.com?subject=Century%20Joy%20access%20request';
 
-const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'why', label: 'Why Us' },
-  { id: 'services', label: 'Services' },
-  { id: 'work', label: 'Work' },
-  // { id: 'insights', label: 'Insights' },  // hidden with the "Latest Articles & Insights" section
-  { id: 'contact', label: 'Contact' },
-];
-
-const MARQUEE = ['Joy', 'Imagine', 'Inspire', 'Create', 'Experience', 'Visualise', 'Transform', 'Discover', 'Envision', 'Realise', 'Manifest', 'Bring Alive', 'Reveal', 'Illuminate', 'Celebrate'];
+const MARQUEE =['Joy', 'Imagine', 'Inspire', 'Create', 'Experience', 'Visualise', 'Transform', 'Discover', 'Envision', 'Realise', 'Manifest', 'Bring Alive', 'Reveal', 'Illuminate', 'Celebrate'];
 
 const HERO_SHOTS = [
   { id: 'photo-1564078516393-cf04bd966897', cap: 'Residential · Living Room' },
@@ -155,7 +148,7 @@ function Gate({ onEnter }: { onEnter: () => void }) {
       <div className="gate__mid">
         {/* deleted — retrieve later: <div className="gate__kicker">Visualisation Studio</div> */}
         {/* changed from: <h1 className="gate__title">Step Inside Your Design<br /><em>Before It Is Built</em></h1> */}
-        <h1 className="gate__title"><em>3D Visualisation Services</em><span className="gate__title-sub">Transform Imagination Into<br />Immersive Experiences</span></h1>
+        <h1 className="gate__title"><em>3D Visualisation Services</em><span className="gate__title-sub">Transform<br className="br-mob" /> Imagination Into<br className="br-desk" /> Immersive<br className="br-mob" /> Experiences</span></h1>
         {/* deleted — retrieve later: <p className="gate__sub">Photorealistic 3D visualisation for architects and interior designers. Your vision, brought to life frame by frame.</p> */}
       </div>
 
@@ -244,8 +237,6 @@ function BeforeAfter() {
    LANDING (white)
    ============================================================ */
 function Landing() {
-  const navRef = useRef<HTMLElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [hi, setHi] = useState(0);
   const [ti, setTi] = useState(0);
   const [svc, setSvc] = useState(0);
@@ -282,9 +273,6 @@ function Landing() {
   useEffect(() => { setSwap(true); const t = setTimeout(() => setSwap(false), 520); return () => clearTimeout(t); }, [ti]);
 
   useEffect(() => {
-    const nav = navRef.current;
-    const onScroll = () => nav?.classList.toggle('scrolled', window.scrollY > 30);
-
     // reveal: bulletproof, scroll-driven; every .rv ends fully visible
     const reveal = () => {
       const h = window.innerHeight * 0.9;
@@ -292,8 +280,8 @@ function Landing() {
         if (el.getBoundingClientRect().top < h) el.classList.add('in');
       });
     };
-    onScroll(); reveal();
-    window.addEventListener('scroll', () => { onScroll(); reveal(); }, { passive: true });
+    reveal();
+    window.addEventListener('scroll', reveal, { passive: true });
     window.addEventListener('resize', reveal);
 
     // process stepper: fill 01 -> 06 sequentially when scrolled in
@@ -330,8 +318,6 @@ function Landing() {
       timers.forEach(clearTimeout);
     };
   }, [reduce]);
-
-  useEffect(() => { document.body.style.overflow = menuOpen ? 'hidden' : ''; }, [menuOpen]);
 
   // gallery filmstrip: custom scrollbar that reflects position and is draggable
   useEffect(() => {
@@ -372,28 +358,7 @@ function Landing() {
 
   return (
     <div className="lv2">
-      {/* NAV */}
-      <header className="nav" ref={navRef}>
-        <div className="wrap nav-in">
-          <BrandLogo height={30} />
-          <div className="nav-links">
-            {NAV.map((n) => <a key={n.id} className="txt" href={`#${n.id}`}>{n.label}</a>)}
-            <Link className="txt" to="/gallery">Gallery</Link>
-            <div className="nav-cta">
-              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
-            </div>
-            <button className="menu-btn" aria-label="Open menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
-          </div>
-        </div>
-      </header>
-
-      <div className={`lv2-scrim ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
-      <nav className={`lv2-drawer ${menuOpen ? 'open' : ''}`}>
-        <button className="x" aria-label="Close menu" onClick={() => setMenuOpen(false)}>✕</button>
-        {NAV.map((n) => <a key={n.id} href={`#${n.id}`} onClick={() => setMenuOpen(false)}>{n.label}</a>)}
-        <Link to="/gallery" onClick={() => setMenuOpen(false)}>Gallery</Link>
-        <Link to="/login" className="btn btn-red" onClick={() => setMenuOpen(false)}>Log in <span className="ar">→</span></Link>
-      </nav>
+      <SiteNav />
 
       {/* HERO */}
       <section className="sec hero" id="top">
@@ -715,13 +680,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="foot">
-        <div className="wrap f-in">
-          <BrandLogo light height={28} />
-          <span>© {new Date().getFullYear()} Century Plyboards (India) Ltd. All rights reserved.</span>
-        </div>
-      </footer>
+      <SiteFooter />
 
       <ChatWidget />
     </div>

@@ -49,7 +49,7 @@ export function startOrphanCleanupWorker(): void {
         message: err instanceof Error ? err.message : String(err),
       }),
     );
-  setInterval(tick, INTERVAL_MS);
-  setTimeout(tick, 10_000);
+  setInterval(tick, INTERVAL_MS).unref();
+  setTimeout(tick, 10_000).unref();
   logger.info('Orphan cleanup worker started', { intervalMs: INTERVAL_MS });
 }

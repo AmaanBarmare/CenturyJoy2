@@ -1,16 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { BrandLogo } from '../components/Logo';
+import { SiteNav } from '../components/SiteNav';
+import { SiteFooter } from '../components/SiteFooter';
 import { ChatWidget } from '../components/ChatWidget';
-
-/* ── nav (links back to the landing sections) ──────────────── */
-const NAV = [
-  { id: 'about', label: 'About' },
-  { id: 'why', label: 'Why Us' },
-  { id: 'services', label: 'Services' },
-  { id: 'work', label: 'Work' },
-  { id: 'contact', label: 'Contact' },
-];
 
 type Cat = 'Interiors' | 'Exteriors' | 'Walkthroughs';
 type Item = { src: string; title: string; cat: Cat; type: 'image' | 'video'; poster?: string };
@@ -95,9 +86,7 @@ function PlayIcon() {
 }
 
 export default function Gallery() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState<Filter>('All');
-  const [scrolled, setScrolled] = useState(false);
   const [lb, setLb] = useState<number | null>(null); // index into `shown`
 
   const shown = useMemo(
@@ -105,13 +94,7 @@ export default function Gallery() {
     [filter],
   );
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   // reveal-on-scroll for the grid cards
   useEffect(() => {
@@ -131,9 +114,9 @@ export default function Gallery() {
   }, [shown]);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen || lb !== null ? 'hidden' : '';
+    document.body.style.overflow = lb !== null ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [menuOpen, lb]);
+  }, [lb]);
 
   const close = () => setLb(null);
   const step = (d: number) => setLb((i) => (i === null ? i : (i + d + shown.length) % shown.length));
@@ -153,28 +136,7 @@ export default function Gallery() {
 
   return (
     <div className="lv2 gp">
-      {/* NAV */}
-      <header className={`nav ${scrolled ? 'scrolled' : ''}`}>
-        <div className="wrap nav-in">
-          <BrandLogo height={30} />
-          <div className="nav-links">
-            {NAV.map((n) => <a key={n.id} className="txt" href={`/#${n.id}`}>{n.label}</a>)}
-            <a className="txt gp-current" href="/gallery">Gallery</a>
-            <div className="nav-cta">
-              <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
-            </div>
-            <button className="menu-btn" aria-label="Open menu" onClick={() => setMenuOpen(true)}><span /><span /><span /></button>
-          </div>
-        </div>
-      </header>
-
-      <div className={`lv2-scrim ${menuOpen ? 'open' : ''}`} onClick={() => setMenuOpen(false)} />
-      <nav className={`lv2-drawer ${menuOpen ? 'open' : ''}`}>
-        <button className="x" aria-label="Close menu" onClick={() => setMenuOpen(false)}>✕</button>
-        {NAV.map((n) => <a key={n.id} href={`/#${n.id}`} onClick={() => setMenuOpen(false)}>{n.label}</a>)}
-        <a href="/gallery" onClick={() => setMenuOpen(false)}>Gallery</a>
-        <Link to="/login" className="btn btn-red" onClick={() => setMenuOpen(false)}>Log in <span className="ar">→</span></Link>
-      </nav>
+      <SiteNav current="Gallery" />
 
       {/* HERO */}
       <section className="sec gp-hero">
@@ -230,13 +192,7 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="foot">
-        <div className="wrap f-in">
-          <BrandLogo light height={28} />
-          <span>© {new Date().getFullYear()} Century Plyboards (India) Ltd. All rights reserved.</span>
-        </div>
-      </footer>
+      <SiteFooter />
 
       {/* LIGHTBOX */}
       {active && (

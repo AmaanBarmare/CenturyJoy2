@@ -19,8 +19,9 @@ export function startEmailWorker(): void {
       running = false;
     }
   };
-  setInterval(tick, INTERVAL_MS);
+  // unref() so these timers never keep the process alive during shutdown
+  setInterval(tick, INTERVAL_MS).unref();
   // run shortly after boot too
-  setTimeout(tick, 3000);
+  setTimeout(tick, 3000).unref();
   logger.info('Email worker started', { intervalMs: INTERVAL_MS });
 }
