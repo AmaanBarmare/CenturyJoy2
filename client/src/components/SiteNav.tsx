@@ -12,7 +12,7 @@ const LINKS: { label: string; to: string }[] = [
   { label: 'Contact', to: '/#contact' },
 ];
 
-export function SiteNav({ current }: { current?: string }) {
+export function SiteNav({ current, light = false }: { current?: string; light?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -35,9 +35,9 @@ export function SiteNav({ current }: { current?: string }) {
 
   return (
     <>
-      <header className={`nav ${scrolled ? 'scrolled' : ''}`}>
+      <header className={`nav ${light ? 'nav-light' : ''} ${scrolled ? 'scrolled' : ''}`}>
         <div className="wrap nav-in">
-          <BrandLogo height={30} />
+          <BrandLogo light={light} height={30} />
           <div className="nav-links">
             {LINKS.map((l) => renderLink(l))}
             <div className="nav-cta">

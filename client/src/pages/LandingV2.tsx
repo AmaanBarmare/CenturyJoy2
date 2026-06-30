@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BrandLogo } from '../components/Logo';
 import { ChatWidget } from '../components/ChatWidget';
 import { SOCIALS } from '../components/Socials';
 import { SiteNav } from '../components/SiteNav';
@@ -136,13 +135,11 @@ function Gate({ onEnter }: { onEnter: () => void }) {
       </video>
       <div className="gate__scrim" />
 
-      <div className="gate__top">
-        <div className="gate__top-in">
-          <BrandLogo light height={30} />
-          <nav className="gate__nav">
-            <Link to="/login" className="btn btn-red btn-sm">Log in <span className="ar">→</span></Link>
-          </nav>
-        </div>
+      {/* Shared site navbar, recoloured for the dark video (see landing-v2.css).
+          The .lv2 wrapper scopes the nav's styles to it WITHOUT letting .lv2 h1
+          rules bleed onto the gate headline. */}
+      <div className="lv2 gate__navwrap">
+        <SiteNav light />
       </div>
 
       <div className="gate__mid">
