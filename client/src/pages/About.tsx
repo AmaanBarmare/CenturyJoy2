@@ -59,7 +59,7 @@ export default function About() {
         <div className="wrap">
           <div className="inner rv">
             <span className="eyebrow">Our Belief</span>
-            <h2>Great design deserves to be <span className="red">seen</span> before it is built, rendered with total fidelity to the original intent.</h2>
+            <h2>We believe every great design deserves to be <span className="red">experienced</span> before it is built.</h2>
           </div>
         </div>
       </section>
