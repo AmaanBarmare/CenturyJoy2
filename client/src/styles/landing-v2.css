@@ -148,6 +148,9 @@
    Enter pill anchored low. (No margin-top push: the old hack shoved the text
    into the bottom corner and crammed it against the button.) */
 @media (max-width: 560px) {
+  /* drop the headline block to the bottom of the mid area so it sits just above
+     the Enter pill (mirrors the reference's `place-content: end center`) */
+  .gate__mid { place-content: end center; padding-bottom: clamp(22px, 6vw, 34px); }
   .gate__title {
     white-space: normal; max-width: 18ch; margin-top: 0;
     font-size: clamp(30px, 8.6vw, 38px); line-height: 1.06; gap: 12px;
