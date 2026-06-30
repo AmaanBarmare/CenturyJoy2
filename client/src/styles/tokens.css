@@ -51,16 +51,36 @@
   --shadow-2: 0 2px 6px -2px rgba(30, 26, 21, 0.1);
   --shadow-lift: 0 24px 48px -32px rgba(30, 26, 21, 0.45);
 
-  /* Type */
-  /* Brand typeface: Helvetica Neue throughout. Headings use the condensed
-     cut (condensed bold) per the guidelines; body uses the regular family. */
-  --ui: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
-  --display: "Helvetica Neue Condensed", "Helvetica Neue", Helvetica, "Arial Narrow", Arial, sans-serif;
+  /* ── Type system (single source of truth — see DESIGN.md) ──────────────
+     Brand typeface is the landing's Arial register, used on EVERY page so a
+     given tag is the same font + size everywhere. --ui = body/UI/headings;
+     --display = the heavy "Arial Black" cut used only for the hero h1 and a
+     few large display numbers. --mono = reference codes / metadata. */
+  --ui: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
+  --display: "Arial Black", "Arial Bold", Arial, "Helvetica Neue", sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-  /* Spacing rhythm */
-  --pad: clamp(18px, 4vw, 44px);
-  --gap: 18px;
+  /* One size per role. These are the canonical sizes; never hard-code a
+     heading/body size when one of these fits. Marketing pages (.lv2) use the
+     full scale; the dense product UI (.shell / .auth) uses the compact
+     heading steps below — same ladder, same treatment, smaller register. */
+  --fs-h1: clamp(2rem, 4vw, 3.6rem);            --lh-h1: 1.04;   /* hero headline   */
+  --fs-h2: clamp(1.875rem, 4vw, 2.875rem);      --lh-h2: 1.06;   /* section heading 30→46px */
+  --fs-h3: 1.25rem;                             --lh-h3: 1.25;   /* sub-heading 20px */
+  --fs-lead: clamp(1.125rem, 1.6vw, 1.3125rem); --lh-lead: 1.6;  /* lede 18→21px    */
+  --fs-body: 1rem;                              --lh-body: 1.7;  /* body 16px       */
+  --fs-meta: 0.8125rem;                                          /* meta 13px       */
+  --fs-eyebrow: 0.75rem;                                         /* eyebrow 12px    */
+
+  /* Compact heading steps for the product register (portal + auth). */
+  --fs-ui-h1: 1.5rem;                           /* page / auth title 24px */
+  --fs-ui-h2: 1.25rem;                          /* greeting / modal 20px  */
+
+  /* ── Spacing rhythm ─────────────────────────────────────────────────── */
+  --pad: clamp(18px, 4vw, 44px);   /* page / section horizontal gutter */
+  --gap: 18px;                     /* default flex / grid gap */
+  --text-gap: 16px;                /* gap between any two stacked text elements */
+  --sec-pad: clamp(72px, 8vw, 120px); /* section vertical rhythm */
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

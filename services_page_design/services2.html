@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — Century Joy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:   #0C0C0C;
+      --bg2:  #141414;
+      --bg3:  #1C1C1C;
+      --iv:   #EFE6D8;
+      --dim:  rgba(239,230,216,0.44);
+      --faint:rgba(239,230,216,0.14);
+      --red:  #C1272D;
+      --br:   rgba(239,230,216,0.08);
+      --fd: 'Bodoni Moda', Georgia, serif;
+      --fb: 'Jost', system-ui, sans-serif;
+      --sw: 248px;
+      --g: clamp(32px,5vw,72px);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--iv);
+      font-family: var(--fb);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── SIDEBAR ── */
+    .sb {
+      position: fixed; left: 0; top: 0; bottom: 0; width: var(--sw);
+      background: var(--bg2);
+      border-right: 1px solid var(--br);
+      display: flex; flex-direction: column;
+      padding: 40px 36px; z-index: 200;
+    }
+    .sb__logo {
+      font-family: var(--fd);
+      font-size: 19px; font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 64px;
+    }
+    .sb__logo em { color: var(--red); font-style: normal; }
+    .sb__nav { flex: 1; }
+    .sb__nav ul { list-style: none; display: flex; flex-direction: column; }
+    .sb__nav li { border-bottom: 1px solid var(--br); }
+    .sb__nav a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+    .sb__nav a::after { content: '→'; font-size: 10px; opacity: 0; transition: opacity 0.2s; }
+    .sb__nav a:hover { color: var(--iv); }
+    .sb__nav a:hover::after { opacity: 1; }
+    .sb__nav a.active { color: var(--iv); }
+    .sb__nav a.active::after { content: '—'; opacity: 1; color: var(--red); }
+    .sb__foot {
+      border-top: 1px solid var(--br);
+      padding-top: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .sb__cta {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--red);
+      display: flex; align-items: center; gap: 8px;
+      transition: gap 0.2s;
+    }
+    .sb__cta:hover { gap: 14px; }
+    .sb__copy { font-size: 10px; color: var(--faint); letter-spacing: 0.06em; }
+
+    /* ── MOBILE BAR ── */
+    .mob {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      background: rgba(12,12,12,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--br);
+      padding: 15px 24px;
+      align-items: center; justify-content: space-between;
+    }
+    .mob__logo { font-family: var(--fd); font-size: 16px; }
+    .mob__logo em { color: var(--red); font-style: normal; }
+    .mob__link { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--sw); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 120px var(--g) clamp(60px,8vw,100px);
+      background: var(--bg2);
+      border-bottom: 1px solid var(--br);
+      position: relative; overflow: hidden;
+    }
+    .hero__ghost {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; gap: 0;
+      overflow: hidden; user-select: none; pointer-events: none;
+    }
+    .hero__ghost span {
+      font-family: var(--fd); font-size: clamp(80px, 12vw, 160px);
+      font-weight: 400; font-style: italic;
+      color: var(--iv); opacity: 0.03;
+      white-space: nowrap; line-height: 1;
+      display: block; padding: 0 var(--g);
+    }
+    .hero__ghost span:nth-child(even) { transform: translateX(40px); }
+    .hero__content { position: relative; z-index: 1; }
+    .hero__kicker {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--red);
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 36px;
+    }
+    .hero__kicker::before { content: ''; display: block; width: 32px; height: 1px; background: var(--red); }
+    .hero__h {
+      font-family: var(--fd);
+      font-size: clamp(48px,8vw,108px);
+      font-weight: 400; font-style: italic;
+      line-height: 0.95; letter-spacing: -0.03em;
+      margin-bottom: clamp(48px,6vw,80px);
+      max-width: 700px;
+    }
+    .hero__list {
+      display: flex; flex-wrap: wrap; gap: 0;
+      border-top: 1px solid var(--br);
+    }
+    .hero__item {
+      padding: 18px 0; flex: 0 0 50%;
+      display: flex; align-items: center; gap: 16px;
+      border-bottom: 1px solid var(--br);
+      border-right: 1px solid var(--br);
+      padding-right: 24px;
+      cursor: pointer; transition: color 0.2s;
+    }
+    .hero__item:nth-child(even) { padding-right: 0; border-right: none; padding-left: 24px; }
+    .hero__item:hover { color: var(--red); }
+    .hero__item:hover .hero__num { color: var(--red); opacity: 1; }
+    .hero__num {
+      font-family: var(--fd); font-size: 11px; font-weight: 400;
+      color: var(--red); opacity: 0.5;
+      flex-shrink: 0; width: 24px;
+    }
+    .hero__name {
+      font-family: var(--fd); font-size: clamp(14px,1.8vw,18px);
+      font-weight: 400; letter-spacing: -0.01em;
+    }
+    .hero__arr {
+      margin-left: auto; font-size: 12px; color: var(--dim);
+      transition: transform 0.2s;
+    }
+    .hero__item:hover .hero__arr { transform: translateX(4px); }
+
+    /* ── ACCORDION ── */
+    .acc {
+      border-bottom: 1px solid var(--br);
+    }
+    .acc-item { border-top: 1px solid var(--br); }
+
+    .acc-trigger {
+      width: 100%; cursor: pointer; background: none; border: none; color: inherit;
+      text-align: left;
+      display: grid;
+      grid-template-columns: 48px 1fr auto auto;
+      align-items: center;
+      gap: clamp(16px,2vw,32px);
+      padding: clamp(24px,3vw,40px) var(--g);
+      transition: background 0.25s;
+    }
+    .acc-trigger:hover { background: var(--bg2); }
+    .acc-trigger:hover .at-name { color: var(--red); }
+    .at-num {
+      font-family: var(--fd); font-size: 13px;
+      color: var(--red); opacity: 0.5;
+      flex-shrink: 0;
+    }
+    .at-name {
+      font-family: var(--fd);
+      font-size: clamp(22px,3.5vw,44px);
+      font-weight: 400; letter-spacing: -0.02em;
+      transition: color 0.25s;
+    }
+    .at-tag {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--dim);
+      white-space: nowrap;
+    }
+    .at-icon {
+      width: 32px; height: 32px; border: 1px solid var(--br);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px; color: var(--dim);
+      transition: transform 0.35s, border-color 0.25s;
+    }
+    .acc-item.open .at-icon { transform: rotate(45deg); border-color: var(--red); color: var(--red); }
+    .acc-item.open .at-num { opacity: 1; }
+
+    .acc-panel {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .acc-panel__inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0 var(--g) clamp(48px,6vw,80px);
+    }
+    .ap-desc { padding-right: clamp(32px,4vw,64px); }
+    .ap-p {
+      font-size: 14px; font-weight: 300; line-height: 1.9; color: var(--dim);
+    }
+    .ap-p + .ap-p { margin-top: 16px; }
+    .ap-bullets { margin-top: 32px; display: flex; flex-direction: column; gap: 10px; }
+    .ap-bullet {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 12px; font-weight: 400; color: var(--dim);
+    }
+    .ap-bullet::before {
+      content: '';  flex-shrink: 0;
+      width: 18px; height: 1px; background: var(--red);
+    }
+    .ap-img {
+      height: clamp(220px,28vw,360px);
+      overflow: hidden; position: relative;
+    }
+    .ap-img img { transition: transform 0.6s ease; }
+    .ap-img:hover img { transform: scale(1.04); }
+
+    /* ── PROCESS ── */
+    .proc {
+      background: var(--bg2);
+      border-top: 1px solid var(--br);
+      padding: clamp(64px,9vw,120px) var(--g);
+    }
+    .proc__top {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: end;
+      margin-bottom: clamp(48px,6vw,80px);
+    }
+    .proc__h {
+      font-family: var(--fd);
+      font-size: clamp(26px,3.5vw,44px);
+      font-weight: 400; line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .proc__sub {
+      font-size: 14px; font-weight: 300;
+      line-height: 1.75; color: var(--dim);
+    }
+    .proc__steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: var(--br);
+      border: 1px solid var(--br);
+    }
+    .step {
+      background: var(--bg);
+      padding: clamp(28px,3vw,44px) clamp(20px,2.5vw,32px);
+      position: relative;
+    }
+    .step__n {
+      font-family: var(--fd); font-size: 48px; font-weight: 400;
+      color: var(--red); opacity: 0.18; line-height: 1;
+      margin-bottom: 24px;
+    }
+    .step__t {
+      font-family: var(--fd); font-size: 17px; font-weight: 400;
+      letter-spacing: -0.01em; margin-bottom: 12px;
+    }
+    .step__d {
+      font-size: 12px; font-weight: 300;
+      line-height: 1.75; color: var(--dim);
+    }
+    .step__arr {
+      position: absolute; right: -10px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 11px; color: var(--red);
+      z-index: 1; background: var(--bg);
+      padding: 4px;
+    }
+    .step:last-child .step__arr { display: none; }
+
+    /* ── CTA ── */
+    .cta {
+      background: var(--red);
+      padding: clamp(80px,11vw,140px) var(--g);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: center;
+    }
+    .cta__h {
+      font-family: var(--fd);
+      font-size: clamp(36px,5.5vw,76px);
+      font-weight: 400; font-style: italic;
+      line-height: 0.96; letter-spacing: -0.03em;
+      color: var(--iv);
+    }
+    .cta__right { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+    .cta__sub {
+      font-size: 14px; font-weight: 300; line-height: 1.7;
+      color: rgba(239,230,216,0.6);
+    }
+    .cta__btn {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--red); background: var(--iv);
+      padding: 16px 40px;
+      transition: all 0.25s;
+    }
+    .cta__btn:hover { background: var(--bg); color: var(--iv); }
+    .cta__lnk {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(239,230,216,0.5);
+      display: flex; align-items: center; gap: 10px;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .cta__lnk::after { content: '→'; }
+    .cta__lnk:hover { color: var(--iv); gap: 16px; }
+
+    /* ── FOOTER ── */
+    .ft {
+      background: var(--bg2);
+      border-top: 1px solid var(--br);
+      padding: 32px var(--g);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ft__logo { font-family: var(--fd); font-size: 16px; }
+    .ft__logo em { color: var(--red); font-style: normal; }
+    .ft__nav { display: flex; gap: 28px; list-style: none; }
+    .ft__nav a {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--faint); transition: color 0.2s;
+    }
+    .ft__nav a:hover { color: var(--dim); }
+    .ft__c { font-size: 10px; color: var(--faint); }
+
+    /* ── REVEAL ── */
+    .r { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .r.v { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.10s; } .d2 { transition-delay: 0.20s; } .d3 { transition-delay: 0.32s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .sb { display: none; }
+      .mob { display: flex; }
+      .main { margin-left: 0; }
+      .hero { min-height: auto; padding-top: 80px; }
+      .hero__item { flex: 0 0 100%; border-right: none; padding-right: 0; padding-left: 0; }
+      .hero__item:nth-child(even) { padding-left: 0; }
+      .at-tag { display: none; }
+      .acc-panel__inner { grid-template-columns: 1fr; }
+      .ap-desc { padding-right: 0; margin-bottom: 28px; }
+      .proc__top { grid-template-columns: 1fr; }
+      .proc__steps { grid-template-columns: repeat(2,1fr); }
+      .step__arr { display: none; }
+      .cta { grid-template-columns: 1fr; }
+      .ft__nav { display: none; }
+    }
+    @media (max-width: 560px) {
+      .proc__steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sb">
+  <div class="sb__logo">Century<em>Joy</em></div>
+  <nav class="sb__nav">
+    <ul>
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./services.html" class="active">Services</a></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="sb__foot">
+    <a href="#" class="sb__cta">Start a Project →</a>
+    <div class="sb__copy">© 2024 Century Plyboards India Ltd.</div>
+  </div>
+</aside>
+
+<div class="mob">
+  <div class="mob__logo">Century<em>Joy</em></div>
+  <a href="./about.html" class="mob__link">About →</a>
+</div>
+
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__ghost" aria-hidden="true">
+      <span>Visualize</span>
+      <span>Render</span>
+      <span>Animate</span>
+    </div>
+    <div class="hero__content">
+      <div class="hero__kicker r">What We Offer</div>
+      <h1 class="hero__h r d1">Services Built<br>for the<br><em>Discerning</em><br>Eye</h1>
+      <div class="hero__list r d2" id="hero-list">
+        <div class="hero__item" data-target="0">
+          <span class="hero__num">01</span>
+          <span class="hero__name">Architectural Visualization</span>
+          <span class="hero__arr">↓</span>
+        </div>
+        <div class="hero__item" data-target="1">
+          <span class="hero__num">02</span>
+          <span class="hero__name">Interior Rendering</span>
+          <span class="hero__arr">↓</span>
+        </div>
+        <div class="hero__item" data-target="2">
+          <span class="hero__num">03</span>
+          <span class="hero__name">Product Visualization</span>
+          <span class="hero__arr">↓</span>
+        </div>
+        <div class="hero__item" data-target="3">
+          <span class="hero__num">04</span>
+          <span class="hero__name">Animated Walkthroughs</span>
+          <span class="hero__arr">↓</span>
+        </div>
+        <div class="hero__item" data-target="4">
+          <span class="hero__num">05</span>
+          <span class="hero__name">Virtual Staging</span>
+          <span class="hero__arr">↓</span>
+        </div>
+        <div class="hero__item" data-target="5">
+          <span class="hero__num">06</span>
+          <span class="hero__name">Design Development</span>
+          <span class="hero__arr">↓</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCORDION -->
+  <div class="acc" id="accordion">
+
+    <!-- 01 -->
+    <div class="acc-item r" id="ai-0">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="at-num">01</span>
+        <span class="at-name">Architectural Visualization</span>
+        <span class="at-tag">Exterior · Aerial</span>
+        <span class="at-icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel__inner">
+          <div class="ap-desc">
+            <p class="ap-p">We produce photorealistic exterior renders that capture the material, scale, and context of a building before a brick is laid. From street-level perspectives to aerial overviews, our renders give developers, architects, and planners a faithful image of the final structure.</p>
+            <p class="ap-p">Each render is composed with an understanding of light, atmosphere, and surrounding environment — making it a powerful tool for project approvals, sales collateral, and stakeholder presentations.</p>
+            <div class="ap-bullets">
+              <div class="ap-bullet">Facade and elevation renders</div>
+              <div class="ap-bullet">Site and master plan visualizations</div>
+              <div class="ap-bullet">Aerial and drone perspective views</div>
+              <div class="ap-bullet">Day, dusk, and night lighting variants</div>
+            </div>
+          </div>
+          <div class="ap-img">
+            <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=85&auto=format&fit=crop" alt="Architectural visualization" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="acc-item r" id="ai-1">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="at-num">02</span>
+        <span class="at-name">Interior Rendering</span>
+        <span class="at-tag">Residential · Commercial</span>
+        <span class="at-icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel__inner">
+          <div class="ap-desc">
+            <p class="ap-p">Our interior renders bring spaces to life with material accuracy, considered light, and a sense of atmosphere that photographs of built spaces struggle to match. We specialize in capturing the unique character of Century Ply's material range — panel textures, veneers, laminates — within the context of a fully realized interior.</p>
+            <p class="ap-p">Whether for a high-end residence, a corporate office, or a hospitality concept, we render spaces that communicate the designer's intent without ambiguity.</p>
+            <div class="ap-bullets">
+              <div class="ap-bullet">Living, dining, and bedroom renders</div>
+              <div class="ap-bullet">Commercial and retail interiors</div>
+              <div class="ap-bullet">Kitchen and bathroom close-ups</div>
+              <div class="ap-bullet">Furniture and millwork detailing</div>
+            </div>
+          </div>
+          <div class="ap-img">
+            <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=900&q=85&auto=format&fit=crop" alt="Interior rendering" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="acc-item r" id="ai-2">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="at-num">03</span>
+        <span class="at-name">Product Visualization</span>
+        <span class="at-tag">Material · Catalogue</span>
+        <span class="at-icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel__inner">
+          <div class="ap-desc">
+            <p class="ap-p">We render individual products and materials with studio-quality precision — from ply panels and laminates to furniture pieces and surface finishes. Our product visualization captures the tactile qualities of materials: grain, sheen, texture, and edge detail — all rendered with the same fidelity we apply to full-scale spaces.</p>
+            <p class="ap-p">Product renders are essential for catalogue production, e-commerce, brand materials, and specification sheets where physical samples cannot reach.</p>
+            <div class="ap-bullets">
+              <div class="ap-bullet">Panel and laminate swatch renders</div>
+              <div class="ap-bullet">Furniture and millwork product shots</div>
+              <div class="ap-bullet">Material exploration and finish variants</div>
+              <div class="ap-bullet">Catalogue and specification imagery</div>
+            </div>
+          </div>
+          <div class="ap-img">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85&auto=format&fit=crop" alt="Product visualization" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="acc-item r" id="ai-3">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="at-num">04</span>
+        <span class="at-name">Animated Walkthroughs</span>
+        <span class="at-tag">Video · Cinematic</span>
+        <span class="at-icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel__inner">
+          <div class="ap-desc">
+            <p class="ap-p">Our animated walkthroughs translate static renders into immersive video experiences — ideal for sales launches, presentation decks, and digital campaigns. A well-crafted walkthrough allows viewers to move through a space, sense its scale, and connect with its atmosphere in a way that static imagery cannot achieve.</p>
+            <p class="ap-p">We compose each animation like a cinematic sequence — with considered camera moves, lighting transitions, and spatial pacing that reflects the design's narrative.</p>
+            <div class="ap-bullets">
+              <div class="ap-bullet">Interior fly-through animations</div>
+              <div class="ap-bullet">Exterior walk-around sequences</div>
+              <div class="ap-bullet">Sales launch video production</div>
+              <div class="ap-bullet">High-resolution export for all platforms</div>
+            </div>
+          </div>
+          <div class="ap-img">
+            <img src="https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=900&q=85&auto=format&fit=crop" alt="Animated walkthrough" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="acc-item r" id="ai-4">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="at-num">05</span>
+        <span class="at-name">Virtual Staging</span>
+        <span class="at-tag">Real Estate · Development</span>
+        <span class="at-icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel__inner">
+          <div class="ap-desc">
+            <p class="ap-p">We furnish empty or incomplete spaces virtually — transforming bare photographs of rooms into fully styled, market-ready images. Virtual staging is an efficient solution for property developers and agents seeking to present units before completion, or reposition existing listings with a fresh interior concept.</p>
+            <p class="ap-p">The result is a photorealistic styled interior that matches the actual proportions and lighting of the physical space.</p>
+            <div class="ap-bullets">
+              <div class="ap-bullet">Residential unit staging</div>
+              <div class="ap-bullet">Commercial and show-home concepts</div>
+              <div class="ap-bullet">Multiple styling options per space</div>
+              <div class="ap-bullet">3-day delivery on standard projects</div>
+            </div>
+          </div>
+          <div class="ap-img">
+            <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=900&q=85&auto=format&fit=crop" alt="Virtual staging" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="acc-item r" id="ai-5">
+      <button class="acc-trigger" aria-expanded="false">
+        <span class="at-num">06</span>
+        <span class="at-name">Design Development</span>
+        <span class="at-tag">Concept · Iteration</span>
+        <span class="at-icon">+</span>
+      </button>
+      <div class="acc-panel">
+        <div class="acc-panel__inner">
+          <div class="ap-desc">
+            <p class="ap-p">We work alongside architects and interior designers during the design development phase — producing iterative renders that help test material combinations, spatial arrangements, and lighting concepts before any final decision is made. It is a collaborative process built on fast feedback and clear visual communication.</p>
+            <p class="ap-p">Think of it as a visual design laboratory: we render your ideas quickly so you can evaluate them honestly and move toward a stronger final result.</p>
+            <div class="ap-bullets">
+              <div class="ap-bullet">Rapid concept renders for client review</div>
+              <div class="ap-bullet">Material and finish option testing</div>
+              <div class="ap-bullet">Spatial layout exploration</div>
+              <div class="ap-bullet">Revision rounds included</div>
+            </div>
+          </div>
+          <div class="ap-img">
+            <img src="https://images.unsplash.com/photo-1581922814484-0b48460b7010?w=900&q=85&auto=format&fit=crop" alt="Design development" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /acc -->
+
+  <!-- PROCESS -->
+  <section class="proc">
+    <div class="proc__top">
+      <h2 class="proc__h r">How a Project<br>Comes to Life</h2>
+      <p class="proc__sub r d1">A clear, collaborative workflow from brief to final delivery — with transparency and quality at every stage.</p>
+    </div>
+    <div class="proc__steps">
+      <div class="step r">
+        <div class="step__n">01</div>
+        <div class="step__t">Brief & Scope</div>
+        <p class="step__d">We receive your drawings, references, and material specifications. A clear brief is the foundation of a precise render.</p>
+        <span class="step__arr">→</span>
+      </div>
+      <div class="step r d1">
+        <div class="step__n">02</div>
+        <div class="step__t">Modelling & Setup</div>
+        <p class="step__d">Our artists build the 3D scene, assemble materials, and establish camera angles for your review before rendering begins.</p>
+        <span class="step__arr">→</span>
+      </div>
+      <div class="step r d2">
+        <div class="step__n">03</div>
+        <div class="step__t">Render & Lighting</div>
+        <p class="step__d">We apply final lighting, run high-resolution renders, and refine the image through post-processing to achieve the intended result.</p>
+        <span class="step__arr">→</span>
+      </div>
+      <div class="step r d3">
+        <div class="step__n">04</div>
+        <div class="step__t">Delivery & Revisions</div>
+        <p class="step__d">Final files are delivered in your required formats. We include a round of revisions to ensure the output meets your expectations.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2 class="cta__h r">Let's render<br>your next<br>project.</h2>
+    <div class="cta__right r d1">
+      <p class="cta__sub">From a single product render to a complete animated walkthrough — we bring your space to life before it exists.</p>
+      <a href="#" class="cta__btn">Start a Project</a>
+      <a href="./about.html" class="cta__lnk">Learn about us</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="ft">
+    <div class="ft__logo">Century<em>Joy</em></div>
+    <ul class="ft__nav">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="ft__c">© 2024 Century Plyboards India Ltd.</div>
+  </footer>
+
+</main>
+
+<script>
+  /* Scroll reveal */
+  const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('v')), { threshold: 0.05 });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+  /* Accordion */
+  function openItem(item) {
+    const panel = item.querySelector('.acc-panel');
+    const btn = item.querySelector('.acc-trigger');
+    item.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+  function closeItem(item) {
+    const panel = item.querySelector('.acc-panel');
+    const btn = item.querySelector('.acc-trigger');
+    item.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    panel.style.maxHeight = '0';
+  }
+
+  document.querySelectorAll('.acc-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.acc-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.acc-item.open').forEach(closeItem);
+      if (!isOpen) openItem(item);
+    });
+  });
+
+  /* Hero list clicks scroll to service */
+  document.querySelectorAll('.hero__item').forEach(el => {
+    el.addEventListener('click', () => {
+      const idx = el.dataset.target;
+      const target = document.getElementById('ai-' + idx);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(() => {
+        const item = target;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.acc-item.open').forEach(closeItem);
+        if (!isOpen) openItem(item);
+      }, 500);
+    });
+  });
+</script>
+</body>
+</html>

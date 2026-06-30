@@ -8,11 +8,18 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--ui);
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
-h1, h2, h3, h4 { margin: 0; font-family: var(--display); font-stretch: condensed; font-weight: 700; line-height: 1.08; letter-spacing: -0.01em; }
+/* ONE heading treatment, brand-wide (landing, portal, auth). Only the SIZE
+   changes by register. Every element-level rule sets a size so a bare heading
+   never falls back to the browser default. See DESIGN.md §Typography. */
+h1, h2, h3, h4 { margin: 0; font-family: var(--ui); font-weight: 700; line-height: var(--lh-h2); letter-spacing: -0.015em; text-wrap: balance; }
+h1 { font-family: var(--display); font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: -0.025em; }
+h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: -0.02em; }
+h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: -0.01em; }
+h4 { font-size: var(--fs-h3); }
 p { margin: 0; }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
@@ -23,14 +30,14 @@ button { font-family: inherit; }
 .muted { color: var(--text-dim); }
 .faint { color: var(--text-faint); }
 .eyebrow {
-  font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+  font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--red);
   display: inline-flex; align-items: center; gap: 9px;
 }
 .eyebrow::before { content: ""; width: 18px; height: 1px; background: var(--red); }
 
-/* Wordmark — "CENTURY" condensed bold red, "Joy" lighter currentColor (matches the logo) */
-.wordmark { display: inline-flex; align-items: baseline; gap: 5px; font-family: var(--display); font-stretch: condensed; font-weight: 700; font-size: 1.32rem; letter-spacing: 0; }
+/* Wordmark — "CENTURY" bold red, "Joy" lighter currentColor (matches the logo) */
+.wordmark { display: inline-flex; align-items: baseline; gap: 5px; font-family: var(--ui); font-weight: 700; font-size: 1.32rem; letter-spacing: 0; }
 .wordmark .wm-1 { color: var(--red); text-transform: uppercase; }
 .wordmark .wm-2 { color: currentColor; font-weight: 500; }
 
@@ -167,6 +174,7 @@ table.tbl .right { text-align: right; }
 .overlay { position: fixed; inset: 0; background: rgba(20, 16, 11, 0.5); z-index: 150; display: grid; place-items: center; padding: 20px; animation: fade var(--t); }
 .modal { background: var(--surface); border-radius: var(--r-lg); width: min(560px, 100%); max-height: 90vh; overflow: auto; box-shadow: var(--shadow-lift); }
 .modal-head { padding: 22px 24px 0; }
+.modal-head h2 { font-size: var(--fs-ui-h2); line-height: 1.2; }
 .modal-body { padding: 16px 24px; }
 .modal-foot { padding: 16px 24px 22px; display: flex; gap: 10px; justify-content: flex-end; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
@@ -194,8 +202,9 @@ table.tbl .right { text-align: right; }
 .auth-form { position: relative; display: grid; place-items: center; padding: clamp(28px, 4vw, 56px); }
 .auth-theme-toggle { position: absolute; top: 22px; right: 22px; }
 .auth-card { width: min(400px, 100%); }
-.auth-card h1 { font-size: 1.65rem; margin-bottom: 6px; }
-.auth-card .lead { color: var(--text-dim); margin-bottom: 26px; font-size: 14px; }
+/* Product register: compact heading step (see DESIGN.md §Typography). */
+.auth-card h1 { font-size: var(--fs-ui-h1); line-height: 1.12; margin-bottom: 6px; }
+.auth-card .lead { color: var(--text-dim); margin-bottom: 26px; font-size: 0.875rem; }
 .auth-card .alt { margin-top: 18px; font-size: 13px; color: var(--text-dim); text-align: center; }
 .auth-card .alt a { color: var(--red); font-weight: 600; }
 .auth-note { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; font-size: 12.5px; color: var(--text-dim); margin-bottom: 22px; }

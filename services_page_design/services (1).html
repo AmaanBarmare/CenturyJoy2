@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services — Century Joy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --ivory:   #F5EDE0;
+      --ivory-2: #EDE3D0;
+      --white:   #FFFFFF;
+      --ink:     #1A1A1A;
+      --mid:     #5C5550;
+      --warm:    #9A8F82;
+      --red:     #C1272D;
+      --border:  rgba(26,26,26,0.10);
+      --ff-d: 'Bodoni Moda', Georgia, serif;
+      --ff-b: 'Jost', system-ui, sans-serif;
+      --gutter: clamp(24px, 5vw, 80px);
+      --mw: 1360px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--ff-b);
+      font-weight: 400;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px var(--gutter);
+      background: rgba(245,237,224,0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.35s ease;
+    }
+    .nav.compact { padding-top: 14px; padding-bottom: 14px; }
+    .nav__logo {
+      font-family: var(--ff-d);
+      font-size: 20px; font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .nav__logo em { color: var(--red); font-style: normal; }
+    .nav__links {
+      display: flex; gap: 36px;
+      list-style: none;
+    }
+    .nav__links a {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--warm);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover,
+    .nav__links a.active { color: var(--ink); }
+    .nav__cta {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--white); background: var(--ink);
+      padding: 11px 28px;
+      transition: background 0.25s;
+    }
+    .nav__cta:hover { background: var(--red); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 160px var(--gutter) 60px;
+      max-width: var(--mw); margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: end;
+    }
+    .hero__left {}
+    .hero__right {
+      padding-bottom: 8px;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 14px;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 32px;
+    }
+    .eyebrow::before {
+      content: ''; display: block;
+      width: 36px; height: 1px;
+      background: currentColor;
+    }
+    .hero__headline {
+      font-family: var(--ff-d);
+      font-size: clamp(44px, 6.5vw, 88px);
+      font-weight: 400; font-style: italic;
+      line-height: 1.04; letter-spacing: -0.03em;
+    }
+    .hero__sub {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.8; color: var(--mid);
+      margin-bottom: 40px;
+    }
+    .hero__count {
+      display: flex; gap: 40px;
+    }
+    .hc__num {
+      font-family: var(--ff-d);
+      font-size: 36px; font-weight: 400;
+      color: var(--ink);
+    }
+    .hc__num em { color: var(--red); font-style: normal; }
+    .hc__lbl {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--warm); margin-top: 4px;
+    }
+
+    /* ── INTRO BAND ── */
+    .intro-band {
+      background: var(--ink); color: var(--white);
+      padding: clamp(48px, 6vw, 80px) var(--gutter);
+    }
+    .intro-band__inner {
+      max-width: var(--mw); margin: 0 auto;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 80px; align-items: center;
+    }
+    .intro-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--red);
+    }
+    .intro-text {
+      font-family: var(--ff-d);
+      font-size: clamp(20px, 2.5vw, 34px);
+      font-weight: 400; line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── SERVICE LIST ── */
+    .services-list {
+      max-width: var(--mw); margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .service-item {
+      border-top: 1px solid var(--border);
+      padding: clamp(48px, 7vw, 88px) 0;
+    }
+    .service-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .service-item__top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .service-item__num {
+      font-family: var(--ff-d);
+      font-size: 13px; font-weight: 400;
+      color: var(--red); letter-spacing: 0.04em;
+    }
+    .service-item__name {
+      font-family: var(--ff-d);
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 400; letter-spacing: -0.02em;
+      flex: 1; margin: 0 48px;
+      line-height: 1.1;
+    }
+    .service-item__tag {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--warm);
+      white-space: nowrap;
+    }
+
+    .service-item__body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 5vw, 80px);
+      align-items: start;
+    }
+    .service-item__desc {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.85; color: var(--mid);
+    }
+    .service-item__desc p + p { margin-top: 18px; }
+    .service-item__bullets {
+      margin-top: 28px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .bullet {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 400;
+      color: var(--mid);
+    }
+    .bullet::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+    .service-item__media {
+      height: clamp(240px, 32vw, 400px);
+      overflow: hidden;
+      position: relative;
+    }
+    .service-item__media img {
+      transition: transform 0.6s ease;
+    }
+    .service-item__media:hover img { transform: scale(1.04); }
+
+    /* ── PROCESS ── */
+    .process {
+      background: var(--ink); color: var(--white);
+      padding: clamp(72px, 10vw, 120px) var(--gutter);
+    }
+    .process__inner {
+      max-width: var(--mw); margin: 0 auto;
+    }
+    .process__header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: end;
+      margin-bottom: 72px;
+    }
+    .process__heading {
+      font-family: var(--ff-d);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .process__sub {
+      font-size: 14px; font-weight: 300;
+      line-height: 1.75; color: rgba(255,255,255,0.52);
+    }
+    .process__steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .step {
+      background: var(--ink);
+      padding: clamp(32px,3.5vw,48px) clamp(24px,2.5vw,36px);
+      position: relative;
+    }
+    .step::after {
+      content: '→';
+      position: absolute; right: -14px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px; color: var(--red);
+      z-index: 1;
+    }
+    .step:last-child::after { display: none; }
+    .step__num {
+      font-family: var(--ff-d);
+      font-size: 44px; font-weight: 400;
+      color: var(--red); opacity: 0.25;
+      line-height: 1; margin-bottom: 24px;
+    }
+    .step__title {
+      font-family: var(--ff-d);
+      font-size: 18px; font-weight: 400;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .step__desc {
+      font-size: 13px; font-weight: 300;
+      line-height: 1.7; color: rgba(255,255,255,0.48);
+    }
+
+    /* ── INDUSTRIES ── */
+    .industries {
+      padding: clamp(72px, 10vw, 120px) var(--gutter);
+      max-width: var(--mw); margin: 0 auto;
+    }
+    .industries__head {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: end;
+      margin-bottom: 64px;
+    }
+    .ind-heading {
+      font-family: var(--ff-d);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .ind-intro {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.75; color: var(--mid);
+    }
+    .industry-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .industry-card {
+      background: var(--ivory);
+      padding: 40px 32px;
+      display: flex; flex-direction: column;
+      gap: 16px;
+      transition: background 0.3s;
+    }
+    .industry-card:hover { background: var(--white); }
+    .industry-card__icon {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .industry-card__name {
+      font-family: var(--ff-d);
+      font-size: 18px; font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+    .industry-card__desc {
+      font-size: 13px; font-weight: 300;
+      line-height: 1.65; color: var(--mid);
+    }
+
+    /* ── CTA ── */
+    .cta-band {
+      padding: clamp(80px, 10vw, 128px) var(--gutter);
+      max-width: var(--mw); margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 80px; align-items: center;
+      border-top: 1px solid var(--border);
+    }
+    .cta-heading {
+      font-family: var(--ff-d);
+      font-size: clamp(32px, 4.5vw, 60px);
+      font-weight: 400; font-style: italic;
+      line-height: 1.08; letter-spacing: -0.02em;
+    }
+    .cta-actions { display: flex; flex-direction: column; gap: 14px; }
+    .btn {
+      display: block;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 16px 36px; text-align: center;
+      transition: all 0.25s; white-space: nowrap;
+    }
+    .btn--solid {
+      color: var(--white); background: var(--ink);
+      border: 1px solid var(--ink);
+    }
+    .btn--solid:hover { background: var(--red); border-color: var(--red); }
+    .btn--outline {
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+    .btn--outline:hover { border-color: var(--ink); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--ink); color: var(--white);
+      padding: 48px var(--gutter);
+    }
+    .footer__inner {
+      max-width: var(--mw); margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer__logo {
+      font-family: var(--ff-d);
+      font-size: 18px; font-weight: 500;
+    }
+    .footer__logo em { color: var(--red); font-style: normal; }
+    .footer__nav {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .footer__nav a {
+      font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.38);
+      transition: color 0.2s;
+    }
+    .footer__nav a:hover { color: rgba(255,255,255,0.8); }
+    .footer__copy {
+      font-size: 11px; color: rgba(255,255,255,0.28);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── REVEAL ── */
+    .r {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .r.v { opacity: 1; transform: none; }
+    .r.d1 { transition-delay: 0.10s; }
+    .r.d2 { transition-delay: 0.20s; }
+    .r.d3 { transition-delay: 0.32s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; gap: 48px; }
+      .intro-band__inner { grid-template-columns: 1fr; gap: 20px; }
+      .service-item__top { flex-direction: column; gap: 12px; }
+      .service-item__name { margin: 0; }
+      .service-item__body { grid-template-columns: 1fr; }
+      .process__header { grid-template-columns: 1fr; }
+      .process__steps { grid-template-columns: repeat(2, 1fr); }
+      .step::after { display: none; }
+      .industry-grid { grid-template-columns: repeat(2, 1fr); }
+      .industries__head { grid-template-columns: 1fr; }
+      .cta-band { grid-template-columns: 1fr; gap: 40px; }
+      .nav__links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .process__steps { grid-template-columns: 1fr; }
+      .industry-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav__logo">Century<em>Joy</em></div>
+  <ul class="nav__links">
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./about.html">About</a></li>
+    <li><a href="./services.html" class="active">Services</a></li>
+    <li><a href="#">Portfolio</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="nav__cta">Start a Project</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__left">
+    <div class="eyebrow r">What We Offer</div>
+    <h1 class="hero__headline r d1">Visualization<br>Built for the<br>Discerning Eye</h1>
+  </div>
+  <div class="hero__right">
+    <p class="hero__sub r">From a single product render to a complete animated walkthrough, every service we offer is designed to communicate architectural and material intent with photorealistic precision.</p>
+    <div class="hero__count r d1">
+      <div>
+        <div class="hc__num">6<em>+</em></div>
+        <div class="hc__lbl">Service Types</div>
+      </div>
+      <div>
+        <div class="hc__num">48<em>h</em></div>
+        <div class="hc__lbl">Avg. Turnaround</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO BAND -->
+<div class="intro-band">
+  <div class="intro-band__inner">
+    <div class="intro-label r">Our Services</div>
+    <p class="intro-text r d1">We cover every stage of visual communication — from early concept exploration to final presentation-ready imagery that drives client decisions.</p>
+  </div>
+</div>
+
+<!-- SERVICES LIST -->
+<div class="services-list">
+
+  <!-- 01 -->
+  <div class="service-item">
+    <div class="service-item__top r">
+      <span class="service-item__num">01</span>
+      <h2 class="service-item__name">Architectural Visualization</h2>
+      <span class="service-item__tag">Exterior · Aerial</span>
+    </div>
+    <div class="service-item__body">
+      <div class="service-item__desc r">
+        <p>We produce photorealistic exterior renders that capture the material, scale, and context of a building before a brick is laid. From street-level perspectives to aerial overviews, our renders give developers, architects, and planners a faithful image of the final structure.</p>
+        <p>Each render is composed with an understanding of light, atmosphere, and surrounding environment — making it a powerful tool for project approvals, sales collateral, and stakeholder presentations.</p>
+        <div class="service-item__bullets">
+          <div class="bullet">Facade and elevation renders</div>
+          <div class="bullet">Site and master plan visualizations</div>
+          <div class="bullet">Aerial and drone perspective views</div>
+          <div class="bullet">Day, dusk, and night lighting variants</div>
+        </div>
+      </div>
+      <div class="service-item__media r d1">
+        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=85&auto=format&fit=crop" alt="Architectural visualization" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="service-item">
+    <div class="service-item__top r">
+      <span class="service-item__num">02</span>
+      <h2 class="service-item__name">Interior Rendering</h2>
+      <span class="service-item__tag">Residential · Commercial</span>
+    </div>
+    <div class="service-item__body">
+      <div class="service-item__desc r">
+        <p>Our interior renders bring spaces to life with material accuracy, considered light, and a sense of atmosphere that photographs of built spaces struggle to match. We specialize in capturing the unique character of Century Ply's material range — panel textures, veneers, laminates — within the context of a fully realized interior.</p>
+        <p>Whether for a high-end residence, a corporate office, or a hospitality concept, we render spaces that communicate the designer's intent without ambiguity.</p>
+        <div class="service-item__bullets">
+          <div class="bullet">Living, dining, and bedroom renders</div>
+          <div class="bullet">Commercial and retail interiors</div>
+          <div class="bullet">Kitchen and bathroom detailing</div>
+          <div class="bullet">Furniture and millwork close-ups</div>
+        </div>
+      </div>
+      <div class="service-item__media r d1">
+        <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=900&q=85&auto=format&fit=crop" alt="Interior rendering" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="service-item">
+    <div class="service-item__top r">
+      <span class="service-item__num">03</span>
+      <h2 class="service-item__name">Product Visualization</h2>
+      <span class="service-item__tag">Material · Catalogue</span>
+    </div>
+    <div class="service-item__body">
+      <div class="service-item__desc r">
+        <p>We render individual products and materials with studio-quality precision — from ply panels and laminates to furniture pieces and surface finishes. Our product visualization captures the tactile qualities of materials: grain, sheen, texture, and edge detail — all rendered with the same fidelity we apply to full-scale spaces.</p>
+        <p>Product renders are essential for catalogue production, e-commerce, brand materials, and specification sheets where physical samples cannot reach.</p>
+        <div class="service-item__bullets">
+          <div class="bullet">Panel and laminate swatch renders</div>
+          <div class="bullet">Furniture and millwork product shots</div>
+          <div class="bullet">Material exploration and finish variants</div>
+          <div class="bullet">Catalogue and specification imagery</div>
+        </div>
+      </div>
+      <div class="service-item__media r d1">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85&auto=format&fit=crop" alt="Product visualization" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="service-item">
+    <div class="service-item__top r">
+      <span class="service-item__num">04</span>
+      <h2 class="service-item__name">Animated Walkthroughs</h2>
+      <span class="service-item__tag">Video · Cinematic</span>
+    </div>
+    <div class="service-item__body">
+      <div class="service-item__desc r">
+        <p>Our animated walkthroughs translate static renders into immersive video experiences — ideal for sales launches, presentation decks, and digital campaigns. A well-crafted walkthrough allows viewers to move through a space, sense its scale, and connect with its atmosphere in a way that static imagery cannot achieve.</p>
+        <p>We compose each animation like a cinematic sequence — with considered camera moves, lighting transitions, and spatial pacing that reflects the design's narrative.</p>
+        <div class="service-item__bullets">
+          <div class="bullet">Interior fly-through animations</div>
+          <div class="bullet">Exterior and site walk-around sequences</div>
+          <div class="bullet">Sales launch video production</div>
+          <div class="bullet">High-resolution export for all platforms</div>
+        </div>
+      </div>
+      <div class="service-item__media r d1">
+        <img src="https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=900&q=85&auto=format&fit=crop" alt="Animated walkthrough" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="service-item">
+    <div class="service-item__top r">
+      <span class="service-item__num">05</span>
+      <h2 class="service-item__name">Virtual Staging</h2>
+      <span class="service-item__tag">Real Estate · Development</span>
+    </div>
+    <div class="service-item__body">
+      <div class="service-item__desc r">
+        <p>We furnish empty or incomplete spaces virtually — transforming bare photographs of rooms into fully styled, market-ready images. Virtual staging is an efficient solution for property developers and agents seeking to present units before completion, or reposition existing listings with a fresh interior concept.</p>
+        <p>The result is a photorealistic styled interior that matches the actual proportions and lighting of the physical space.</p>
+        <div class="service-item__bullets">
+          <div class="bullet">Residential unit staging</div>
+          <div class="bullet">Commercial and show-home concepts</div>
+          <div class="bullet">Multiple styling options per space</div>
+          <div class="bullet">3-day delivery on standard projects</div>
+        </div>
+      </div>
+      <div class="service-item__media r d1">
+        <img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=900&q=85&auto=format&fit=crop" alt="Virtual staging" />
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 -->
+  <div class="service-item">
+    <div class="service-item__top r">
+      <span class="service-item__num">06</span>
+      <h2 class="service-item__name">Design Development</h2>
+      <span class="service-item__tag">Concept · Iteration</span>
+    </div>
+    <div class="service-item__body">
+      <div class="service-item__desc r">
+        <p>We work alongside architects and interior designers during the design development phase — producing iterative renders that help test material combinations, spatial arrangements, and lighting concepts before any final decision is made. It is a collaborative process built on fast feedback and clear visual communication.</p>
+        <p>Think of it as a visual design laboratory: we render your ideas quickly so you can evaluate them honestly and move toward a stronger final result.</p>
+        <div class="service-item__bullets">
+          <div class="bullet">Rapid concept renders for client review</div>
+          <div class="bullet">Material and finish option testing</div>
+          <div class="bullet">Spatial layout exploration</div>
+          <div class="bullet">Revision rounds included</div>
+        </div>
+      </div>
+      <div class="service-item__media r d1">
+        <img src="https://images.unsplash.com/photo-1581922814484-0b48460b7010?w=900&q=85&auto=format&fit=crop" alt="Design development" />
+      </div>
+    </div>
+  </div>
+
+</div><!-- /services-list -->
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="process__inner">
+    <div class="process__header">
+      <h2 class="process__heading r">How a Project<br>Comes to Life</h2>
+      <p class="process__sub r d1">A clear, collaborative workflow from brief to final delivery — with transparency and quality at every stage.</p>
+    </div>
+    <div class="process__steps">
+      <div class="step r">
+        <div class="step__num">01</div>
+        <div class="step__title">Brief & Scope</div>
+        <p class="step__desc">We receive your drawings, references, and material specifications. A clear brief is the foundation of a precise render.</p>
+      </div>
+      <div class="step r d1">
+        <div class="step__num">02</div>
+        <div class="step__title">Modelling & Setup</div>
+        <p class="step__desc">Our artists build the 3D scene, assemble materials, and establish the camera angles for your review before rendering begins.</p>
+      </div>
+      <div class="step r d2">
+        <div class="step__num">03</div>
+        <div class="step__title">Render & Lighting</div>
+        <p class="step__desc">We apply final lighting, run high-resolution renders, and refine the image through post-processing to achieve the intended result.</p>
+      </div>
+      <div class="step r d3">
+        <div class="step__num">04</div>
+        <div class="step__title">Delivery & Revisions</div>
+        <p class="step__desc">Final files are delivered in your required formats. We include a round of revisions to ensure the output meets your expectations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section class="industries">
+  <div class="industries__head">
+    <h2 class="ind-heading r">Who We Serve</h2>
+    <p class="ind-intro r d1">Our clients span every discipline that needs to communicate space and material with clarity and conviction.</p>
+  </div>
+  <div class="industry-grid">
+    <div class="industry-card r">
+      <div class="industry-card__icon">🏛</div>
+      <div class="industry-card__name">Architecture Firms</div>
+      <p class="industry-card__desc">Exterior and interior renders for planning submissions, client pitches, and award entries.</p>
+    </div>
+    <div class="industry-card r d1">
+      <div class="industry-card__icon">🪑</div>
+      <div class="industry-card__name">Interior Designers</div>
+      <p class="industry-card__desc">Concept renders and material boards that communicate design intent to clients before installation.</p>
+    </div>
+    <div class="industry-card r d2">
+      <div class="industry-card__icon">🏢</div>
+      <div class="industry-card__name">Developers</div>
+      <p class="industry-card__desc">Sales launch imagery and animated walkthroughs for residential and commercial projects.</p>
+    </div>
+    <div class="industry-card r d3">
+      <div class="industry-card__icon">✦</div>
+      <div class="industry-card__name">Material Brands</div>
+      <p class="industry-card__desc">Product and material visualization for catalogues, e-commerce, and brand campaigns.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2 class="cta-heading r">Let's render<br>your next project.</h2>
+  <div class="cta-actions r d1">
+    <a href="#" class="btn btn--solid">Start a Project</a>
+    <a href="./about.html" class="btn btn--outline">Learn About Us</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__logo">Century<em>Joy</em></div>
+    <ul class="footer__nav">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="footer__copy">© 2024 Century Plyboards India Ltd.</div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+  }, { threshold: 0.06, rootMargin: '0px 0px -28px 0px' });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+  // Nav compact
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('compact', window.scrollY > 60);
+  }, { passive: true });
+</script>
+</body>
+</html>

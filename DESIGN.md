@@ -1,162 +1,236 @@
-# Design
+# Century Joy — Design System
 
-A synthesis of four mockups into one system. **Backbone:** Option 6's full-screen scroll
-experience (the favorite). **Geometry:** Option 10's rounded blocks + pills. **Services layout:**
-Option 7's sticky-image split (serif dropped). **App navigation + editorial numbering:**
-Option 1's rail and numbered sections. Brand red `#C8102E` and the Century Joy star logo are
-constant across everything.
+> **Single source of truth.** Every reusable value — font, type size, colour, spacing,
+> radius, button — is defined **once** so every page reuses the same vocabulary instead of
+> re-inventing it. The numbers below are the ones **actually shipped in the CSS**, derived from
+> the **landing page** (`/`, `LandingV2`). When you build a new page, you pull from here; you do
+> **not** invent a new size.
+>
+> **The golden rule:** never hard-code a font-size, hex, or px when a token exists. Reach for
+> `var(--…)`. A new shade or size → add a token here first, then use it.
 
-## Visual Theme
+---
 
-Two coordinated worlds, one brand.
+## 0. Where things live in code
 
-- **Landing (brand register) — cinematic & dark.** Scene: *an architect in a bright studio,
-  deciding whether to trust a new visualisation service; the renders must glow and feel
-  expensive.* Photoreal renders read most powerfully on a warm near-black. Long, deliberate,
-  scroll-snapped panels that alternate dark and light for rhythm.
-- **Portal (product register) — calm & light.** Scene: *a studio producer at a desk for hours,
-  scanning project queues and file names in a bright office; needs clarity and low eye strain.*
-  Warm paper-white surfaces, a quiet left rail, dense-but-legible tables, rounded cards.
+| File | Owns |
+|---|---|
+| `client/src/styles/tokens.css` | **All design tokens** — fonts, the type scale, colour, radii, spacing, motion (`:root` custom properties). Edit the system here. |
+| `client/src/styles/base.css` | Global elements (the brand-wide `h1–h4` treatment, `body`, links), buttons, badges, cards, forms, tables, tracker, dropzone, toast, modal, **auth** screens. |
+| `client/src/styles/landing-v2.css` | The **landing page** (`.lv2`) + Gallery (`.gp`) — the marketing register. The reference for this whole document. |
+| `client/src/styles/portal.css` | The signed-in **portal** app shell (`.shell`) — the product register. |
+| `client/src/styles/theme.css` | Dark-theme swaps for the portal/auth. |
+| `client/src/styles/landing.css` | **Legacy** `/v1` landing (`.landing`). Kept for reference, not in the live nav. Not part of this system; do not build new pages against it. |
 
-Continuity between them is carried by the red, the logo, the type, and the rounded geometry,
-not by forcing one treatment onto both.
+The page at `/` is `LandingV2`; `/gallery` reuses its register; `/login` + the password screens use the
+auth shell; everything behind login uses the portal shell.
 
-## Color
+---
 
-OKLCH, neutrals tinted warm toward the brand hue. Never pure `#000`/`#fff`.
+## 1. One brand, two registers
 
-### Brand
-| Token | OKLCH | ~hex | Use |
+Every page is the **same type system** (Arial, one heading treatment, the same scale tokens, the
+same spacing rhythm, the same red). Only the **size register** changes between the two worlds:
+
+| | **Marketing** (`.lv2`, `.gp`) | **Product** (`.shell`, `.auth`) |
+|---|---|---|
+| Pages | Landing, Gallery, future About / Services | Login + password screens, dashboards, project detail |
+| Mood | Editorial, white, confident | Calm, dense, low-strain |
+| Type sizes | **Full scale** — big fluid hero & section headings | **Compact step** of the *same* scale |
+| Corners | **10px everywhere** (buttons included) | Pills for buttons, **22px** cards |
+| Red usage | Committed — CTAs, marquee, red Contact panel | Restrained — primary buttons, active nav, focus |
+
+Both registers share `tokens.css`. The only thing that differs is which **size step** a heading
+uses. That is the entire consistency contract: *same system everywhere, two size registers.*
+
+---
+
+## 2. Typography — the heart of the system
+
+### Family
+Brand typeface is **Arial** (the landing's register), used on **every page** so a given tag is
+the same font everywhere.
+
+| Token | Stack | Use |
+|---|---|---|
+| `--ui` | `Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif` | Body, UI, **and headings** |
+| `--display` | `"Arial Black", "Arial Bold", Arial, "Helvetica Neue", sans-serif` | The heavy cut — **only** the hero `h1` and a few large display numbers |
+| `--mono` | `ui-monospace, "SF Mono", Menlo, Consolas, monospace` | Reference codes, file sizes, timestamps (`.mono`, tabular figures) |
+
+### ONE heading treatment, brand-wide
+There is a **single heading treatment** (set on the global `h1–h4` rule in `base.css`, mirrored
+on `.lv2`): `--ui` family, **weight 700**, `text-wrap: balance`, tight tracking. Every heading in
+the product reads as the same Arial voice; **only the SIZE changes by register.**
+
+### The type scale — ONE size per role (single source of truth)
+Defined once in `tokens.css`, referenced everywhere. **These are the only heading/body sizes on
+the site.**
+
+| Role | Tag | Token | Value | Line-height |
+|---|---|---|---|---|
+| **Hero headline** | `h1` | `--fs-h1` | `clamp(2rem, 4vw, 3.6rem)` (32→57.6px), `--display` | `1.04` |
+| **Section heading** | `h2` | `--fs-h2` | `clamp(1.875rem, 4vw, 2.875rem)` (30→46px) | `1.06` |
+| **Sub-heading** | `h3` | `--fs-h3` | `1.25rem` (20px) | `1.25` |
+| **Lede** (section intro) | `p.lead` | `--fs-lead` | `clamp(1.125rem, 1.6vw, 1.3125rem)` (18→21px) | `1.6` |
+| **Body** | `p` | `--fs-body` | `1rem` (16px) | `1.7` |
+| **Meta / caption** | — | `--fs-meta` | `0.8125rem` (13px) | — |
+| **Eyebrow** | `.eyebrow` | `--fs-eyebrow` | `0.75rem` (12px), weight 700, uppercase, tracking `.18em`, red, with a leading rule | — |
+
+**Compact (product) heading steps** — same ladder, dense UI:
+
+| Role | Selector | Token | Value |
 |---|---|---|---|
-| `--red` | — | `#B81F25` | Brand red (guidelines RGB 184,31,37). Primary actions, accent, active nav |
-| `--red-deep` | — | `#7A1411` | Dark red — hover / pressed |
-| `--red-tint` | — | `#F8ECEC` | Subtle red wash behind brand moments (light) |
-| `--gold` | — | `#C3952D` | Gold/dark-yellow secondary accent (sparing) |
+| Page / auth title `h1` | `.shell h1`, `.topbar h1`, `.auth-card h1` | `--fs-ui-h1` | `1.5rem` (24px) |
+| Greeting / modal title `h2` | `.shell h2`, `.greeting h2`, `.modal-head h2` | `--fs-ui-h2` | `1.25rem` (20px) |
+| Card / block title | `.card-title` (div) | — | `1rem` (16px) |
 
-Strategy: landing = **Committed** (red is load-bearing on CTAs, the contact panel can go
-red-drenched). Portal = **Restrained** (red ≤10%: primary buttons, current selection, focus).
+So `h1 (24) > h2 (20) > card-title (16)` in the product UI — a correct hierarchy that mirrors the
+marketing `h1 > h2 > h3`.
 
-### Dark surfaces (landing)
-| Token | OKLCH | Use |
+### The orphan rule — every heading is sized by a rule, never the browser
+The global `h1–h4` rule sets a **font-size** (from the tokens), so a bare `<h2>` with no section
+class still renders at the canonical size instead of the browser's `~1.5em` default. A page or
+section may set only **contextual** properties on a heading — `max-width`, `margin`, `color`,
+`text-align`, `white-space`. It must **never** set `font-size` / `line-height` / `font-family` to
+a different value. That is exactly how pages drift (the home hero `h1` and the Gallery hero `h1`
+were once `3.6rem` vs `4rem`; the CTA `h2` was a different size and used Arial Black). They are now
+one `h1`, one `h2`, one `h3` — everywhere in the register.
+
+### Sanctioned size exceptions (the only headings that may differ — locked, intentional)
+A few compact list/step titles and one display heading are allowed to break the scale. They are
+listed here so they read as deliberate, not as drift:
+
+| Role | Selector | Size | Why |
+|---|---|---|---|
+| Intro-gate title | `.gate__title` | `clamp(1.9rem, 4.4vw, 3.3rem)` | Full-screen cinematic overlay, bespoke layout |
+| Service display heading | `.svc2-name` (h3) | `clamp(30px, 4.4vw, 50px)` | Focal heading of the active service panel |
+| Process step title | `.pstp h3` | `18px` | Compact 6-column stepper |
+| Process step copy | `.pstp p` | `14.5px` | Compact 6-column stepper |
+| FAQ question / summary | `details.faq summary` | `17px` | Disclosure control, not a heading tag |
+| Gallery caption title | `.gcard .cap .t` | `1.4rem` | Caption over an image |
+
+If you need a heading outside this list, use a scale token — do not add a new size.
+
+### Copy
+No em dashes (`—`) as sentence punctuation in visible copy — use a comma, full stop, or rewrite.
+(The short red dash before an `.eyebrow` is a CSS leading rule, not punctuation, and stays.)
+
+---
+
+## 3. Colour
+
+Brand red is the only constant across every page and theme. Neutrals are warm in the marketing
+register, cool in the portal.
+
+### Brand (`:root`)
+| Token | Hex | Use |
 |---|---|---|
-| `--d-bg` | `oklch(0.17 0.008 60)` | Warm near-black page |
-| `--d-panel` | `oklch(0.21 0.010 60)` | Raised panel |
-| `--d-text` | `oklch(0.95 0.008 80)` | Bone text |
-| `--d-text-dim` | `oklch(0.95 0.008 80 / 0.62)` | Secondary |
-| `--d-line` | `oklch(0.95 0.008 80 / 0.14)` | Hairlines |
+| `--red` | `#b81f25` | Primary actions, accents, active nav, focus, errors (RGB 184,31,37) |
+| `--red-deep` | `#7a1411` | Hover / pressed red; red Contact panel bg |
+| `--red-tint` | `#f8ecec` | Subtle red wash (portal active nav, etc.) |
+| `--gold` | `#c3952d` | Secondary accent — sparing |
 
-### Light surfaces (portal + light landing panels)
-| Token | OKLCH | Use |
+Red is reserved for: primary CTAs, the active selection, focus ring, validation errors. **Status
+colours never use red** so "red = action/error" stays unambiguous.
+
+### Marketing neutrals (`.lv2`, `.gp`, `.gate` — warm white/black)
+| Token | Hex | Use |
 |---|---|---|
-| `--bg` | `oklch(0.98 0.006 85)` | Warm paper page |
-| `--surface` | `oklch(1 0 0 / 0)` → `oklch(0.995 0.004 85)` | Cards |
-| `--surface-2` | `oklch(0.96 0.006 85)` | Sidebar / inset / table header |
-| `--text` | `oklch(0.23 0.012 50)` | Ink |
-| `--text-dim` | `oklch(0.55 0.012 55)` | Muted |
-| `--line` | `oklch(0.90 0.008 75)` | Borders |
+| `--ink` | `#15120e` | Near-black ink |
+| `--ink-soft` | `#4d473f` | Body copy |
+| `--ink-faint` | `#8c8579` | Meta / tertiary |
+| `--paper` | `#ffffff` | Page |
+| `--paper-2` | `#f6f4f0` | Tinted section / chips |
+| `--paper-3` | `#efebe4` | Image mats / placeholders |
+| `--line` / `--line-2` | `#e8e3d9` / `#d6cfc1` | Hairline / stronger border |
+| `--red-tint` (local) | `#fbeded` | Red wash on white |
 
-### Status palette (kept distinct from brand red to avoid confusion)
-Each badge = tinted background + readable text + a small dot/icon + a label. Never color alone.
-| Group | Statuses | Hue |
+### Product neutrals (`.shell` — cool greys) + status palette
+The portal overrides the neutrals to a cool set on `.shell` (`--bg #f5f6f8`, `--surface #fff`,
+`--surface-2 #eef0f3`, `--text #15181c`, `--text-dim #5b6068`, `--line #e7e9ee`, …). Status badges
+use a fixed palette kept **distinct from brand red** — amber / blue / violet / emerald / green /
+slate, each a tinted bg + readable fg + a dot. Status is **never colour alone** — always a label.
+See `tokens.css` for the exact values; dark-mode swaps live in `theme.css`.
+
+---
+
+## 4. Spacing & rhythm
+
+| Token | Value | Use |
 |---|---|---|
-| Awaiting | `pending`, `revision_*_requested` | amber `oklch(0.80 0.13 75)` |
-| Active | `accepted`, `in_progress` | blue `oklch(0.62 0.13 245)` |
-| In revision | `revision_*_in_progress` | violet `oklch(0.58 0.15 300)` |
-| Ready | `first_draft_submitted`, `revision_*_submitted` | emerald `oklch(0.65 0.14 165)` |
-| Completed | `completed` | green `oklch(0.58 0.13 150)` |
-| Closed | `closed` | slate `oklch(0.62 0.02 250)` |
+| `--pad` | `clamp(18px, 4vw, 44px)` | Page / section horizontal gutter |
+| `--gap` | `18px` | Default flex / grid gap |
+| `--text-gap` | `16px` | **Gap between any two stacked text elements** |
+| `--sec-pad` | `clamp(72px, 8vw, 120px)` | **Section vertical rhythm** |
 
-Red is reserved for: primary CTAs, destructive confirmations, and validation errors.
+**The text rhythm rule.** Any group of stacked text (eyebrow → heading → lede → body) is a flex
+column with `gap: var(--text-gap)` so the spacing between text is **identical in every section**.
+In the landing this is the `.tstack` / `.shead` primitive; reuse it (or its `--text-gap` value) on
+new pages instead of ad-hoc margins. Section padding is always `--sec-pad`. Marketing content is
+capped at `--maxw: 1240px` inside `--gut: clamp(20px, 5vw, 60px)`; the portal page caps at 1340px.
 
-## Typography
+---
 
-**Decision (per the official Century Joy Brand Guidelines, Mar 2025):** **Helvetica Neue**
-throughout, no serif, no web font.
+## 5. Geometry — radii
 
-- **Headings / display — Helvetica Neue Condensed Bold.** `--display` family with
-  `font-stretch: condensed` + weight 700, tight tracking. Echoes the condensed "CENTURY"
-  logotype. (`"Arial Narrow"` is the condensed fallback off macOS.)
-- **Body / UI — Helvetica Neue**, weights 400 (body), 500 (medium), 700 (bold). Hierarchy comes
-  from weight + size contrast, which is the guideline's intent ("headline bold / body bold").
-- **Reference codes / metadata** — `ui-monospace` with tabular figures for `CJ-2026-0001`,
-  file sizes, timestamps.
-- Stacks: body `"Helvetica Neue", Helvetica, Arial, sans-serif`;
-  display `"Helvetica Neue Condensed", "Helvetica Neue", "Arial Narrow", Arial, sans-serif`.
-
-### Scale
-- **Landing (fluid):** display `clamp(2.6rem, 6.4vw, 6rem)` / 0.98 line-height / -0.035em; H2
-  `clamp(2rem, 4vw, 3.4rem)`; lead `clamp(1.05rem, 1.3vw, 1.25rem)`. ≥1.25 ratio between steps.
-- **Portal (fixed):** h1 1.75rem, h2 1.375rem, h3 1.125rem, body 0.9375rem (15px), small
-  0.8125rem, label 0.6875rem uppercase 0.14em tracking. ~1.2 ratio.
-- Eyebrow/label: Archivo 600, 0.16–0.24em tracking, uppercase, dim.
-
-## Geometry & Elevation (from Option 10)
-
-- Radii: `--r-sm 10px`, `--r 16px`, `--r-lg 22px`, `--r-xl 32px` (hero frame), pill `999px`.
-- Buttons are pills. Cards and image frames use `--r-lg`/`--r-xl`.
-- Elevation (light only, soft + warm): `0 1px 0 var(--line)` resting; `0 24px 48px -32px
-  oklch(0.23 0.012 50 / 0.45)` on hover-lift. Dark surfaces use hairline borders, not shadows.
-- No nested cards. No side-stripe borders (banned).
-
-## Components
-
-- **Buttons** — pill. `primary` (solid red → red-deep hover), `outline`, `ghost`, `bone`
-  (light-on-dark). States: default/hover/focus-visible/active/disabled/loading. Arrow glyph
-  slides on hover.
-- **Status badge** — pill, tint bg + dot + label, per the status palette above.
-- **Progress tracker** — horizontal stepper with numbered circles + connecting line (Option 10),
-  collapses to vertical on mobile. Maps the 12-state machine into the visible lifecycle:
-  Submitted → Accepted → In Progress → Draft → (Revisions) → Completed → Closed. Current step in
-  red; done steps filled; future steps outlined.
-- **Cards** — rounded surface, hairline border, optional hover-lift. Used only where a card is
-  genuinely the right affordance (not as a default wrapper).
-- **Data table** — used for project lists; sticky header on `--surface-2`, zebra-free, row hover,
-  ref number in mono, status badge column, right-aligned actions. Responsive: collapses to
-  stacked rows on narrow screens.
-- **File drop / upload slot** — dashed rounded zone; per-file chip showing name + size + remove;
-  image thumbnails render inline; progress bar during upload; client-side type/size hints.
-- **App shell (portal)** — left rail (Option 1, recolored light): star logo, role-scoped nav
-  with small index numerals, user + logout at the bottom; collapses to a top bar < 920px. Top
-  content bar shows page title + summary counts.
-- **Landing nav** — fixed top bar + right-side **dot index** (Option 6); both auto-switch
-  light/dark theme based on the panel in view.
-- **Modals** — used sparingly (modal-as-default is banned). Allowed: submission confirmation,
-  revision request, admin status-override (reason required), destructive confirms.
-- **Toasts** — bottom-right, 200ms, for action feedback (e.g. "Email sent to studio team").
-- **Forms** — single-column, label above field, inline validation, live char counters
-  (concept note ≤250, revision notes ≤500), submit disabled until valid.
-
-## Layout
-
-- **Landing** — `scroll-snap-type: y proximity` full-height panels (Option 6): Hero (dark) →
-  About (light) → Services (sticky-image split, Option 7) → Gallery (dark mosaic/filmstrip,
-  Option 1) → Process (6-step) → FAQ → Contact (red-drenched). Each panel art-directed; dot
-  index tracks position.
-- **Portal** — left rail + fluid content max-width ~1340px; rounded content cards; predictable,
-  repeated grid so users navigate by muscle memory.
-
-## Motion
-
-- **Landing (brand):** staggered entrance reveals on scroll, theme crossfade between panels,
-  sticky-image crossfade in services, arrow nudges. Easing ease-out-quint/expo, 600–800ms.
-  Never animate layout properties; transition `transform`/`opacity`. Full `prefers-reduced-motion`
-  fallback to instant.
-- **Portal (product):** 150–250ms state transitions only; skeleton loaders (not centered
-  spinners); motion conveys state, never decoration; no page-load choreography.
-
-## Imagery
-
-Brand register requires real imagery. Landing uses photoreal interior/architecture renders
-(Unsplash placeholders until Century Ply supplies real renders); search the physical object
-("warm-lit living room render at dusk"), not the category. In the portal, the deliverables
-themselves are the imagery — thumbnails 180×120, full view on click.
-
-## Source map (what we take from each option)
-
-| From | We take | We drop |
+| Token | Value | Use |
 |---|---|---|
-| **Option 6** (favorite) | Scroll-snap full-screen panels; top bar + right dot index; per-panel light/dark theme switching | — |
-| **Option 10** | Rounded radii, pill buttons, soft warm shadows, bento About, circular-step process, card hover-lift | Flat generic Poppins look |
-| **Option 7** | Sticky-image services split; generous editorial spacing | Cormorant serif (reflex-reject) |
-| **Option 1** | Left-rail app nav (recolored for portal), numbered section index, mosaic gallery | All-dark-everything for the portal |
-| **All four** | Brand red `#C8102E`, the content/copy, scroll-reveal pattern, the star logo | Poppins (→ Archivo), "Century Ply 3D Services" name (→ Century Joy) |
+| `--r-sm` | `10px` | Inputs, small chips |
+| `--r` | `16px` | Stats, tiles |
+| `--r-lg` | `22px` | **Portal cards**, tables, modal |
+| `--r-xl` | `32px` | Large image frames (portal) |
+| `--pill` | `999px` | **Portal buttons & badges** |
+
+**Register override:** the **marketing register (`.lv2`) sets every box radius — including
+`--pill` — to `10px`**, so cards, images, inputs, chips **and buttons** all share one soft 10px
+corner. Round controls (slider grips, arrow buttons, dots) stay circles (`50%`). The **portal**
+keeps the global scale: pill buttons/badges, 22px cards.
+
+---
+
+## 6. Components (reuse as-is — don't restyle locally)
+
+- **Button (`.btn`)** — inline-flex, 8px gap, **13.5px / weight 700**, padding `12px 22px`
+  (landing) / `11px 22px` (portal). Marketing: `.btn-red` (solid → `--red-deep`), `.btn-ghost`
+  (white, `--line-2` border). Portal: `.btn-primary` / `.btn-outline` / `.btn-ghost` /
+  `.btn-danger`. Modifiers `.btn-sm`, `.btn-lg`, `.btn-block`. A trailing `.ar` arrow slides
+  `translateX(3px)` on hover. Corner = the register's radius (10px landing, pill portal).
+- **Eyebrow (`.eyebrow`)** — `--fs-eyebrow`, weight 700, uppercase, tracking `.18em`, red, with a
+  leading rule (22×2px landing / 18×1px portal). Content is a single label ("About", "Services"),
+  never `Label — Century Joy`.
+- **Wordmark (`.wordmark`)** — Arial, "CENTURY" red uppercase + "Joy" lighter currentColor.
+- **Status badge (`.badge`)** — pill, tint bg + 7px dot + label, via `.amber/.blue/.violet/`
+  `.emerald/.green/.slate`.
+- **Card (`.card`)** — `--surface`, hairline border, `--r-lg`, soft shadow. `.card-pad`,
+  `.card-head`, `.card-title` (1rem/700). Use only where a card is the right affordance.
+- **Forms** — `.field` (18px bottom margin), label above (12.5px/700), `.input/.textarea/.select`
+  (14px, `--r-sm`, **focus → red border**). Hint 11.5px faint, `.error` 12px red.
+- **Table (`.tbl`)**, **Modal (`.overlay` + `.modal`)**, **Toast (`.toast`)**, **Progress tracker
+  (`.tracker`)**, **File drop (`.dropzone` / `.filechip`)** — see `base.css`. Modal-as-default and
+  side-stripe borders are banned.
+
+---
+
+## 7. Motion
+
+Animate `transform` / `opacity` only. Tokens: `--t-fast 0.16s`, `--t 0.22s`,
+`--ease-out-expo`, `--ease-out-quint`. Landing reveals = `.rv` (opacity + 22px translateY, 0.6s
+expo, `.in` when in view), staggered with `.d1/.d2/.d3`. Portal = 150–250ms state transitions
+only. Always honour `prefers-reduced-motion` (every CSS file ends with the fallback).
+
+---
+
+## 8. Checklist for a new page
+
+1. **Pick the register.** Marketing → wrap in `.lv2` (10px corners, full type scale, committed
+   red). Product → wrap in `.shell` (pills + 22px cards, compact scale, restrained red).
+2. **Pick the heading by role**, not by size — `h1` hero/title, `h2` section, `h3` sub-section.
+   The size flows from the canonical rule. **Never set `font-size` / `line-height` / `font-family`
+   on a heading**; set only `max-width` / `margin` / `color` / `text-align`. (Orphan rule, §2.)
+3. **Lead each section with an `.eyebrow`;** put the red accent phrase in `<span class="red">`.
+4. **Stack text with `--text-gap`** (reuse `.tstack` / `.shead`); pad sections with `--sec-pad`;
+   gutter with `--pad`/`--gut`.
+5. **Reuse components as-is** — `.btn` / `.badge` / `.card` / `.field` / `.tbl` / `.modal`.
+6. **Only reference tokens** (`var(--…)`) — no raw hex/px. New value → add a token first.
+7. Animate `transform`/`opacity` only; add `.rv` for landing reveals; respect reduced-motion.
+8. Verify the page reads as the **same Arial voice** as the landing before shipping.

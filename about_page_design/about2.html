@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Century Joy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:   #0C0C0C;
+      --bg2:  #141414;
+      --bg3:  #1C1C1C;
+      --iv:   #EFE6D8;
+      --dim:  rgba(239,230,216,0.44);
+      --faint:rgba(239,230,216,0.14);
+      --red:  #C1272D;
+      --br:   rgba(239,230,216,0.08);
+      --fd: 'Bodoni Moda', Georgia, serif;
+      --fb: 'Jost', system-ui, sans-serif;
+      --sw: 248px;
+      --g: clamp(32px,5vw,72px);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--iv);
+      font-family: var(--fb);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── SIDEBAR ── */
+    .sb {
+      position: fixed; left: 0; top: 0; bottom: 0; width: var(--sw);
+      background: var(--bg2);
+      border-right: 1px solid var(--br);
+      display: flex; flex-direction: column;
+      padding: 40px 36px; z-index: 200;
+    }
+    .sb__logo {
+      font-family: var(--fd);
+      font-size: 19px; font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 64px;
+    }
+    .sb__logo em { color: var(--red); font-style: normal; }
+    .sb__nav { flex: 1; }
+    .sb__nav ul { list-style: none; display: flex; flex-direction: column; }
+    .sb__nav li { border-bottom: 1px solid var(--br); }
+    .sb__nav a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--dim);
+      transition: color 0.2s;
+    }
+    .sb__nav a::after { content: '→'; font-size: 10px; opacity: 0; transition: opacity 0.2s; }
+    .sb__nav a:hover { color: var(--iv); }
+    .sb__nav a:hover::after { opacity: 1; }
+    .sb__nav a.active { color: var(--iv); }
+    .sb__nav a.active::after { content: '—'; opacity: 1; color: var(--red); }
+    .sb__foot {
+      border-top: 1px solid var(--br);
+      padding-top: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .sb__cta {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--red);
+      display: flex; align-items: center; gap: 8px;
+      transition: gap 0.2s;
+    }
+    .sb__cta:hover { gap: 14px; }
+    .sb__copy { font-size: 10px; color: var(--faint); letter-spacing: 0.06em; }
+
+    /* ── MOBILE BAR ── */
+    .mob {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      background: rgba(12,12,12,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--br);
+      padding: 15px 24px;
+      align-items: center; justify-content: space-between;
+    }
+    .mob__logo { font-family: var(--fd); font-size: 16px; }
+    .mob__logo em { color: var(--red); font-style: normal; }
+    .mob__link { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--sw); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+    .hero__bg { position: absolute; inset: 0; }
+    .hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(12,12,12,0.25) 0%, rgba(12,12,12,0.75) 60%, rgba(12,12,12,0.96) 100%);
+    }
+    .hero__meta {
+      position: relative; z-index: 1;
+      padding: 44px var(--g);
+      display: flex; align-items: flex-start; justify-content: space-between;
+    }
+    .hero__tag {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--red);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero__tag::before { content: ''; display: block; width: 28px; height: 1px; background: var(--red); }
+    .hero__yr { font-size: 10px; color: var(--dim); letter-spacing: 0.1em; }
+    .hero__bot {
+      position: relative; z-index: 1;
+      padding: clamp(40px,5vw,64px) var(--g);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 40px; align-items: end;
+    }
+    .hero__h {
+      font-family: var(--fd);
+      font-size: clamp(52px,8vw,108px);
+      font-weight: 400; font-style: italic;
+      line-height: 0.94; letter-spacing: -0.03em;
+    }
+    .hero__sub {
+      font-size: 14px; font-weight: 300;
+      line-height: 1.85; color: var(--dim);
+      max-width: 340px; justify-self: end; align-self: end;
+      padding-bottom: 8px;
+    }
+    .hero__scroll {
+      position: absolute; bottom: clamp(40px,5vw,64px); right: var(--g);
+      display: flex; align-items: center; gap: 10px;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--dim);
+    }
+    .hero__scroll::after { content: ''; display: block; width: 40px; height: 1px; background: var(--br); }
+
+    /* ── STATEMENT ── */
+    .stmt {
+      background: var(--bg2);
+      border-top: 1px solid var(--br);
+      border-bottom: 1px solid var(--br);
+      padding: clamp(80px,12vw,160px) var(--g);
+    }
+    .stmt__inner { max-width: 860px; }
+    .stmt__kicker {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 32px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .stmt__kicker::before { content: ''; display: block; width: 32px; height: 1px; background: var(--red); }
+    .stmt__text {
+      font-family: var(--fd);
+      font-size: clamp(26px,3.8vw,52px);
+      font-weight: 400; line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .stmt__text em { color: var(--red); font-style: italic; }
+
+    /* ── STORY ── */
+    .story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .story__txt {
+      padding: clamp(60px,8vw,100px) var(--g);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .story__ov {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 28px;
+    }
+    .story__h {
+      font-family: var(--fd);
+      font-size: clamp(26px,3vw,40px);
+      font-weight: 400; line-height: 1.15; letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+    .story__p {
+      font-size: 14px; font-weight: 300; line-height: 1.9; color: var(--dim);
+    }
+    .story__p + .story__p { margin-top: 18px; }
+    .story__pull {
+      margin-top: 44px;
+      padding: 28px;
+      background: var(--bg2);
+      border-left: 2px solid var(--red);
+    }
+    .story__pull p {
+      font-family: var(--fd); font-style: italic;
+      font-size: 17px; line-height: 1.5; color: var(--iv);
+    }
+    .story__img {
+      position: relative; overflow: hidden;
+      min-height: 500px;
+    }
+    .story__img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(12,12,12,0.15);
+    }
+
+    /* ── VALUES ── */
+    .vals {
+      background: var(--bg2);
+      padding: clamp(64px,9vw,120px) var(--g);
+    }
+    .vals__top {
+      display: flex; align-items: baseline; justify-content: space-between;
+      border-bottom: 1px solid var(--br);
+      padding-bottom: 32px; margin-bottom: 0;
+    }
+    .vals__h {
+      font-family: var(--fd);
+      font-size: clamp(24px,3vw,38px);
+      font-weight: 400; letter-spacing: -0.02em;
+    }
+    .vals__ct {
+      font-size: 11px; color: var(--dim); letter-spacing: 0.08em;
+    }
+    .val {
+      display: grid;
+      grid-template-columns: 60px 1fr 1fr;
+      gap: clamp(24px,3vw,48px);
+      align-items: start;
+      border-bottom: 1px solid var(--br);
+      padding: clamp(32px,4vw,52px) 0;
+    }
+    .val__n {
+      font-family: var(--fd); font-size: 52px; font-weight: 400;
+      color: var(--red); opacity: 0.18; line-height: 1;
+    }
+    .val__title {
+      font-family: var(--fd);
+      font-size: clamp(20px,2.4vw,30px);
+      font-weight: 400; letter-spacing: -0.01em;
+      padding-top: 4px;
+    }
+    .val__body {
+      font-size: 13px; font-weight: 300;
+      line-height: 1.85; color: var(--dim); padding-top: 8px;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-bottom: 1px solid var(--br);
+    }
+    .stat {
+      padding: clamp(44px,5vw,72px) clamp(24px,3vw,48px);
+      border-right: 1px solid var(--br);
+    }
+    .stat:last-child { border-right: none; }
+    .stat__n {
+      font-family: var(--fd);
+      font-size: clamp(44px,5.5vw,76px);
+      font-weight: 400; line-height: 1;
+      margin-bottom: 12px;
+    }
+    .stat__n em { color: var(--red); font-style: normal; }
+    .stat__bar { width: 24px; height: 1px; background: var(--red); margin-bottom: 12px; }
+    .stat__l {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── CTA ── */
+    .cta {
+      background: var(--red);
+      padding: clamp(80px,11vw,140px) var(--g);
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: end;
+    }
+    .cta__h {
+      font-family: var(--fd);
+      font-size: clamp(36px,5.5vw,76px);
+      font-weight: 400; font-style: italic;
+      line-height: 0.96; letter-spacing: -0.03em;
+      color: var(--iv);
+    }
+    .cta__right { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+    .cta__sub {
+      font-size: 14px; font-weight: 300; line-height: 1.7;
+      color: rgba(239,230,216,0.6);
+    }
+    .cta__btn {
+      display: inline-block;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--red); background: var(--iv);
+      padding: 16px 40px;
+      transition: all 0.25s;
+    }
+    .cta__btn:hover { background: var(--bg); color: var(--iv); }
+    .cta__lnk {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(239,230,216,0.5);
+      display: flex; align-items: center; gap: 10px;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .cta__lnk::after { content: '→'; }
+    .cta__lnk:hover { color: var(--iv); gap: 16px; }
+
+    /* ── FOOTER ── */
+    .ft {
+      background: var(--bg2);
+      border-top: 1px solid var(--br);
+      padding: 32px var(--g);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ft__logo { font-family: var(--fd); font-size: 16px; }
+    .ft__logo em { color: var(--red); font-style: normal; }
+    .ft__nav { display: flex; gap: 28px; list-style: none; }
+    .ft__nav a {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--faint); transition: color 0.2s;
+    }
+    .ft__nav a:hover { color: var(--dim); }
+    .ft__c { font-size: 10px; color: var(--faint); }
+
+    /* ── REVEAL ── */
+    .r { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .r.v { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.10s; } .d2 { transition-delay: 0.20s; } .d3 { transition-delay: 0.32s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .sb { display: none; }
+      .mob { display: flex; }
+      .main { margin-left: 0; }
+      .hero { padding-top: 60px; }
+      .hero__bot { grid-template-columns: 1fr; }
+      .hero__sub { justify-self: start; max-width: 100%; }
+      .story { grid-template-columns: 1fr; }
+      .story__img { min-height: 300px; }
+      .val { grid-template-columns: 48px 1fr; }
+      .val__body { display: none; }
+      .stats { grid-template-columns: repeat(2,1fr); }
+      .stat { border-bottom: 1px solid var(--br); }
+      .stat:nth-child(2n) { border-right: none; }
+      .cta { grid-template-columns: 1fr; }
+      .ft__nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sb">
+  <div class="sb__logo">Century<em>Joy</em></div>
+  <nav class="sb__nav">
+    <ul>
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./about.html" class="active">About</a></li>
+      <li><a href="./services.html">Services</a></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="sb__foot">
+    <a href="#" class="sb__cta">Start a Project →</a>
+    <div class="sb__copy">© 2024 Century Plyboards India Ltd.</div>
+  </div>
+</aside>
+
+<div class="mob">
+  <div class="mob__logo">Century<em>Joy</em></div>
+  <a href="./services.html" class="mob__link">Services →</a>
+</div>
+
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg">
+      <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&q=85&auto=format&fit=crop" alt="" />
+      <div class="hero__overlay"></div>
+    </div>
+    <div class="hero__meta">
+      <span class="hero__tag r">About the Studio</span>
+      <span class="hero__yr r">Est. 1986</span>
+    </div>
+    <div class="hero__bot">
+      <h1 class="hero__h r d1">The Studio<br><em>Behind</em><br>the Vision</h1>
+      <p class="hero__sub r d2">We are Century Ply's 3D visualization studio — where architectural intent becomes imagery that sells before anything is built.</p>
+    </div>
+    <div class="hero__scroll r">Scroll</div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="stmt">
+    <div class="stmt__kicker r">Our Belief</div>
+    <p class="stmt__text r d1">
+      Great design deserves to be <em>seen</em><br>
+      before it is built — rendered with<br>
+      total fidelity to the original intent.
+    </p>
+  </section>
+
+  <!-- STORY -->
+  <section class="story">
+    <div class="story__txt">
+      <div class="story__ov r">Our Story</div>
+      <h2 class="story__h r d1">Born from six decades of material excellence</h2>
+      <p class="story__p r d2">For over sixty years, Century Ply has shaped the interiors of India's most distinctive spaces. Century Joy is the natural extension of that legacy — a studio dedicated to visualizing the full material richness of architecture and interior design.</p>
+      <p class="story__p r d2">We combine deep product knowledge with world-class rendering technology to produce imagery that convinces, communicates, and compels the viewer to experience a space before a single panel is placed.</p>
+      <div class="story__pull r d3">
+        <p>"A render is not a picture of a room. It is a promise of what the room will feel like to live in."</p>
+      </div>
+    </div>
+    <div class="story__img r">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=900&q=85&auto=format&fit=crop" alt="Interior design render" />
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="vals">
+    <div class="vals__top">
+      <h2 class="vals__h r">The Way We Work</h2>
+      <span class="vals__ct r">Three Principles</span>
+    </div>
+    <div class="val r">
+      <div class="val__n">01</div>
+      <div class="val__title">Craft Before Speed</div>
+      <div class="val__body">We take the time to understand every material, every light condition, every spatial relationship before a single frame is rendered. Precision is not optional — it is the product.</div>
+    </div>
+    <div class="val r">
+      <div class="val__n">02</div>
+      <div class="val__title">Material Truth</div>
+      <div class="val__body">Plywood, stone, glass, fabric — each has its own language. Our renders speak it fluently, drawing on decades of material knowledge from the Century Ply universe.</div>
+    </div>
+    <div class="val r">
+      <div class="val__n">03</div>
+      <div class="val__title">Light as Story</div>
+      <div class="val__body">The same room, lit differently, tells a different story. We treat light not as a technical parameter but as a narrative device — shaping atmosphere, depth, and emotion in every scene.</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat r">
+      <div class="stat__n">60<em>+</em></div>
+      <div class="stat__bar"></div>
+      <div class="stat__l">Years of Heritage</div>
+    </div>
+    <div class="stat r d1">
+      <div class="stat__n">5k<em>+</em></div>
+      <div class="stat__bar"></div>
+      <div class="stat__l">Spaces Visualized</div>
+    </div>
+    <div class="stat r d2">
+      <div class="stat__n">200<em>+</em></div>
+      <div class="stat__bar"></div>
+      <div class="stat__l">Design Partners</div>
+    </div>
+    <div class="stat r d3">
+      <div class="stat__n">98<em>%</em></div>
+      <div class="stat__bar"></div>
+      <div class="stat__l">Client Return Rate</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2 class="cta__h r">Ready to see your vision rendered?</h2>
+    <div class="cta__right r d1">
+      <p class="cta__sub">From a single product render to a complete animated walkthrough — let's build something that sells your space before it's built.</p>
+      <a href="#" class="cta__btn">Start a Project</a>
+      <a href="./services.html" class="cta__lnk">View all services</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="ft">
+    <div class="ft__logo">Century<em>Joy</em></div>
+    <ul class="ft__nav">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Portfolio</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="ft__c">© 2024 Century Plyboards India Ltd.</div>
+  </footer>
+
+</main>
+
+<script>
+  const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('v')), { threshold: 0.07 });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

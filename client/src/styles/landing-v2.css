@@ -22,15 +22,16 @@
   --red-deep: #7a1411;
   --red-tint: #fbeded;
 
-  /* Type */
-  --font: Arial, "Helvetica Neue", Helvetica, "Liberation Sans", sans-serif;
-  --display: "Arial Black", "Arial Bold", Arial, sans-serif;
+  /* Type — inherits the shared brand system (tokens.css / DESIGN.md).
+     --font is the Arial body+heading family; --display (Arial Black, the hero
+     cut) is inherited from :root, so it is not re-declared here. */
+  --font: var(--ui);
 
   /* Geometry */
   --maxw: 1240px;
   --gut: clamp(20px, 5vw, 60px);
-  --sec: clamp(72px, 8vw, 120px);          /* one vertical rhythm for every section */
-  --tgap: 16px;                            /* one gap between stacked text elements */
+  --sec: var(--sec-pad);                   /* shared section vertical rhythm  */
+  --tgap: var(--text-gap);                 /* shared gap between stacked text */
   --shead-gap: clamp(40px, 5vw, 60px);     /* section header -> content */
   --r: 10px; --r-lg: 10px; --r-xl: 10px; --pill: 10px;
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -53,18 +54,20 @@
 .lv2 img { display: block; max-width: 100%; }
 .lv2 :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 4px; }
 
-/* The single type scale - one size per tag, used everywhere */
+/* The single type scale — one size per tag, drawn from the shared tokens
+   (tokens.css). Reused in every section; never re-declare a size locally. */
 .lv2 .eyebrow {
-  font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  font-size: var(--fs-eyebrow); font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
   color: var(--red); display: inline-flex; align-items: center; gap: 11px;
 }
 .lv2 .eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--red); }
-.lv2 h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.05; letter-spacing: -.02em; }
-.lv2 h2 .red { color: var(--red); }
-.lv2 h3 { font-size: 20px; line-height: 1.25; letter-spacing: -.01em; }
-.lv2 p  { font-size: 16px; line-height: 1.7; color: var(--ink-soft); }
-.lv2 .lead { font-size: clamp(18px, 1.6vw, 21px); line-height: 1.6; color: var(--ink-soft); font-weight: 400; }
-.lv2 .meta { font-size: 13px; line-height: 1.5; letter-spacing: .02em; color: var(--ink-faint); }
+.lv2 h1 { font-family: var(--display); font-size: var(--fs-h1); line-height: var(--lh-h1); letter-spacing: -.025em; }
+.lv2 h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); letter-spacing: -.02em; }
+.lv2 h1 .red, .lv2 h2 .red { color: var(--red); }
+.lv2 h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: -.01em; }
+.lv2 p  { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--ink-soft); }
+.lv2 .lead { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink-soft); font-weight: 400; }
+.lv2 .meta { font-size: var(--fs-meta); line-height: 1.5; letter-spacing: .02em; color: var(--ink-faint); }
 
 /* ── Layout primitives (reused by every section) ──────── */
 .lv2 .wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gut); width: 100%; }
@@ -200,7 +203,8 @@
 .lv2 .hero-grid { display: grid; grid-template-columns: 1fr 1.08fr; gap: clamp(34px, 5vw, 72px); align-items: start; }
 .lv2 .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .lv2 .hero-tags span { font-size: 12px; font-weight: 700; letter-spacing: .03em; color: var(--ink-soft); background: var(--paper-2); border: 1px solid var(--line); padding: 7px 14px; border-radius: var(--pill); }
-.lv2 .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.04; letter-spacing: -.025em; max-width: none; white-space: nowrap; }
+/* Hero headline inherits the canonical .lv2 h1 size; only context here. */
+.lv2 .hero h1 { max-width: none; white-space: nowrap; }
 .lv2 .hero h1 em { display: inline; font-style: normal; color: var(--red); white-space: nowrap; }
 /* nudge the hero text column down a little */
 .lv2 .hero-grid > .rv:first-child { margin-top: clamp(28px, 5vw, 72px); }
@@ -257,7 +261,6 @@
 .lv2 .wic::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--red); }
 .lv2 .wic svg { width: 23px; height: 23px; stroke: #fff; stroke-width: 1.9; fill: none; }
 .lv2 .wtxt { display: flex; flex-direction: column; gap: 8px; }
-.lv2 .wtxt p { font-size: 15px; }
 @media (max-width: 900px) {
   .lv2 .why2 { grid-template-columns: 1fr; gap: clamp(34px, 6vw, 48px); }
   .lv2 .why2-intro { position: static; }
@@ -428,7 +431,6 @@
 .lv2 details.faq .pl::after { width: 2px; height: 13px; transform: translate(-50%,-50%); transition: transform .25s var(--ease); }
 .lv2 details.faq[open] .pl::after { transform: translate(-50%,-50%) scaleY(0); }
 .lv2 details.faq .ans { padding: 0 36px 24px 0; }
-.lv2 details.faq .ans p { font-size: 15.5px; }
 @media (max-width: 760px) { .lv2 .faq-grid { grid-template-columns: 1fr; } }
 
 /* ============================================================
@@ -447,7 +449,7 @@
 .lv2 .cta-grid .ct img { width: 100%; height: 100%; object-fit: cover; }
 .lv2 .cta-grid .ct:nth-child(n+5):nth-child(-n+8) { grid-row: span 2; }
 .lv2 .cta-foot { text-align: center; max-width: 760px; margin: clamp(28px, 4vw, 52px) auto 0; display: flex; flex-direction: column; align-items: center; gap: var(--tgap); }
-.lv2 .cta-foot h2 { font-family: var(--display); font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -.02em; }
+/* CTA heading uses the canonical .lv2 h2 (no special display cut). */
 .lv2 .cta-foot h2 em { font-style: normal; color: var(--red); }
 .lv2 .cta-foot .cta-sub { max-width: 48ch; }
 .lv2 .cta-foot .cta-row { margin-top: 16px; }
@@ -553,7 +555,7 @@
 .gp .nav-links a.gp-current { color: var(--red); }
 
 .lv2 .gp-hero { padding-top: clamp(118px, 16vh, 168px); padding-bottom: clamp(32px, 3.5vw, 48px); }
-.gp-hero h1 { font-family: var(--display); font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1; letter-spacing: -.025em; }
+/* Gallery hero inherits the canonical .lv2 h1 — identical to the home hero. */
 .gp-hero .shead { max-width: 760px; margin-bottom: clamp(28px, 3.5vw, 42px); }
 
 /* filter pills */
