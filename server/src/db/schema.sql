@@ -69,7 +69,14 @@ create table if not exists projects (
                       'revision_2_requested','revision_2_in_progress','revision_2_submitted',
                       'completed','closed'
                     )),
-  concept_note      text check (char_length(concept_note) <= 250),
+  project_type      varchar(20) check (project_type in ('residential','commercial','hospitality','retail','other')),
+  services          text[],
+  concept_note      text check (char_length(concept_note) <= 250),   -- legacy; new projects use the structured brief below
+  brief_design_intent        text check (char_length(brief_design_intent) <= 2000),
+  brief_client_requirements  text check (char_length(brief_client_requirements) <= 2000),
+  brief_preferred_style      text check (char_length(brief_preferred_style) <= 2000),
+  brief_material_preferences text check (char_length(brief_material_preferences) <= 2000),
+  brief_special_instructions text check (char_length(brief_special_instructions) <= 2000),
   number_of_views   smallint not null check (number_of_views between 1 and 10),
   revisions_used    smallint not null default 0 check (revisions_used <= 2),
   revisions_allowed smallint not null default 2,
@@ -89,7 +96,7 @@ create table if not exists project_files (
   project_id      uuid not null references projects(id) on delete cascade,
   category        varchar(30) not null check (category in (
                     'plan_master','plan_floor','elevation',
-                    'sections','rcp_layouts','references'
+                    'sections','rcp_layouts','models_3d','references'
                   )),
   original_name   varchar(255) not null,
   storage_key     varchar(600) not null unique,

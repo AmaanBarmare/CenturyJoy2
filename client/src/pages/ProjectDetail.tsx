@@ -9,9 +9,18 @@ import { DeliverableUploader } from '../components/DeliverableUploader';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { endpoints, apiError } from '../lib/api';
-import { CATEGORY_LABEL, ITERATION_LABEL, formatBytes, formatDate, formatDateTime } from '../lib/format';
+import { CATEGORY_LABEL, ITERATION_LABEL, BRIEF_LABEL, PROJECT_TYPE_LABEL, SERVICE_LABEL, formatBytes, formatDate, formatDateTime } from '../lib/format';
 import { statusLabel } from '../lib/status';
+import { groupChunkedFiles, downloadReassembled } from '../lib/chunk';
 import type { ProjectDetail as Detail, ProjectStatus } from '../types';
+
+const BRIEF_KEYS = [
+  'brief_design_intent',
+  'brief_client_requirements',
+  'brief_preferred_style',
+  'brief_material_preferences',
+  'brief_special_instructions',
+] as const;
 
 export default function ProjectDetail() {
   const { id = '' } = useParams();
@@ -21,6 +30,7 @@ export default function ProjectDetail() {
   const [data, setData] = useState<Detail | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [dl, setDl] = useState<string | null>(null);
 
   const [revModal, setRevModal] = useState(false);
   const [revNotes, setRevNotes] = useState('');
@@ -55,6 +65,14 @@ export default function ProjectDetail() {
     try { await fn(); toast(ok, 'success'); await load(); }
     catch (err) { toast(apiError(err), 'error'); }
     finally { setBusy(false); setRevModal(false); setFlagModal(false); setOvModal(false); }
+  };
+
+  // Fetch + re-join a chunked 3D model, then save the original file.
+  const reassemble = async (key: string, name: string, parts: { downloadUrl: string }[]) => {
+    setDl(key);
+    try { await downloadReassembled(name, parts); }
+    catch (err) { toast(apiError(err), 'error'); }
+    finally { setDl(null); }
   };
 
   // studio action set
@@ -93,11 +111,33 @@ export default function ProjectDetail() {
           {/* Requirements */}
           <div className="card card-pad">
             <div className="card-title" style={{ marginBottom: 14 }}>Requirements</div>
-            <div className="row" style={{ gap: 28, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-              <div><div className="faint" style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em' }}>Views requested</div><div style={{ fontSize: 1.4 + 'rem', fontWeight: 700 }}>{p.number_of_views}</div></div>
-              {(role !== 'client') && <div><div className="faint" style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em' }}>Client</div><div style={{ fontWeight: 600 }}>{p.client_name}{p.company_name ? ` · ${p.company_name}` : ''}</div></div>}
+            <div className="meta-grid">
+              <div><div className="meta-k">Views requested</div><div style={{ fontSize: '1.4rem', fontWeight: 700, lineHeight: 1 }}>{p.number_of_views}</div></div>
+              {p.project_type && <div><div className="meta-k">Type</div><div style={{ fontWeight: 600 }}>{PROJECT_TYPE_LABEL[p.project_type] ?? p.project_type}</div></div>}
+              {role !== 'client' && <div><div className="meta-k">Client</div><div style={{ fontWeight: 600 }}>{p.client_name}{p.company_name ? ` · ${p.company_name}` : ''}</div></div>}
             </div>
-            {p.concept_note && <><div className="faint" style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em', marginTop: 18 }}>Concept note</div><p style={{ marginTop: 6 }}>{p.concept_note}</p></>}
+
+            {p.services && p.services.length > 0 && (
+              <div style={{ marginTop: 16 }}>
+                <div className="meta-k" style={{ marginBottom: 8 }}>Services</div>
+                <div className="chips">
+                  {p.services.map((s) => <span key={s} className="chip static">{SERVICE_LABEL[s] ?? s}</span>)}
+                </div>
+              </div>
+            )}
+
+            {BRIEF_KEYS.some((k) => p[k]) ? (
+              <div className="brief-list">
+                {BRIEF_KEYS.filter((k) => p[k]).map((k) => (
+                  <div className="brief-item" key={k}>
+                    <div className="meta-k">{BRIEF_LABEL[k]}</div>
+                    <p style={{ marginTop: 6, whiteSpace: 'pre-wrap' }}>{p[k]}</p>
+                  </div>
+                ))}
+              </div>
+            ) : p.concept_note ? (
+              <div style={{ marginTop: 18 }}><div className="meta-k">Concept note</div><p style={{ marginTop: 6 }}>{p.concept_note}</p></div>
+            ) : null}
           </div>
 
           {/* Submitted files */}
@@ -106,11 +146,20 @@ export default function ProjectDetail() {
             {files.length === 0 ? <p className="muted">No files.</p> : (
               Object.entries(groupBy(files, (f) => f.category)).map(([cat, list]) => (
                 <div key={cat} style={{ marginBottom: 14 }}>
-                  <div className="faint" style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 6 }}>{CATEGORY_LABEL[cat] ?? cat}</div>
-                  {list.map((f) => (
-                    <div className="filechip" key={f.id}>
-                      <div style={{ minWidth: 0 }}><div className="fc-name">{f.originalName}</div><div className="fc-size">{formatBytes(f.sizeBytes)}</div></div>
-                      <a className="btn btn-ghost btn-sm" style={{ marginLeft: 'auto' }} href={f.downloadUrl} target="_blank" rel="noreferrer">Download</a>
+                  <div className="meta-k" style={{ marginBottom: 6 }}>{CATEGORY_LABEL[cat] ?? cat}</div>
+                  {groupChunkedFiles(list).map((g) => (
+                    <div className="filechip" key={g.key}>
+                      <div style={{ minWidth: 0 }}>
+                        <div className="fc-name">{g.displayName}</div>
+                        <div className="fc-size">{formatBytes(g.totalBytes)}{g.isChunked ? ` · ${g.items.length} parts` : ''}</div>
+                      </div>
+                      {g.isChunked ? (
+                        <button className="btn btn-ghost btn-sm" style={{ marginLeft: 'auto' }} disabled={dl === g.key} onClick={() => reassemble(g.key, g.displayName, g.items)}>
+                          {dl === g.key ? <><span className="spinner" /> Joining…</> : 'Download'}
+                        </button>
+                      ) : (
+                        <a className="btn btn-ghost btn-sm" style={{ marginLeft: 'auto' }} href={g.items[0].downloadUrl} target="_blank" rel="noreferrer">Download</a>
+                      )}
                     </div>
                   ))}
                 </div>

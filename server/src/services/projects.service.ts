@@ -35,13 +35,30 @@ async function enrichList(projects: Project[]) {
 export const projectsService = {
   async create(
     user: RequestUser,
-    input: { title: string; conceptNote: string; numberOfViews: number; files: { category: any; originalName: string; sizeBytes: number }[] },
+    input: {
+      title: string;
+      projectType: string;
+      services: string[];
+      numberOfViews: number;
+      designIntent: string;
+      clientRequirements: string;
+      preferredStyle: string;
+      materialPreferences: string;
+      specialInstructions: string;
+      files: { category: any; originalName: string; sizeBytes: number }[];
+    },
   ): Promise<{ project: Project; uploads: PresignedItem[] }> {
     const project = await projectsRepo.create({
       client_id: user.id,
       title: input.title,
-      concept_note: input.conceptNote,
+      project_type: input.projectType,
+      services: input.services,
       number_of_views: input.numberOfViews,
+      brief_design_intent: input.designIntent,
+      brief_client_requirements: input.clientRequirements || null,
+      brief_preferred_style: input.preferredStyle || null,
+      brief_material_preferences: input.materialPreferences || null,
+      brief_special_instructions: input.specialInstructions || null,
     });
     await historyRepo.add({ project_id: project.id, from_status: null, to_status: 'pending', changed_by: user.id });
     const uploads = await uploadService.presignProjectFiles(project.id, input.files, user);

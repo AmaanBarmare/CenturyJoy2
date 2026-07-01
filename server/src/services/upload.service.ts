@@ -1,7 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import { badRequest, forbidden, notFound } from '../lib/errors';
 import { createSignedUploadUrl, deleteObject, readLeadingBytes } from '../lib/storage';
-import { detectKind, kindAllowedForCategory, type FileKind } from '../lib/magicBytes';
+import {
+  detectKind, kindAllowedForCategory,
+  isExtensionValidatedCategory, extensionAllowedForCategory,   // NEW
+  type FileKind,
+} from '../lib/magicBytes';
 import { filesRepo } from '../repositories/files.repo';
 import { deliverablesRepo } from '../repositories/deliverables.repo';
 import { writeAudit } from '../lib/audit';
@@ -22,6 +26,12 @@ const MIME_BY_KIND: Record<FileKind, string> = {
   pdf: 'application/pdf',
   dwg: 'image/vnd.dwg',
   jpg: 'image/jpeg',
+  png: 'image/png',            // NEW
+};
+
+const MIME_BY_EXT: Record<string, string> = {   // NEW — for 3D models
+  skp: 'application/vnd.sketchup.skp',
+  max: 'application/x-3dsmax',
 };
 
 function extOf(name: string): string {
@@ -85,6 +95,33 @@ export const uploadService = {
     const file = await filesRepo.findById(fileId);
     if (!file) throw notFound('File not found');
     if (file.is_confirmed) return;
+
+    // 3D model categories (.skp/.max) validated by extension + non-empty size.
+    if (isExtensionValidatedCategory(file.category)) {
+      const ext = extOf(file.storage_key);
+      const ok = extensionAllowedForCategory(file.category, ext) && file.file_size_bytes > 0;
+      if (!ok) {
+        await deleteObject(file.storage_key);
+        await filesRepo.remove(file.id);
+        await writeAudit({
+          user,
+          action: 'file_rejected',
+          entityType: 'project_file',
+          entityId: file.id,
+          metadata: { category: file.category, ext },
+        });
+        throw badRequest('Uploaded file failed validation and was removed. Please upload a valid file.');
+      }
+      await filesRepo.markConfirmed(file.id, MIME_BY_EXT[ext] ?? 'application/octet-stream');
+      await writeAudit({
+        user,
+        action: 'file_uploaded',
+        entityType: 'project_file',
+        entityId: file.id,
+        metadata: { category: file.category },
+      });
+      return;
+    }
 
     const bytes = await readLeadingBytes(file.storage_key, 16);
     const kind = bytes ? detectKind(bytes) : null;

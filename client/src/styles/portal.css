@@ -146,12 +146,124 @@
 @media (max-width: 980px) { .detail-grid { grid-template-columns: 1fr; } .detail-side { position: static; } }
 @media (max-width: 760px) {
   .shell, .shell.collapsed { grid-template-columns: 1fr; }
-  .rail { position: static; height: auto; flex-direction: row; align-items: center; flex-wrap: wrap; padding: 12px var(--pad); overflow: visible; }
-  .rail-top { padding: 0; margin-right: auto; flex-direction: row; }
+  .rail {
+    position: static; height: auto; overflow: visible;
+    flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px;
+    padding: 10px var(--pad); border-right: 0; border-bottom: 1px solid var(--line);
+  }
+  .rail-top { padding: 0; margin: 0 auto 0 0; flex-direction: row; }
   .collapse-btn { display: none; }
-  .rnav { flex-direction: row; flex: 0; flex-wrap: wrap; }
-  .rnav a { padding: 8px 12px; }
-  .rnav a .label { display: inline; }
-  .ruser { border-top: 0; padding-top: 0; margin-top: 0; flex-direction: row; }
+  .ruser { order: 2; border-top: 0; padding: 0; margin: 0; width: auto; flex-direction: row; gap: 8px; }
   .ruser-info { display: none; }
+  /* Nav becomes a single horizontally-scrollable strip so items never wrap. */
+  .rnav {
+    order: 3; flex: 1 1 100%; flex-direction: row; flex-wrap: nowrap;
+    gap: 4px; overflow-x: auto; padding-bottom: 2px;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .rnav::-webkit-scrollbar { display: none; }
+  .rnav a { flex: none; padding: 9px 13px; }
+  .rnav a .label { display: inline; }
+  .rnav a.cta { margin-top: 0; }
+}
+
+/* ============================================================
+   New Project form flow, selectable chips, brief disclosure
+   ============================================================ */
+.form-flow { display: flex; flex-direction: column; gap: 18px; max-width: 780px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  min-height: 44px; padding: 8px 15px; border-radius: var(--pill);
+  border: 1px solid var(--line-strong); background: var(--surface);
+  font-family: var(--ui); font-size: 13px; font-weight: 600; color: var(--text-dim);
+  cursor: pointer; transition: background var(--t), border-color var(--t), color var(--t);
+}
+.chip:hover { border-color: var(--text); color: var(--text); }
+.chip.on { background: var(--red-tint); border-color: var(--red); color: var(--red); }
+.chip .chip-tick { font-size: 12px; font-weight: 700; opacity: 0.9; }
+.chip.static { cursor: default; min-height: 34px; padding: 6px 13px; }
+.chip.static:hover { border-color: var(--line-strong); color: var(--text-dim); }
+
+.disclose { border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); }
+.disclose > summary {
+  list-style: none; cursor: pointer; padding: 12px 14px;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.disclose > summary::-webkit-details-marker { display: none; }
+.disclose > summary::before { content: "＋"; color: var(--red); font-weight: 700; }
+.disclose[open] > summary::before { content: "－"; }
+.disclose[open] > summary { border-bottom: 1px solid var(--line); }
+.disclose-body { padding: 16px 14px 4px; }
+
+/* Requirements meta + brief (ProjectDetail) */
+.meta-grid { display: flex; gap: 28px; flex-wrap: wrap; align-items: flex-start; }
+.meta-k { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-faint); font-weight: 600; }
+.brief-list { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.brief-item p { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+.kv { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0; font-size: 13px; border-bottom: 1px solid var(--line); }
+.kv:last-child { border-bottom: 0; }
+.kv > span:last-child { text-align: right; font-weight: 500; overflow-wrap: anywhere; }
+
+/* Modal summary table is display-only (no row affordance) */
+.summary-tbl tbody tr { cursor: default; }
+.summary-tbl tbody tr:hover { background: transparent; }
+.summary-tbl tbody td:first-child { width: 42%; color: var(--text-dim); }
+
+/* ============================================================
+   Analytics — KPI grid + hand-rolled bar charts
+   ============================================================ */
+.kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 22px; }
+.kpi-grid .stat { min-width: 0; }
+.chart-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.chart-card { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-2); padding: clamp(16px, 2.2vw, 22px); }
+.chart-card .card-title { margin-bottom: 16px; }
+.chart-empty { color: var(--text-faint); font-size: 13px; padding: 24px 0; text-align: center; }
+
+.bars { display: flex; align-items: flex-end; gap: 10px; height: 168px; }
+.bar-col { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; min-width: 0; height: 100%; }
+.bar-val { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.bar-track { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+.bar-fill { width: 100%; min-height: 3px; background: var(--surface-2); border: 1px solid var(--line-strong); border-bottom: 0; border-radius: 6px 6px 0 0; transition: height var(--t) var(--ease-out-expo); }
+.bar-fill.accent { background: var(--red); border-color: var(--red); }
+.bar-x { font-size: 11px; color: var(--text-dim); margin-top: 8px; }
+
+.hbars { display: flex; flex-direction: column; gap: 12px; }
+.hbar { display: grid; grid-template-columns: 130px 1fr 34px; align-items: center; gap: 12px; }
+.hbar-label { font-size: 12.5px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hbar-track { height: 12px; background: var(--surface-2); border-radius: var(--pill); overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: var(--pill); min-width: 4px; transition: width var(--t) var(--ease-out-expo); }
+.hbar-val { text-align: right; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ============================================================
+   Production board (columns + delivery queue)
+   ============================================================ */
+.board { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+.board-col { flex: 0 0 clamp(240px, 24vw, 300px); background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 12px; display: flex; flex-direction: column; }
+.board-head { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dim); padding: 2px 4px 10px; }
+.board-count { background: var(--surface); border: 1px solid var(--line); border-radius: var(--pill); padding: 1px 9px; font-size: 11px; color: var(--text-dim); }
+.board-list { display: flex; flex-direction: column; gap: 10px; min-height: 40px; }
+.board-card { text-align: left; width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 13px; cursor: pointer; font-family: var(--ui); color: var(--text); transition: transform var(--t-fast), box-shadow var(--t), border-color var(--t); }
+.board-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--line-strong); }
+.board-card .bc-title { font-size: 13.5px; font-weight: 600; margin-top: 4px; line-height: 1.3; }
+.board-card .bc-client { font-size: 12px; margin-top: 2px; }
+.board-empty { color: var(--text-faint); font-size: 12.5px; text-align: center; padding: 16px 0; }
+
+/* ============================================================
+   Responsive — admin views
+   ============================================================ */
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .chart-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .hbar { grid-template-columns: 96px 1fr 30px; gap: 8px; }
+  .board { flex-direction: column; overflow: visible; }
+  .board-col { flex: 1 1 auto; }
+  .topbar { flex-wrap: wrap; }
+  .tb-right { width: 100%; }
+  .tb-right .row { width: 100%; }
 }

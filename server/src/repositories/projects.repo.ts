@@ -14,16 +14,28 @@ export const projectsRepo = {
   async create(input: {
     client_id: string;
     title: string;
-    concept_note: string;
+    project_type: string;
+    services: string[];
     number_of_views: number;
+    brief_design_intent: string;
+    brief_client_requirements: string | null;
+    brief_preferred_style: string | null;
+    brief_material_preferences: string | null;
+    brief_special_instructions: string | null;
   }): Promise<Project> {
     const { data, error } = await supabase
       .from(TABLE)
       .insert({
         client_id: input.client_id,
         title: input.title,
-        concept_note: input.concept_note,
+        project_type: input.project_type,
+        services: input.services,
         number_of_views: input.number_of_views,
+        brief_design_intent: input.brief_design_intent,
+        brief_client_requirements: input.brief_client_requirements,
+        brief_preferred_style: input.brief_preferred_style,
+        brief_material_preferences: input.brief_material_preferences,
+        brief_special_instructions: input.brief_special_instructions,
       })
       .select('*')
       .single();

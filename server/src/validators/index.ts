@@ -28,13 +28,23 @@ const fileCategory = z.enum([
   'elevation',
   'sections',
   'rcp_layouts',
+  'models_3d',   // NEW
   'references',
 ]);
 
+const brief = z.string().trim().max(2000);
+
 export const createProjectSchema = z.object({
   title: z.string().trim().min(1).max(100),
-  conceptNote: z.string().trim().max(250),
+  projectType: z.enum(['residential', 'commercial', 'hospitality', 'retail', 'other']),
+  services: z.array(z.enum(['interior', 'exterior', 'material_visualisation', 'multiple_views'])).min(1).max(4),
   numberOfViews: z.number().int().min(1).max(10),
+  // Structured brief — design intent required, rest optional
+  designIntent: z.string().trim().min(1).max(2000),
+  clientRequirements: brief.optional().default(''),
+  preferredStyle: brief.optional().default(''),
+  materialPreferences: brief.optional().default(''),
+  specialInstructions: brief.optional().default(''),
   files: z
     .array(
       z.object({

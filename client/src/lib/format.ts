@@ -23,6 +23,7 @@ export const CATEGORY_LABEL: Record<string, string> = {
   elevation: 'Elevation',
   sections: 'Sections',
   rcp_layouts: 'RCP Layouts',
+  models_3d: '3D Models',
   references: 'References',
 };
 
@@ -30,4 +31,27 @@ export const ITERATION_LABEL: Record<string, string> = {
   original: 'Original',
   revision_1: 'Revision 1',
   revision_2: 'Revision 2',
+};
+
+export const PROJECT_TYPE_LABEL: Record<string, string> = {
+  residential: 'Residential',
+  commercial: 'Commercial',
+  hospitality: 'Hospitality',
+  retail: 'Retail',
+  other: 'Other',
+};
+
+export const SERVICE_LABEL: Record<string, string> = {
+  interior: 'Interior',
+  exterior: 'Exterior',
+  material_visualisation: 'Material Visualisation',
+  multiple_views: 'Multiple Views',
+};
+
+export const BRIEF_LABEL: Record<string, string> = {
+  brief_design_intent: 'Design Intent',
+  brief_client_requirements: 'Client Requirements',
+  brief_preferred_style: 'Preferred Style',
+  brief_material_preferences: 'Material Preferences',
+  brief_special_instructions: 'Special Instructions',
 };

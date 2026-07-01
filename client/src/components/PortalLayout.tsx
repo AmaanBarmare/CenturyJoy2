@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import type { Role } from '../types';
 
-type IconName = 'grid' | 'plus' | 'list' | 'users' | 'doc';
+type IconName = 'grid' | 'plus' | 'list' | 'users' | 'doc' | 'board' | 'clients' | 'chart';
 
 const ICONS: Record<IconName, ReactNode> = {
   grid: (<><rect x="3" y="3" width="7.5" height="7.5" rx="1.6" /><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6" /><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6" /><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6" /></>),
@@ -12,6 +12,9 @@ const ICONS: Record<IconName, ReactNode> = {
   list: (<><path d="M8 6h13M8 12h13M8 18h13" /><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01" /></>),
   users: (<><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" /><circle cx="10" cy="7" r="4" /><path d="M21 21v-2a4 4 0 0 0-3-3.87" /></>),
   doc: (<><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></>),
+  board: (<><rect x="3" y="4" width="5" height="16" rx="1.4" /><rect x="10" y="4" width="5" height="11" rx="1.4" /><rect x="17" y="4" width="4" height="14" rx="1.4" /></>),
+  clients: (<><circle cx="9" cy="8" r="3.2" /><path d="M3.5 20v-1.2A4.3 4.3 0 0 1 7.8 14.5h2.4a4.3 4.3 0 0 1 4.3 4.3V20" /><path d="M16 4.5a3.2 3.2 0 0 1 0 6.2M18.5 20v-1a4 4 0 0 0-2.5-3.7" /></>),
+  chart: (<><path d="M4 20V4" /><path d="M4 20h16" /><rect x="7" y="12" width="3" height="5" rx="0.6" /><rect x="12" y="8" width="3" height="9" rx="0.6" /><rect x="17" y="5" width="3" height="12" rx="0.6" /></>),
 };
 
 function Icon({ name }: { name: IconName }) {
@@ -33,6 +36,9 @@ const NAV: Record<Role, NavItem[]> = {
   studio: [{ to: '/studio', label: 'Project Queue', icon: 'list', end: true }],
   admin: [
     { to: '/admin', label: 'Projects', icon: 'grid', end: true },
+    { to: '/admin/board', label: 'Board', icon: 'board' },
+    { to: '/admin/clients', label: 'Clients', icon: 'clients' },
+    { to: '/admin/analytics', label: 'Analytics', icon: 'chart' },
     { to: '/admin/users', label: 'Users', icon: 'users' },
     { to: '/admin/audit', label: 'Audit Log', icon: 'doc' },
   ],

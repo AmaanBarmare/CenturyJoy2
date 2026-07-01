@@ -1,7 +1,11 @@
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import type {
+  Analytics,
   AuditEntry,
   AuthUser,
+  Board,
+  ClientDetail,
+  ClientRow,
   PresignedItem,
   Project,
   ProjectDetail,
@@ -92,7 +96,15 @@ export const endpoints = {
     return data;
   },
   async createProject(body: {
-    title: string; conceptNote: string; numberOfViews: number;
+    title: string;
+    projectType: string;
+    services: string[];
+    numberOfViews: number;
+    designIntent: string;
+    clientRequirements?: string;
+    preferredStyle?: string;
+    materialPreferences?: string;
+    specialInstructions?: string;
     files: { category: string; originalName: string; sizeBytes: number }[];
   }) {
     const { data } = await api.post<{ project: Project; uploads: PresignedItem[] }>('/projects', body);
@@ -160,6 +172,24 @@ export const endpoints = {
     const { data } = await api.get<{ entries: AuditEntry[]; total: number; page: number; pageSize: number }>(
       '/admin/audit-log', { params },
     );
+    return data;
+  },
+
+  // admin — clients / analytics / board
+  async adminClients() {
+    const { data } = await api.get<{ clients: ClientRow[] }>('/admin/clients');
+    return data.clients;
+  },
+  async adminClientDetail(id: string) {
+    const { data } = await api.get<ClientDetail>(`/admin/clients/${id}`);
+    return data;
+  },
+  async adminAnalytics() {
+    const { data } = await api.get<Analytics>('/admin/analytics');
+    return data;
+  },
+  async adminBoard() {
+    const { data } = await api.get<Board>('/admin/board');
     return data;
   },
 };

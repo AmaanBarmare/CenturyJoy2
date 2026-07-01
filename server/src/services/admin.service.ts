@@ -151,4 +151,87 @@ export const adminService = {
     }
     return lines.join('\n');
   },
+
+  // ── Clients (mini-CRM) ──────────────────────────────────
+  async listClients() {
+    const [{ data: clients, error: cErr }, { data: projects, error: pErr }] = await Promise.all([
+      supabase.from('users').select('*').eq('role', 'client').order('created_at', { ascending: false }),
+      supabase.from('projects').select('client_id, status, created_at').eq('is_deleted', false),
+    ]);
+    if (cErr) throw cErr; if (pErr) throw pErr;
+    const DONE = ['completed', 'closed'];
+    const agg = new Map<string, { total: number; active: number; completed: number; last: string | null }>();
+    for (const p of (projects ?? []) as any[]) {
+      const a = agg.get(p.client_id) ?? { total: 0, active: 0, completed: 0, last: null };
+      a.total++; if (DONE.includes(p.status)) a.completed++; else a.active++;
+      if (!a.last || p.created_at > a.last) a.last = p.created_at;
+      agg.set(p.client_id, a);
+    }
+    return (clients ?? []).map((c: any) => {
+      const a = agg.get(c.id) ?? { total: 0, active: 0, completed: 0, last: null };
+      return { ...publicUser(c), projects_total: a.total, projects_active: a.active, projects_completed: a.completed, last_project_at: a.last };
+    });
+  },
+
+  async clientDetail(id: string) {
+    const user = await usersRepo.findById(id);
+    if (!user || user.role !== 'client') throw notFound('Client not found');
+    const { data: projects, error } = await supabase
+      .from('projects').select('*').eq('client_id', id).eq('is_deleted', false)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    const list = (projects ?? []) as any[];
+    const DONE = ['completed', 'closed'];
+    return {
+      client: publicUser(user), projects: list,
+      stats: { total: list.length, active: list.filter((p) => !DONE.includes(p.status)).length, completed: list.filter((p) => DONE.includes(p.status)).length },
+    };
+  },
+
+  // ── Analytics & Reports ─────────────────────────────────
+  async analytics() {
+    const [{ data: users, error: uErr }, { data: projects, error: pErr }] = await Promise.all([
+      supabase.from('users').select('role, created_at'),
+      supabase.from('projects').select('status, project_type, services, created_at, completed_at, revisions_used, is_deleted'),
+    ]);
+    if (uErr) throw uErr; if (pErr) throw pErr;
+    const DONE = ['completed', 'closed'];
+    const proj = (projects ?? []).filter((p: any) => !p.is_deleted) as any[];
+    const clients = (users ?? []).filter((u: any) => u.role === 'client');
+    const months: { key: string; label: string }[] = [];
+    const now = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push({ key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`, label: d.toLocaleString('en-US', { month: 'short' }) });
+    }
+    const mk = (iso: string) => (iso ? iso.slice(0, 7) : '');
+    const receivedByMonth = months.map((m) => ({ ...m, count: proj.filter((p) => mk(p.created_at) === m.key).length }));
+    const registrationsByMonth = months.map((m) => ({ ...m, count: clients.filter((u: any) => mk(u.created_at) === m.key).length }));
+    const countBy = (arr: any[], f: string) => { const m: Record<string, number> = {}; for (const x of arr) { const k = x[f] ?? 'unknown'; m[k] = (m[k] ?? 0) + 1; } return m; };
+    const services: Record<string, number> = {};
+    for (const p of proj) for (const s of (p.services ?? [])) services[s] = (services[s] ?? 0) + 1;
+    const done = proj.filter((p) => p.completed_at);
+    const avgCompletionDays = done.length
+      ? Math.round(done.reduce((a, p) => a + (new Date(p.completed_at).getTime() - new Date(p.created_at).getTime()) / 86400000, 0) / done.length) : null;
+    const avgRevisions = proj.length ? Math.round((proj.reduce((a, p) => a + (p.revisions_used ?? 0), 0) / proj.length) * 10) / 10 : 0;
+    return {
+      totals: { clients: clients.length, studio: (users ?? []).filter((u: any) => u.role === 'studio').length, projects: proj.length, active: proj.filter((p) => !DONE.includes(p.status)).length, completed: proj.filter((p) => DONE.includes(p.status)).length },
+      receivedByMonth, registrationsByMonth,
+      byStatus: countBy(proj, 'status'), byType: countBy(proj.filter((p) => p.project_type), 'project_type'),
+      services, avgCompletionDays, avgRevisions,
+    };
+  },
+
+  // ── Production board + Delivery/Closure queue ───────────
+  async board() {
+    const { data, error } = await supabase.from('projects').select('*').eq('is_deleted', false).order('created_at', { ascending: true });
+    if (error) throw error;
+    const list = (data ?? []) as any[];
+    const ids = [...new Set(list.map((p) => p.client_id))];
+    const users = ids.length ? await usersRepo.findManyByIds(ids) : [];
+    const nameOf = new Map(users.map((u) => [u.id, u.name]));
+    const enriched = list.map((p) => ({ ...p, client_name: nameOf.get(p.client_id) ?? 'Unknown' }));
+    const DONE = ['completed', 'closed'];
+    return { active: enriched.filter((p) => !DONE.includes(p.status)), delivery: enriched.filter((p) => DONE.includes(p.status)) };
+  },
 };

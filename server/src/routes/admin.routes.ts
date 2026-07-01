@@ -69,6 +69,16 @@ router.patch(
   asyncHandler(async (req, res) => res.json(await adminService.softDelete(req.params.id, req.user!))),
 );
 
+// ── Clients (mini-CRM) ──────────────────────────────────
+router.get('/clients', asyncHandler(async (_req, res) => res.json({ clients: await adminService.listClients() })));
+router.get('/clients/:id', asyncHandler(async (req, res) => res.json(await adminService.clientDetail(req.params.id))));
+
+// ── Analytics ───────────────────────────────────────────
+router.get('/analytics', asyncHandler(async (_req, res) => res.json(await adminService.analytics())));
+
+// ── Production board + Delivery queue ───────────────────
+router.get('/board', asyncHandler(async (_req, res) => res.json(await adminService.board())));
+
 // ── Audit log ───────────────────────────────────────────
 router.get(
   '/audit-log',

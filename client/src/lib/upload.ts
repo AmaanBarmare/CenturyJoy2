@@ -7,8 +7,8 @@ const bucket = (import.meta.env.VITE_SUPABASE_STORAGE_BUCKET as string) || 'cent
 
 export const supabase = url && anon ? createClient(url, anon) : null;
 
-/** Upload a single file to its signed Supabase Storage URL (browser → storage). */
-export async function uploadToSigned(item: PresignedItem, file: File): Promise<void> {
+/** Upload a single file (or chunk-part blob) to its signed Supabase Storage URL. */
+export async function uploadToSigned(item: PresignedItem, file: Blob): Promise<void> {
   if (!supabase) {
     throw new Error('Supabase storage is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
   }

@@ -20,7 +20,11 @@ export type FileCategory =
   | 'elevation'
   | 'sections'
   | 'rcp_layouts'
+  | 'models_3d'      // NEW
   | 'references';
+
+export type ProjectType = 'residential' | 'commercial' | 'hospitality' | 'retail' | 'other';        // NEW
+export type ServiceType = 'interior' | 'exterior' | 'material_visualisation' | 'multiple_views';     // NEW
 
 export type Iteration = 'original' | 'revision_1' | 'revision_2';
 
@@ -47,7 +51,14 @@ export interface Project {
   client_id: string;
   title: string;
   status: ProjectStatus;
-  concept_note: string | null;
+  project_type: ProjectType | null;
+  services: ServiceType[] | null;
+  concept_note: string | null;                    // kept (legacy)
+  brief_design_intent: string | null;
+  brief_client_requirements: string | null;
+  brief_preferred_style: string | null;
+  brief_material_preferences: string | null;
+  brief_special_instructions: string | null;
   number_of_views: number;
   revisions_used: number;
   revisions_allowed: number;

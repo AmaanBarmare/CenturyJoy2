@@ -20,7 +20,11 @@ export type FileCategory =
   | 'elevation'
   | 'sections'
   | 'rcp_layouts'
+  | 'models_3d'
   | 'references';
+
+export type ProjectType = 'residential' | 'commercial' | 'hospitality' | 'retail' | 'other';
+export type ServiceType = 'interior' | 'exterior' | 'material_visualisation' | 'multiple_views';
 
 export interface AuthUser {
   id: string;
@@ -38,7 +42,14 @@ export interface Project {
   company_name?: string | null;
   title: string;
   status: ProjectStatus;
+  project_type?: ProjectType | null;
+  services?: ServiceType[] | null;
   concept_note: string | null;
+  brief_design_intent?: string | null;
+  brief_client_requirements?: string | null;
+  brief_preferred_style?: string | null;
+  brief_material_preferences?: string | null;
+  brief_special_instructions?: string | null;
   number_of_views: number;
   revisions_used: number;
   revisions_allowed: number;
@@ -121,4 +132,39 @@ export interface AuditEntry {
   entity_id: string | null;
   ip_address: string | null;
   created_at: string;
+}
+
+// ── Admin: Clients (mini-CRM) ─────────────────────────────
+export interface ClientRow extends UserRow {
+  projects_total: number;
+  projects_active: number;
+  projects_completed: number;
+  last_project_at: string | null;
+}
+
+export interface ClientDetail {
+  client: UserRow;
+  projects: Project[];
+  stats: { total: number; active: number; completed: number };
+}
+
+// ── Admin: Analytics ──────────────────────────────────────
+export interface MonthPoint { key: string; label: string; count: number; }
+
+export interface Analytics {
+  totals: { clients: number; studio: number; projects: number; active: number; completed: number };
+  receivedByMonth: MonthPoint[];
+  registrationsByMonth: MonthPoint[];
+  byStatus: Record<string, number>;
+  byType: Record<string, number>;
+  services: Record<string, number>;
+  avgCompletionDays: number | null;
+  avgRevisions: number;
+}
+
+// ── Admin: Production board ────────────────────────────────
+export type BoardProject = Project & { client_name?: string };
+export interface Board {
+  active: BoardProject[];
+  delivery: BoardProject[];
 }

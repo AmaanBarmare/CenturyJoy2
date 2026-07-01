@@ -24,6 +24,10 @@ const ClientDashboard = lazy(() => import('./pages/client/Dashboard'));
 const NewProject = lazy(() => import('./pages/client/NewProject'));
 const StudioDashboard = lazy(() => import('./pages/studio/Dashboard'));
 const AdminProjects = lazy(() => import('./pages/admin/Projects'));
+const AdminBoard = lazy(() => import('./pages/admin/Board'));
+const AdminClients = lazy(() => import('./pages/admin/Clients'));
+const AdminClientDetail = lazy(() => import('./pages/admin/ClientDetail'));
+const AdminAnalytics = lazy(() => import('./pages/admin/Analytics'));
 const AdminUsers = lazy(() => import('./pages/admin/Users'));
 const AdminAudit = lazy(() => import('./pages/admin/AuditLog'));
 
@@ -74,6 +78,10 @@ export default function App() {
       <Route path="/studio/projects/:id" element={<Protected roles={['studio', 'admin']}><ProjectDetail /></Protected>} />
 
       <Route path="/admin" element={<Protected roles={['admin']}><AdminProjects /></Protected>} />
+      <Route path="/admin/board" element={<Protected roles={['admin']}><AdminBoard /></Protected>} />
+      <Route path="/admin/clients" element={<Protected roles={['admin']}><AdminClients /></Protected>} />
+      <Route path="/admin/clients/:id" element={<Protected roles={['admin']}><AdminClientDetail /></Protected>} />
+      <Route path="/admin/analytics" element={<Protected roles={['admin']}><AdminAnalytics /></Protected>} />
       <Route path="/admin/users" element={<Protected roles={['admin']}><AdminUsers /></Protected>} />
       <Route path="/admin/audit" element={<Protected roles={['admin']}><AdminAudit /></Protected>} />
 
